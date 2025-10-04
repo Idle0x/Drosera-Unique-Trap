@@ -49,7 +49,7 @@ Before beginning, ensure you have:
 - Ethereum wallet with private key (for Hoodi testnet)
 - Access to ChatGPT or Claude AI (strongly recommended)
 - Clear concept for your unique trap's anomaly detection logic
-- Cadet and Corporal roles obtained
+- Cadet and Corporal roles 
 - Drosera operator running (setup from Cadet/Corporal process - if not, see [Izmer's Operator Setup Guide](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup))
 
 ---
@@ -541,7 +541,7 @@ Before beginning, ensure you have:
 
 ### Step 7: Deploy Contracts
 
-**Purpose**: Deploys your trap and response contracts to Hoodi testnet.
+**Purpose**: Deploys your trap and response contracts to Hoodi testnet. Before deploying your drosera operator has most likely been set already, so proceed to the next step. However if not, [checkout Izmer's guide](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup)
 
 1. **Load and Export Environment Variables**:
    ```bash
