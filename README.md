@@ -234,7 +234,9 @@ Before beginning, ensure you have:
    - Keep the deployment script ready to paste
    - You'll paste these in Step 4
 
-**You are now ready to proceed to Step 4 once you have all contracts generated and ready.**
+**You are now set to proceed to Step 4 once you have all contracts generated and ready.**
+
+Please refer to the [troubleshooting section](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/README.md#troubleshooting) below for detailed explanations and better understanding.
 
 ---
 
