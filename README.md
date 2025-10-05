@@ -154,14 +154,10 @@ Before beginning, ensure you have:
    - Figure this out with AI
 
 2. **Data to Monitor** (can be one or multiple)
-   - Single data point example: NFT floor price
-   - Multiple data points example: block time, gas price, transaction count, block difficulty
    - Clearly list all data your trap needs to collect
    - Figure this out with AI
 
 3. **Trigger Conditions** (can be one or multiple)
-   - Single condition example: Price drops below $100
-   - Multiple conditions example: Block time < 2 seconds OR block time > 50 seconds OR gas price spikes 200% OR difficulty anomaly detected
    - Define exactly when your trap should trigger a response
    - Figure this out with AI
 
