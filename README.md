@@ -938,8 +938,7 @@ For a detailed video walkthrough of the entire process, check out [Reiji's compr
 1. Uniqueness is essential - your trap must be different
 2. Use AI to generate custom code based on your specific idea
 3. The community is available to help in Discord
-4. Test thoroughly with dryrun before applying
-5. Document your work professionally for submission
+4. Document your work professionally for submission
 
 Good luck with your trap development!
 
