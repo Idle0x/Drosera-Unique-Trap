@@ -607,10 +607,13 @@ Before deploying, your drosera operator has been most likely set already, so pro
 
 2. **Apply and Make Trap Live**:
    ```bash
-DROSERA_PRIVATE_KEY=your_eth_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
-```
-
-Replace:`your_eth_private_key_here`
+   DROSERA_PRIVATE_KEY=your_eth_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
+   ```
+   
+   **Replace:**
+   - `your_eth_private_key_here` with your actual Ethereum private key (the same one you've been using throughout)
+   
+   **Explanation**: Pushes your trap configuration to the Drosera Network and makes it live.
 
 **Important Notes**:
 - Errors can occur in either `drosera dryrun` or `drosera apply` even after successful compilation and updating `drosera.toml`
