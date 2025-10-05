@@ -607,8 +607,9 @@ Before deploying, your drosera operator has been most likely set already, so pro
 
 2. **Apply and Make Trap Live**:
    ```bash
-   DROSERA_PRIVATE_KEY=your_eth_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
+DROSERA_PRIVATE_KEY=your_eth_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
 ```
+
 Replace:`your_eth_private_key_here`
 
 **Important Notes**:
