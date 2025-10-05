@@ -723,6 +723,7 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
 ```bash
 # Add remote (paste YOUR URL here)
 git remote add origin https://github.com/YOUR_USERNAME/my-unique-trap.git
+```
 
 # Verify
 git remote -v
