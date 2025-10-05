@@ -524,6 +524,11 @@ Please refer to the [troubleshooting section](https://github.com/Idle0x/Drosera-
    PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
    GITHUB_TOKEN=WILL_BE_ADDED_IN_PART_2
    ```
+   
+   **Replace:**
+   - `0xYOUR_PRIVATE_KEY_HERE` with your actual wallet private key
+   - `GITHUB_TOKEN` will be added later in Part 2
+   
    Save and exit with `Ctrl+X`, `Y`, `Enter`.
    
    **Explanation**: Replace with your actual Ethereum private key for Hoodi testnet.
@@ -599,13 +604,12 @@ Before deploying, your drosera operator has been most likely set already, so pro
    ```bash
    drosera dryrun
    ```
-   **Explanation**: Tests your trap configuration changes before making them live. This validates your setup without actually applying it to the network.
 
 2. **Apply and Make Trap Live**:
    ```bash
    DROSERA_PRIVATE_KEY=your_eth_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
-   ```
-   **Explanation**: Pushes your trap configuration to the Drosera Network and makes it live. Use the same private key you've been using throughout.
+```
+Replace:`your_eth_private_key_here`
 
 **Important Notes**:
 - Errors can occur in either `drosera dryrun` or `drosera apply` even after successful compilation and updating `drosera.toml`
@@ -688,7 +692,7 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
 7. **Copy the URL**: Click the green **"Code"** button, then copy the URL ending with `.git`
    - ✅ Correct: `https://github.com/YOUR_USERNAME/my-unique-trap.git`
    - ❌ Wrong: Don't copy from your browser's address bar
-     
+
 ---
 
 ### Step 5: Generate GitHub Personal Access Token
@@ -712,6 +716,11 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
    PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
    GITHUB_TOKEN=ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
    ```
+   
+   **Replace:**
+   - `0xYOUR_PRIVATE_KEY_HERE` with your actual wallet private key
+   - `ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` with your GitHub token from above
+   
    Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 ---
@@ -723,10 +732,12 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
 ```bash
 # Add remote (paste YOUR URL here)
 git remote add origin https://github.com/YOUR_USERNAME/my-unique-trap.git
-```
 
 # Verify
 git remote -v
+```
+
+---
 
 ### Step 7: Push to GitHub
 
@@ -736,22 +747,11 @@ source ~/my-unique-trap/.env
 
 # Push
 git push -u origin main
+```
+
 When prompted:
-Username: Your GitHub username
-Password: Paste your GitHub Personal Access Token (PAT)
-## Replacement Text for .env file section:
-
-Find the section with the `.env` update and replace with:
-
-```markdown
-Update:
-
-```bash
-PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
-GITHUB_TOKEN=ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-Replace:
-0xYOUR_PRIVATE_KEY_HERE with your actual wallet private key
-ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX with your GitHub token from Step 5
+- **Username**: Your GitHub username
+- **Password**: Paste your GitHub Personal Access Token (PAT)
 
 **Verify**: Visit `https://github.com/YOUR_USERNAME/my-unique-trap` and confirm all files are present.
 
