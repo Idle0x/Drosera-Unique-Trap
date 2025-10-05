@@ -233,6 +233,7 @@ Before beginning, ensure you have:
 **You are now set to proceed to Step 4 once you have all contracts generated and ready.**
 
 Please refer to the [troubleshooting section](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/README.md#troubleshooting) below if you need detailed explanations.
+
 Furthermore, if you're confused you can simply paste this guide to the AI and request the AI to ask you questions about what it needs to successfully create your trap.
 
 ---
