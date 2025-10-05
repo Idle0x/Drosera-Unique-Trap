@@ -680,13 +680,15 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
 ### Step 4: Create GitHub Repository
 
 1. Go to: [GitHub New Repository](https://github.com/new)
-2. **Repository name**: `my-unique-trap` (or your preferred name)
-3. **Description**: Brief description of your trap
-4. **Visibility**: Public
-5. **Do NOT initialize** with README, .gitignore, or license
+2. Repository name: `my-unique-trap` (or your preferred name)
+3. Description: Brief description of your trap
+4. Visibility: Public
+5. Do NOT initialize with README, .gitignore, or license
 6. Click "Create repository"
-7. Copy the URL: `https://github.com/YOUR_USERNAME/my-unique-trap.git`
-
+7. **Copy the URL**: Click the green **"Code"** button, then copy the URL ending with `.git`
+   - ✅ Correct: `https://github.com/YOUR_USERNAME/my-unique-trap.git`
+   - ❌ Wrong: Don't copy from your browser's address bar
+     
 ---
 
 ### Step 5: Generate GitHub Personal Access Token
@@ -714,31 +716,49 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
 
 ---
 
-### Step 6: Push to GitHub
+### Step 6: Configure Remote
+
+**Replace `YOUR_USERNAME/my-unique-trap.git` with the URL you copied in Step 4:**
 
 ```bash
-# Add remote
+# Add remote (paste YOUR URL here)
 git remote add origin https://github.com/YOUR_USERNAME/my-unique-trap.git
 
 # Verify
 git remote -v
 
+## Step
+```markdown
+### Step 7: Push to GitHub
+
+```bash
 # Load token
 source ~/my-unique-trap/.env
 
 # Push
 git push -u origin main
-```
-
 When prompted:
-- **Username**: Your GitHub username
-- **Password**: Paste your GitHub PAT
+Username: Your GitHub username
+Password: Paste your GitHub Personal Access Token (PAT)
+## Replacement Text for .env file section:
+
+Find the section with the `.env` update and replace with:
+
+```markdown
+Update:
+
+```bash
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
+GITHUB_TOKEN=ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Replace:
+0xYOUR_PRIVATE_KEY_HERE with your actual wallet private key
+ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX with your GitHub token from Step 5
 
 **Verify**: Visit `https://github.com/YOUR_USERNAME/my-unique-trap` and confirm all files are present.
 
 ---
 
-### Step 7: Security Cleanup
+### Step 8: Security Cleanup
 
 ```bash
 # Remove local .env
