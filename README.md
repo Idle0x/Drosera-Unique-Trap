@@ -539,7 +539,9 @@ Please refer to the [troubleshooting section](https://github.com/Idle0x/Drosera-
 
 ### Step 7: Deploy Contracts
 
-**Purpose**: Deploys your trap and response contracts to Hoodi testnet. Before deploying your drosera operator has most likely been set already, so proceed to the next step. However if not, [checkout Izmer's guide](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup)
+**Purpose**: Deploys your trap and response contracts to Hoodi testnet. 
+
+Before deploying, your drosera operator has been most likely set already, so proceed to the next step. However if not, [checkout Izmer's guide](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup)
 
 1. **Load and Export Environment Variables**:
    ```bash
