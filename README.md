@@ -727,8 +727,6 @@ git remote add origin https://github.com/YOUR_USERNAME/my-unique-trap.git
 # Verify
 git remote -v
 
-## Step
-```markdown
 ### Step 7: Push to GitHub
 
 ```bash
