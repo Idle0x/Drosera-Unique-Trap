@@ -694,7 +694,9 @@ git commit -m "Initial commit: [Your Trap Name] - Unique Drosera trap implementa
 3. Configure:
    - **Note**: `my-unique-trap-token`
    - **Expiration**: 30 days or no expiration
-   - **Scopes**: `repo`
+   - **Scopes**: Select **BOTH** `repo` AND `workflow`
+     - `repo`: Required to create and push to your repository
+     - `workflow`: Required to push GitHub Actions workflow files
 4. Generate and copy token: `ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
 
 5. **Add to .env**:
@@ -778,7 +780,6 @@ docker compose logs -f
 - Trap contract address: `0xYOUR_TRAP_ADDRESS`
 - Response contract address: `0xYOUR_RESPONSE_ADDRESS`
 - Brief description of your trap's unique purpose
-- Transaction evidence (hashes or explorer links)
 - **Screenshots from dashboard showing your trap activity**
 
 **Submit**:
@@ -913,7 +914,7 @@ Even after successful compilation and updating `drosera.toml`, you may encounter
 
 **Authentication failed**:
 - Regenerate PAT: [GitHub Tokens](https://github.com/settings/tokens)
-- Ensure `repo` scope is selected
+- Ensure **BOTH** `repo` AND `workflow` scopes are selected
 
 **Repository not empty**:
 ```bash
