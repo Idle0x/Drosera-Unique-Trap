@@ -163,13 +163,14 @@ Once you have these defined, skip to step 2 below with your concept ready.
 
 #### Preparation Process:
 
-1. **Find Example Contracts (REQUIRED)**:
+1. **Find Example Contracts (REQUIRED - Less than 2 minutes)**:
    - Visit [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
-   - Find any trap example you like
-   - Copy the trap contract code (src)
-   - Copy the response contract code (src)
+   - Pick ANY trap example (doesn't matter which - it's just for the AI to understand the structure)
+   - Copy the trap contract code from the `src` folder
+   - Copy the response contract code from the `src` folder
    - You'll paste both at the end of the prompt below
-
+   
+   **Why this matters**: Without examples, the AI won't know Drosera's specific structure and your contracts may not compile. This step ensures the AI generates code that works with your setup.
 2. **Prepare The Contracts**:
 
    **Option A - Let AI Suggest Ideas**: Copy the prompt below, together with the contract code you've obtained above and paste to the AI
