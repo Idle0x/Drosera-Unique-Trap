@@ -2,7 +2,8 @@
 
 ## Introduction
 
-This guide walks you through creating, deploying, and publishing a unique Drosera trap on Ubuntu VPS using Termius. You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation) for structure, but your implementation must be unique.
+This guide walks you through creating, deploying, and publishing a unique Drosera trap on Ubuntu VPS using Termius.
+You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation) for structure, but your implementation must be unique.
 
 ---
 
