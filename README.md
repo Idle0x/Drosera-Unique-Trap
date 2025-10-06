@@ -3,6 +3,7 @@
 ## Introduction
 
 This guide walks you through creating, deploying, and publishing a unique Drosera trap on Ubuntu VPS using Termius.
+
 You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation) for structure, but your implementation must be unique.
 
 ---
@@ -21,7 +22,7 @@ You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) o
 - Ethereum wallet with private key (Hoodi testnet)
 - ChatGPT or Claude AI access
 - Cadet and Corporal roles
-- [Drosera operator running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup)
+- [Drosera operator running](https://github.com/0xmoei/Drosera-Network?tab=readme-ov-file#method-1-docker)
 
 ---
 
