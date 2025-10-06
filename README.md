@@ -172,7 +172,7 @@ Once you have these defined, skip to step 2 below with your concept ready.
 
 2. **Prepare The Contracts**:
 
-   **Option A - Let AI Suggest Ideas**: Copy the prompt below and paste your example contracts at the end
+   **Option A - Let AI Suggest Ideas**: Copy the prompt below, together with the contract code you've obtained above and paste to the AI
    
    **Option B - Use Your Own Idea**: Copy the prompt below, but in your message tell the AI your specific trap concept before pasting the examples
 
