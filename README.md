@@ -152,7 +152,7 @@ If you know exactly what anomaly you want to detect, ensure you've defined:
 - **Your Unique Trap Idea**: What specific anomaly/condition will it detect? Why is this important? How is it different from existing traps?
 - **Data to Monitor**: List all data points your trap needs to collect (can be one or multiple)
 - **Trigger Conditions**: Define exactly when your trap should trigger a response (can be one or multiple)
-- **Sophistication Level**: Simple (single check), Moderate (multiple conditions/calculations), or Complex (historical analysis, statistics, multiple interdependent conditions)
+- **Detection Approach**: How your trap analyzes data - Straightforward (single condition check), Moderate (multiple conditions combined, some calculations), or Advanced (historical data analysis, statistical patterns, multiple interdependent conditions)
 - **Response Action**: What should happen when triggered? (Examples: emit event, pause protocol, send notification, execute protective action)
 
 Once you have these defined, skip to step 2 below with your concept ready.
@@ -188,13 +188,16 @@ Once you have these defined, skip to step 2 below with your concept ready.
       - Data points to monitor
       - Trigger conditions
       - Response action
-      - Complexity level (simple/moderate/complex)
+      - Detection approach (straightforward/moderate/advanced)
 
-   3. Once I choose an idea, generate THREE complete, ready-to-deploy files:
-      - MyUniqueTrap.sol (the trap contract implementing ITrap interface)
-      - MyUniqueResponse.sol (the response contract)
-      - Deploy.sol (Foundry deployment script that deploys both contracts)
-      - Clear explanation of how they work together
+   3. Once I choose an idea, generate THREE complete, ready-to-deploy files with EXACTLY these standardized names:
+      - File name: MyUniqueTrap.sol (trap contract implementing ITrap interface)
+      - File name: MyUniqueResponse.sol (response contract)
+      - File name: Deploy.sol (deployment script)
+      
+      CRITICAL NAMING REQUIREMENT: Use exactly "MyUniqueTrap" and "MyUniqueResponse" as the contract names in ALL files, including imports in Deploy.sol. Do NOT use custom names like "GasTrap" or "PriceTrap". This standardization prevents compilation errors when users follow the guide's file creation commands.
+      
+      Provide clear explanation of how they work together.
 
    MANDATORY REQUIREMENTS YOU MUST FOLLOW:
    - Trap contract must implement ITrap from "drosera-contracts/interfaces/ITrap.sol"
@@ -290,9 +293,11 @@ Please refer to the [troubleshooting section](#troubleshooting) if you need deta
    ```
    Create a Foundry deployment script that:
    1. Imports forge-std/Script.sol
-   2. Deploys my trap contract: [YOUR TRAP CONTRACT NAME]
-   3. Deploys my response contract: [YOUR RESPONSE CONTRACT NAME]
+   2. Deploys my trap contract: MyUniqueTrap
+   3. Deploys my response contract: MyUniqueResponse
    4. Logs both deployed addresses
+   
+   Use exactly "MyUniqueTrap" and "MyUniqueResponse" as contract names.
    ```
 
 #### 4.3 Create Test File (OPTIONAL)
@@ -963,6 +968,7 @@ git push origin main
 ### Video Guide
 
 For a detailed video walkthrough of the entire process, check out [Reiji's comprehensive guide](https://x.com/Reiji4kt/status/1973679261547413736).
+
 ---
 
 ## Final Notes
