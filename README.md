@@ -177,7 +177,7 @@ Before beginning, ensure you have:
 1. **Visit Example Traps**:
    - [My trap](https://github.com/Idle0x/block-time-anomaly-trap)
    - [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
-   - Find an example similar to your concept
+   - Find any trap you like
    - Copy the trap and response contract code as reference
 
 2. **Work with AI** (ChatGPT or Claude):
