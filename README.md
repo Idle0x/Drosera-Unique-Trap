@@ -145,94 +145,104 @@ Before beginning, ensure you have:
 
 **IMPORTANT**: This step is critical. Do not proceed to Step 4 until you have completed this preparation and received your generated contracts from the AI.
 
-#### What You Need to Define:
+#### If You Already Have a Trap Idea:
 
-1. **Your Unique Trap Idea**
-   - What specific anomaly or condition will your trap detect?
-   - Why is this important to monitor?
-   - How is it different from existing traps?
-   - Figure this out with AI
+If you know exactly what anomaly you want to detect, ensure you've defined:
 
-2. **Data to Monitor** (can be one or multiple)
-   - Clearly list all data your trap needs to collect
-   - Figure this out with AI
+- **Your Unique Trap Idea**: What specific anomaly/condition will it detect? Why is this important? How is it different from existing traps?
+- **Data to Monitor**: List all data points your trap needs to collect (can be one or multiple)
+- **Trigger Conditions**: Define exactly when your trap should trigger a response (can be one or multiple)
+- **Sophistication Level**: Simple (single check), Moderate (multiple conditions/calculations), or Complex (historical analysis, statistics, multiple interdependent conditions)
+- **Response Action**: What should happen when triggered? (Examples: emit event, pause protocol, send notification, execute protective action)
 
-3. **Trigger Conditions** (can be one or multiple)
-   - Define exactly when your trap should trigger a response
-   - Figure this out with AI
+Once you have these defined, skip to step 2 below with your concept ready.
 
-4. **Sophistication Level**
-   - Simple: Single check, straightforward logic
-   - Moderate: Multiple conditions, some calculation
-   - Complex: Historical data analysis, statistical calculations, multiple interdependent conditions
-   - Figure this out with AI
+#### If You Don't Have a Trap Idea Yet:
 
-5. **Response Action**
-   - What should happen when your trap triggers?
-   - Examples: Emit event, pause protocol, send notification, execute protective action
-   - Figure this out with AI
+**Don't worry!** Most people find it challenging to come up with unique trap concepts. Use the prompt below and the AI will suggest several unique ideas for you to choose from.
 
 #### Preparation Process:
 
-1. **Visit Example Traps**:
-   - [My trap](https://github.com/Idle0x/block-time-anomaly-trap)
-   - [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
-   - Use the links above ti find any trap you like
-   - Copy the trap and response contract code as reference
+1. **Find Example Contracts (REQUIRED)**:
+   - Visit [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
+   - Find any trap example you like
+   - Copy the trap contract code
+   - Copy the response contract code
+   - You'll paste both at the end of the prompt below
 
-2. **Work with AI** (ChatGPT or Claude):
+2. **Prepare The Contracts**:
+
+   **Option A - Let AI Suggest Ideas**: Copy the prompt below and paste your example contracts at the end
    
-   Use this example prompt structure:
+   **Option B - Use Your Own Idea**: Copy the prompt below, but in your message tell the AI your specific trap concept before pasting the examples
+
    ```
-   I want to create a Drosera trap that detects [YOUR UNIQUE IDEA - be specific].
+   I need help creating a UNIQUE Drosera trap for blockchain anomaly detection on Hoodi testnet. 
 
-   DATA TO MONITOR:
-   - [List your data point(s) - can be one or multiple]
-   - [Example: block timestamps, gas prices, token balances, etc.]
+   CRITICAL: My trap MUST be different from others. Blockchain anomalies can be absolutely anything affecting the blockchain - from minor threats to major exploits, including but not limited to: suspicious network activity, gas price anomalies, low reserves, liquidation risks, slippage issues, impermanent loss, protocol vulnerabilities, oracle manipulation, unusual user behavior, consensus issues, or ANY other detectable blockchain condition.
 
-   TRIGGER CONDITIONS:
-   - [List your condition(s) - can be one or multiple]
-   - [Example: when block time < 2 seconds, or when price drops > 20%, etc.]
+   YOUR TASK:
+   1. Suggest 3-5 UNIQUE trap ideas I can choose from, ensuring high uniqueness and minimal chance of others having the same idea
+   2. For each idea, provide:
+      - Brief description of what anomaly it detects
+      - Data points to monitor
+      - Trigger conditions
+      - Response action
+      - Complexity level (simple/moderate/complex)
 
-   SOPHISTICATION:
-   - [Describe complexity: simple check, multiple conditions, historical analysis, etc.]
+   3. Once I choose an idea, generate THREE complete, ready-to-deploy files:
+      - MyUniqueTrap.sol (the trap contract implementing ITrap interface)
+      - MyUniqueResponse.sol (the response contract)
+      - Deploy.sol (Foundry deployment script that deploys both contracts)
+      - Clear explanation of how they work together
 
-   RESPONSE ACTION:
-   - [What should happen when triggered]
+   MANDATORY REQUIREMENTS YOU MUST FOLLOW:
+   - Trap contract must implement ITrap from "drosera-contracts/interfaces/ITrap.sol"
+   - collect() function: MUST be 'view', returns bytes memory, gathers data
+   - shouldRespond() function: MUST be 'pure' (no state reads, no external calls, deterministic), returns (bool, bytes memory)
+   - Response contract function signature MUST match bytes payload from shouldRespond()
+   - All contracts use Solidity ^0.8.20
+   - Contracts must be complete, compilable, and functional
 
-   Here's a reference trap contract I found:
-   [PASTE EXAMPLE TRAP CONTRACT]
+   UNIQUENESS REQUIREMENT:
+   Ensure the trap ideas you suggest are creative and diverse. Avoid common/obvious traps like simple block time monitoring or basic gas price alerts. Think about:
+   - Cross-protocol anomalies
+   - Statistical analysis patterns
+   - Multi-condition triggers
+   - Uncommon data combinations
+   - Novel threat vectors
+   - Edge cases in DeFi mechanisms
 
-   Here's a reference response contract:
-   [PASTE EXAMPLE RESPONSE CONTRACT]
+   Here are example contracts for reference structure (but make mine completely unique):
 
-   Generate:
-   1. A custom trap contract implementing ITrap interface with:
-      - collect() function that gathers my specific data
-      - shouldRespond() function that checks my conditions and triggers appropriately
-   2. A custom response contract that executes my desired response action
-   3. Explanation of how they work together
-   4. Any additional helper functions or logic needed
+   EXAMPLE TRAP CONTRACT:
+   [PASTE YOUR EXAMPLE TRAP CONTRACT HERE]
 
-   Make sure the contracts are complete, compilable, and unique to my use case.
+   EXAMPLE RESPONSE CONTRACT:
+   [PASTE YOUR EXAMPLE RESPONSE CONTRACT HERE]
+
+   Start by presenting me with 3-5 unique trap ideas to choose from, with clear summaries of each.
    ```
 
-3. **Refine Through Multiple Rounds**:
-   - Your first contracts or ideas may need adjustments
-   - Test the logic, ask for clarifications
-   - Request modifications if something doesn't match your needs
-   - Iterate until you have complete, working contracts
-   - Don't rush - this is the most important step
+3. **Choose and Refine**:
+   - Review the AI's trap idea suggestions (or discuss your own idea)
+   - Pick the one that interests you most
+   - The AI will then generate all three files:
+     * **MyUniqueTrap.sol** - Your trap contract
+     * **MyUniqueResponse.sol** - Your response contract  
+     * **Deploy.sol** - Your deployment script
+   - Ask for modifications if needed
+   - Iterate until all three contracts are perfect
 
 4. **Save Your Generated Contracts**:
-   - Keep the trap contract code ready to paste
-   - Keep the response contract code ready to paste
-   - Keep the deployment script ready to paste
+   - Keep MyUniqueTrap.sol code ready
+   - Keep MyUniqueResponse.sol code ready  
+   - Keep Deploy.sol code ready
    - You'll paste these in Step 4
 
-**You are now set to proceed to Step 4 once you have all contracts generated and ready.**
+**You are now ready to proceed to Step 4 once you have all three contracts generated.**
 
-Please refer to the [troubleshooting section](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/README.md#troubleshooting) below if you need detailed explanations.
+Please refer to the [troubleshooting section](#troubleshooting) if you need detailed explanations about trap requirements.
 
 ---
 
