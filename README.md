@@ -26,7 +26,11 @@ This guide walks you through creating, deploying, and publishing a unique Droser
 
 ## Sergeant and Captain Roles
 
-**Requirements**: Unique trap concept → Deploy → Publish to GitHub → Submit to Discord → Receive recognition
+**Requirements**: 
+- Unique trap concept
+- Deploy
+- Publish to GitHub
+- Open a ticket and submit
 
 You must have Cadet and Corporal roles first.
 
@@ -78,7 +82,7 @@ interface ITrap {
     function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
 }
 ```
-Save and exit.
+Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 Verify:
 ```bash
@@ -155,12 +159,12 @@ See [troubleshooting](#troubleshooting) for trap requirements.
 mkdir -p src
 nano src/MyUniqueTrap.sol
 ```
-Paste your AI-generated trap contract. Save and exit.
+Paste your AI-generated trap contract. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 ```bash
 nano src/MyUniqueResponse.sol
 ```
-Paste your AI-generated response contract. Save and exit.
+Paste your AI-generated response contract. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 #### Deployment Script
 
@@ -168,7 +172,7 @@ Paste your AI-generated response contract. Save and exit.
 mkdir -p script
 nano script/Deploy.sol
 ```
-Paste your AI-generated deployment script. Save and exit.
+Paste your AI-generated deployment script. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 #### Test File (OPTIONAL)
 
@@ -191,6 +195,7 @@ out = "out"
 libs = ["lib"]
 solc = "0.8.20"
 ```
+Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 **remappings.txt**:
 ```bash
@@ -230,7 +235,7 @@ whitelist = ["0xYOUR_WALLET_ADDRESS"]
 private_trap = true
 address = "UPDATE_AFTER_DEPLOYMENT"
 ```
-Update `response_function` to match your response contract. Update addresses and whitelist after deployment.
+Update `response_function` to match your response contract. Update addresses and whitelist after deployment. Save and exit with `Ctrl+X`, `Y`, `Enter`..
 
 #### Repository Files
 
@@ -253,21 +258,7 @@ broadcast/
 nano README.md
 ```
 ```markdown
-# [Your Trap Name]
-
-## Overview
-[What anomaly does your trap detect and why]
-
-## Technical Details
-- Monitors: [Your data points]
-- Triggers: [Your conditions]
-- Response: [Your action]
-
-## Deployment
-- Network: Hoodi Testnet (560048)
-- Trap: [Address]
-- Response: [Address]
-```
+[Generate readme in the same AI session you're working in.]```
 
 **Deployment docs** (OPTIONAL): Create `deployment/DEPLOYMENT.md`, `deployment/addresses.json`, `deployment/TRANSACTIONS.md` if you want detailed records.
 
@@ -297,7 +288,7 @@ nano .env
 PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
 GITHUB_TOKEN=ADDED_IN_PART_2
 ```
-Replace with your actual private key. Save and exit.
+Replace with your actual private key. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 ```bash
 chmod 600 .env
