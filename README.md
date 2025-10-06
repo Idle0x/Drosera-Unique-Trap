@@ -166,8 +166,8 @@ Once you have these defined, skip to step 2 below with your concept ready.
 1. **Find Example Contracts (REQUIRED)**:
    - Visit [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
    - Find any trap example you like
-   - Copy the trap contract code
-   - Copy the response contract code
+   - Copy the trap contract code (src)
+   - Copy the response contract code (src)
    - You'll paste both at the end of the prompt below
 
 2. **Prepare The Contracts**:
