@@ -2,9 +2,7 @@
 
 ## Introduction
 
-This guide walks you through creating, deploying, and publishing a unique Drosera trap on Ubuntu VPS using Termius.
-
-You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation) for structure, but your implementation must be unique.
+This guide walks you through creating, deploying, and publishing a unique Drosera trap on Ubuntu VPS using Termius. You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation) for structure, but your implementation must be unique.
 
 ---
 
@@ -22,17 +20,13 @@ You can reference [my trap](https://github.com/Idle0x/block-time-anomaly-trap) o
 - Ethereum wallet with private key (Hoodi testnet)
 - ChatGPT or Claude AI access
 - Cadet and Corporal roles
-- [Drosera operator running](https://github.com/0xmoei/Drosera-Network?tab=readme-ov-file#method-1-docker)
+- [Drosera operator running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup)
 
 ---
 
 ## Sergeant and Captain Roles
 
-**Requirements**: 
-- Unique trap concept
-- Deploy
-- Publish to GitHub
-- Open a ticket and submit
+**Requirements**: Unique trap concept → Deploy → Publish to GitHub → Submit to Discord → Receive recognition
 
 You must have Cadet and Corporal roles first.
 
@@ -84,7 +78,7 @@ interface ITrap {
     function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
 }
 ```
-Save and exit with `Ctrl+X`, `Y`, `Enter`.
+Save and exit.
 
 Verify:
 ```bash
@@ -99,14 +93,15 @@ ls lib/forge-std/src lib/openzeppelin-contracts/contracts lib/drosera-contracts/
 
 #### A. Get Example Contracts (Required - 2 minutes)
 
-1. Visit [my trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
-2. Pick ANY trap example (doesn't matter which)
-3. Copy the trap contract from `src` folder
-4. Copy the response contract from `src` folder
+Pick ANY trap from these sources as your reference:
+- [My trap](https://github.com/Idle0x/block-time-anomaly-trap)
+- [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
 
-**Why required**: Without examples, AI won't generate Drosera-compatible code and your contracts won't compile.
+Copy the trap contract (from `src/` folder) and response contract (from `src/` folder).
 
-#### B. Use This AI Prompt
+**Why required**: Examples teach the AI Drosera-specific patterns (import paths, data structures, access control). Without them, generated code won't compile with your setup. You're not copying logic - just showing the AI the structure.
+
+#### B. Use This Complete AI Prompt
 
 Copy everything below, add your example contracts at the end, and paste to ChatGPT or Claude:
 
@@ -115,41 +110,106 @@ I need a UNIQUE Drosera trap for Hoodi testnet blockchain anomaly detection.
 
 TASK:
 1. Suggest 3-5 UNIQUE trap ideas (avoid common ones like simple gas monitoring)
-2. For each idea provide: description, data points, trigger conditions, response action, detection approach (straightforward/moderate/advanced)
-3. Once I choose, generate THREE files with these EXACT names:
+2. For each idea provide:
+   - Brief description of the anomaly it detects
+   - Data points to monitor
+   - Trigger conditions (must be deterministic)
+   - Response action
+   - Detection approach (straightforward/moderate/advanced)
+
+3. Once I choose an idea, generate THREE complete files with EXACT names:
    - MyUniqueTrap.sol
-   - MyUniqueResponse.sol  
+   - MyUniqueResponse.sol
    - Deploy.sol
 
-CRITICAL NAMING: Use exactly "MyUniqueTrap" and "MyUniqueResponse" as contract names in ALL files including Deploy.sol imports. DO NOT use custom names like "GasTrap". This prevents compilation errors.
+CRITICAL NAMING RULES:
+- Use exactly "MyUniqueTrap" and "MyUniqueResponse" as contract names in ALL files
+- Deploy.sol must import these exact names
+- DO NOT use custom names like "GasTrap" or "OracleTrap" - this causes compilation errors
 
-REQUIREMENTS:
-- Trap implements ITrap from "drosera-contracts/interfaces/ITrap.sol"
-- collect(): view, returns bytes memory
-- shouldRespond(): pure (no state/external calls), returns (bool, bytes memory)
-- Response function signature matches shouldRespond() payload
-- Solidity ^0.8.20
-- Complete, compilable, functional
+MANDATORY REQUIREMENTS:
 
-UNIQUENESS: Suggest creative ideas - cross-protocol anomalies, statistical patterns, multi-condition triggers, uncommon data combinations, novel threats, DeFi edge cases.
+For MyUniqueTrap.sol:
+- Import: import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
+- Must implement ITrap interface
+- collect() function:
+  * Must be "view"
+  * Returns bytes memory
+  * CAN read blockchain state (balances, block.number, block.timestamp, events)
+  * Should encode data using abi.encode()
+- shouldRespond() function:
+  * Must be "pure" (CRITICAL)
+  * NO state reads, NO external calls, NO block.timestamp, NO randomness
+  * Only analyzes data parameter passed from collect()
+  * Returns (bool, bytes memory)
+  * Must be deterministic - same input always gives same output
+- If trap needs constructor arguments (like oracle addresses):
+  * Use placeholder addresses with clear comments
+  * Explain what each address represents
+- Use Solidity ^0.8.20
+- Add helpful comments explaining the logic
 
-EXAMPLE TRAP (for structure only - make mine unique):
+For MyUniqueResponse.sol:
+- Must have a response function that matches shouldRespond()'s return payload exactly
+- Function signature example: if shouldRespond returns abi.encode(address, uint256), response function must be: functionName(address, uint256)
+- CAN use block.timestamp for event logging (this is allowed in response contracts)
+- Should emit events for tracking (like in the example)
+- Should have access control (onlyTrapConfig modifier like in example)
+- Constructor should accept trapConfig address
+- Use Solidity ^0.8.20
+- Add comments explaining what the response does
+
+For Deploy.sol:
+- MUST use Foundry Script format with this structure:
+  ```solidity
+  import {Script} from "forge-std/Script.sol";
+  import {MyUniqueTrap} from "../src/MyUniqueTrap.sol";
+  import {MyUniqueResponse} from "../src/MyUniqueResponse.sol";
+  
+  contract Deploy is Script {
+      function run() external {
+          vm.startBroadcast();
+          
+          // Deploy contracts here
+          // Use console.log to display addresses
+          
+          vm.stopBroadcast();
+      }
+  }
+  ```
+- Must use vm.startBroadcast()/vm.stopBroadcast()
+- Must log deployed addresses using console.log
+- If constructor arguments needed, provide placeholder addresses with clear comments
+- Use Solidity ^0.8.20
+
+UNIQUENESS REQUIREMENT:
+Suggest creative ideas like:
+- Cross-protocol anomalies (comparing multiple DEXes, lending protocols)
+- Statistical patterns (unusual frequency, volume spikes, clustering)
+- Multi-condition triggers (combining multiple data points)
+- Uncommon data combinations (correlation between different metrics)
+- Novel threat vectors (oracle manipulation, flash loan attacks, MEV)
+- DeFi edge cases (liquidity cascades, whale behavior, governance attacks)
+
+Avoid generic traps like simple balance checks or basic gas price monitoring.
+
+EXAMPLE TRAP CONTRACT (for structure reference only - make mine completely different):
 [PASTE YOUR EXAMPLE TRAP CONTRACT HERE]
 
-EXAMPLE RESPONSE (for structure only):
+EXAMPLE RESPONSE CONTRACT (for structure reference only - make mine completely different):
 [PASTE YOUR EXAMPLE RESPONSE CONTRACT HERE]
 
-Start with 3-5 unique ideas.
+Start by presenting 3-5 unique trap ideas with clear summaries of each. Once I choose one, generate all three files ready to deploy.
 ```
 
 #### C. Choose and Save
 
 1. Review AI's suggestions, pick one
-2. AI generates all three files
+2. AI generates all three files with correct structure
 3. Ask for changes if needed
 4. Save the code - you'll paste it in Step 4
 
-See [troubleshooting](#troubleshooting) for trap requirements.
+See [troubleshooting](#troubleshooting) for detailed trap requirements.
 
 ---
 
@@ -161,12 +221,12 @@ See [troubleshooting](#troubleshooting) for trap requirements.
 mkdir -p src
 nano src/MyUniqueTrap.sol
 ```
-Paste your AI-generated trap contract. Save and exit with `Ctrl+X`, `Y`, `Enter`.
+Paste your AI-generated trap contract. Save and exit.
 
 ```bash
 nano src/MyUniqueResponse.sol
 ```
-Paste your AI-generated response contract. Save and exit with `Ctrl+X`, `Y`, `Enter`.
+Paste your AI-generated response contract. Save and exit.
 
 #### Deployment Script
 
@@ -174,7 +234,7 @@ Paste your AI-generated response contract. Save and exit with `Ctrl+X`, `Y`, `En
 mkdir -p script
 nano script/Deploy.sol
 ```
-Paste your AI-generated deployment script. Save and exit with `Ctrl+X`, `Y`, `Enter`.
+Paste your AI-generated deployment script. Save and exit.
 
 #### Test File (OPTIONAL)
 
@@ -197,7 +257,6 @@ out = "out"
 libs = ["lib"]
 solc = "0.8.20"
 ```
-Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 **remappings.txt**:
 ```bash
@@ -237,7 +296,7 @@ whitelist = ["0xYOUR_WALLET_ADDRESS"]
 private_trap = true
 address = "UPDATE_AFTER_DEPLOYMENT"
 ```
-Update `response_function` to match your response contract. Update addresses and whitelist after deployment. Save and exit with `Ctrl+X`, `Y`, `Enter`..
+Update `response_function` to match your response contract. Update addresses and whitelist after deployment.
 
 #### Repository Files
 
@@ -260,7 +319,23 @@ broadcast/
 nano README.md
 ```
 ```markdown
-[Generate readme in the same AI session you're working in.]```
+# [Your Trap Name]
+
+## Overview
+[What anomaly does your trap detect and why]
+
+## Technical Details
+- Monitors: [Your data points]
+- Triggers: [Your conditions]
+- Response: [Your action]
+
+## Deployment
+- Network: Hoodi Testnet (560048)
+- Trap: [Address]
+- Response: [Address]
+```
+
+**LICENSE** (OPTIONAL): Add your chosen license from [choosealicense.com](https://choosealicense.com).
 
 **Deployment docs** (OPTIONAL): Create `deployment/DEPLOYMENT.md`, `deployment/addresses.json`, `deployment/TRANSACTIONS.md` if you want detailed records.
 
@@ -290,7 +365,7 @@ nano .env
 PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
 GITHUB_TOKEN=ADDED_IN_PART_2
 ```
-Replace with your actual private key. Save and exit with `Ctrl+X`, `Y`, `Enter`.
+Replace with your actual private key. Save and exit.
 
 ```bash
 chmod 600 .env
@@ -300,7 +375,7 @@ chmod 600 .env
 
 ### Step 7: Deploy
 
-Ensure your operator is running. You have already done this from the [cadet and corporal part](https://github.com/0xmoei/Drosera-Network?tab=readme-ov-file#method-1-docker).
+Ensure your [operator is running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup).
 
 ```bash
 source .env
@@ -529,7 +604,7 @@ Paste error to AI.
 3. Ask community for help
 4. Document professionally
 
-Good luck Trappers! 🧡🧡
+Good luck!
 
 ---
 
