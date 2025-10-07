@@ -98,7 +98,7 @@ ls lib/forge-std/src lib/openzeppelin-contracts/contracts lib/drosera-contracts/
 
 **This is the most important step.** You'll use AI to create all three contract files.
 
-#### A. Get Example Contracts (Required - 2 minutes)
+#### A. Get Example Contracts (Required - less than 2 minutes)
 
 Pick ANY trap from these sources as your reference:
 - [My trap](https://github.com/Idle0x/block-time-anomaly-trap)
@@ -480,6 +480,8 @@ nano .env
 PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
 GITHUB_TOKEN=ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
+
+Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 ---
 
