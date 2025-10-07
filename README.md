@@ -85,7 +85,7 @@ interface ITrap {
     function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
 }
 ```
-Save and exit.
+Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 Verify:
 ```bash
@@ -228,12 +228,12 @@ See [troubleshooting](#troubleshooting) for detailed trap requirements.
 mkdir -p src
 nano src/MyUniqueTrap.sol
 ```
-Paste your AI-generated trap contract. Save and exit.
+Paste your AI-generated trap contract. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 ```bash
 nano src/MyUniqueResponse.sol
 ```
-Paste your AI-generated response contract. Save and exit.
+Paste your AI-generated response contract. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 #### Deployment Script
 
@@ -241,7 +241,7 @@ Paste your AI-generated response contract. Save and exit.
 mkdir -p script
 nano script/Deploy.sol
 ```
-Paste your AI-generated deployment script. Save and exit.
+Paste your AI-generated deployment script. Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 #### Test File (OPTIONAL)
 
@@ -264,6 +264,7 @@ out = "out"
 libs = ["lib"]
 solc = "0.8.20"
 ```
+Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 **remappings.txt**:
 ```bash
@@ -304,6 +305,7 @@ private_trap = true
 address = "UPDATE_AFTER_DEPLOYMENT"
 ```
 Update `response_function` to match your response contract. Update addresses and whitelist after deployment.
+Save and exit with `Ctrl+X`, `Y`, `Enter`.
 
 #### Repository Files
 
