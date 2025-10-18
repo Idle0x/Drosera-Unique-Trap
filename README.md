@@ -369,7 +369,7 @@ ls out/{TrapName}Response.sol/{TrapName}Response.json
 nano .env
 ```
 ```
-PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
+PRIVATE_KEY
 GITHUB_TOKEN=ADDED_IN_PART_3
 ```
 Save and secure:
@@ -377,11 +377,11 @@ Save and secure:
 chmod 600 .env
 ```
 
+Replace `0xYOUR_PRIVATE_KEY_HERE` 
+
 ---
 
 ### Step 8: Deploy
-
-Ensure [operator is running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup).
 
 ```bash
 source .env
@@ -400,6 +400,8 @@ Response deployed at: 0xEF12...
 ---
 
 ## Part 2: Drosera Integration
+
+Ensure [operator is running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup).
 
 ### Step 1: Create drosera.toml
 
