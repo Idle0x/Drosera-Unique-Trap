@@ -35,8 +35,22 @@ CRITICAL INSTRUCTIONS:
 
 PHASE 0 - IDEA GENERATION (START HERE):
 - Welcome me warmly and explain you'll help create a unique trap
-- Generate 3-5 creative trap ideas with SHORT descriptions (what it detects, why it matters)
-- Keep it simple - I'm choosing an idea, not reviewing technical specs
+- Generate 3-5 trap ideas that are:
+  * UNIQUE - different from basic balance/gas checks
+  * ACHIEVABLE - use simple on-chain data (balances, events, basic math)
+  * BEGINNER-FRIENDLY - no complex external dependencies
+- Focus on:
+  * Comparing 2-3 simple metrics (e.g., gas price vs pending transactions)
+  * Detecting sudden changes or spikes (e.g., 3x increase in volume)
+  * Basic cross-protocol checks (e.g., same pair on 2 DEXes)
+  * Simple pattern detection (e.g., multiple large withdrawals in short time)
+- AVOID suggesting ideas that need:
+  * External oracle addresses
+  * Historical data storage
+  * Complex statistical analysis
+  * Multiple external contract dependencies
+- Keep descriptions SHORT and simple - just what it detects and why
+- Some idea overlap is okay (it's testnet, learning focus)
 - Wait for me to pick one before proceeding
 
 NAMING SYSTEM (after I choose):
@@ -134,10 +148,10 @@ READY? Start by welcoming me and presenting 3-5 unique trap ideas!
 
 ## 📖 Full Technical Guide
 
-**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off topic, expand this guide by clicking the collapsed link below. For the best experience, use the AI walkthrough.
-
 <details>
 <summary><strong>Click to expand complete technical guide</strong></summary>
+
+**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed link above. For the best experience, use the AI walkthrough.
 
 ---
 
@@ -230,56 +244,52 @@ ls lib/forge-std/src lib/openzeppelin-contracts/contracts lib/drosera-contracts/
 ```
 I need a UNIQUE Drosera trap for Hoodi testnet.
 
+MY TRAP IDEA: {Your chosen trap concept}
+
 Generate THREE files with these EXACT names:
 - {YourTrapName}Trap.sol
 - {YourTrapName}Response.sol
 - Deploy.sol
+
+UNIQUENESS REQUIREMENTS:
+- My trap must be different from basic balance/gas checks
+- Focus on achievable complexity: comparing 2-3 simple metrics, detecting spikes/changes, basic cross-protocol checks
+- Use simple on-chain data: balances, events, basic math
+- AVOID: external oracle addresses, historical data storage, complex statistics, multiple external dependencies
+- This is for testnet learning - practical and working is better than overly complex
 
 CRITICAL REQUIREMENTS:
 
 For {YourTrapName}Trap.sol:
 - Import: import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
 - Implement ITrap interface
-- collect() function: view, returns bytes memory, CAN read state
-- shouldRespond() function: pure, deterministic, NO state reads/external calls
+- collect() function: view, returns bytes memory, CAN read state (balances, block.number, events)
+- shouldRespond() function: pure, deterministic, NO state reads/external calls/block.timestamp
+- Keep logic simple and achievable
 - Use Solidity ^0.8.20
 - Add helpful comments
 
 For {YourTrapName}Response.sol:
-- Response function MUST match shouldRespond() payload
+- Response function MUST match shouldRespond() payload exactly
 - Include access control (onlyTrapConfig modifier)
 - Emit events for tracking
 - Constructor accepts trapConfig address
 - Use Solidity ^0.8.20
 
 For Deploy.sol:
-- MUST use Foundry Script format:
-  ```solidity
-  import {Script} from "forge-std/Script.sol";
-  import {Console} from "forge-std/console.sol";
-  import {{YourTrapName}Trap} from "../src/{YourTrapName}Trap.sol";
-  import {{YourTrapName}Response} from "../src/{YourTrapName}Response.sol";
-  
-  contract Deploy is Script {
-      function run() external {
-          vm.startBroadcast();
-          
-          {YourTrapName}Trap trap = new {YourTrapName}Trap(/* args if needed */);
-          console.log("Trap deployed at:", address(trap));
-          
-          {YourTrapName}Response response = new {YourTrapName}Response(address(trap));
-          console.log("Response deployed at:", address(response));
-          
-          vm.stopBroadcast();
-      }
-  }
-  ```
+- MUST use Foundry Script format
+- Structure: Contract Deploy is Script with run() function
+- Inside run(): use vm.startBroadcast() and vm.stopBroadcast()
+- Deploy {YourTrapName}Trap, use console.log for address
+- Deploy {YourTrapName}Response with trap address, use console.log
+- If constructor arguments needed, provide placeholder addresses with clear comments
+- Use Solidity ^0.8.20
 
 EXAMPLE CONTRACTS (structure reference only):
 [PASTE TRAP EXAMPLE]
 [PASTE RESPONSE EXAMPLE]
 
-Generate all three files ready to deploy.
+Generate all three files ready to deploy with simple, achievable logic.
 ```
 
 ---
@@ -630,7 +640,7 @@ cast balance YOUR_ADDRESS --rpc-url https://rpc.hoodi.ethpandaops.io  # Check fu
 ---
 
 **Created by**: riot' (@idle0x)  
-**Version**: 2.0  
+**Version**: 2.1  
 **Last Updated**: January 2025
 
 </details>
