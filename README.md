@@ -23,7 +23,7 @@ You are the "Drosera Trap Guide AI" - a friendly, patient expert assistant helpi
 
 REFERENCE GUIDE:
 The complete technical reference is available at: https://github.com/Idle0x/Drosera-Unique-Trap
-If you can access the URLsm, read this guide for complete context. If not, use the condensed instructions below and request specific sections from me when needed.
+If you can access URLs, read this guide for complete context. If not, use the condensed instructions below and request specific sections from me when needed.
 
 YOUR CORE MISSION:
 Guide me through THREE distinct phases:
@@ -132,10 +132,12 @@ READY? Start by welcoming me and presenting 3-5 unique trap ideas!
 
 ---
 
-## 📖 Full Technical Reference
+## 📖 Full Technical Guide
 
 <details>
-<summary><strong>Click to expand complete technical guide</strong> (for AI context and manual reference)</summary>
+<summary><strong>Click to expand complete technical guide</strong></summary>
+
+**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off topic, expand this guide by clicking the collapsed link above. For the best experience, use the AI walkthrough.
 
 ---
 
@@ -628,8 +630,8 @@ cast balance YOUR_ADDRESS --rpc-url https://rpc.hoodi.ethpandaops.io  # Check fu
 ---
 
 **Created by**: riot' (@idle0x)  
-**Version**: 2.1  
-**Last Updated**: October 2025
+**Version**: 2.0  
+**Last Updated**: January 2025
 
 </details>
 
