@@ -11,7 +11,7 @@ The easiest way to complete this guide is with an AI assistant. It will generate
 ### How to Start:
 
 1. **Copy the entire prompt** from the box below
-2. **Open your AI** (ChatGPT, Claude, Gemini, etc.)
+2. **Open your AI** (ChatGPT, Claude, etc.)
 3. **Paste and follow along** - the AI will guide you step-by-step
 
 ---
