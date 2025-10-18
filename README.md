@@ -111,7 +111,7 @@ When you give me the code-generation prompt, ensure it specifies:
 - shouldRespond() must be "pure", deterministic, no external calls
 - Response function signature must match shouldRespond() payload
 - Deploy.sol must use Foundry Script format:
-  ```
+
   import {Script} from "forge-std/Script.sol";
   contract Deploy is Script {
       function run() external {
@@ -120,7 +120,7 @@ When you give me the code-generation prompt, ensure it specifies:
           vm.stopBroadcast();
       }
   }
-  ```
+
 - Use Solidity ^0.8.20
 - Include clear comments
 
