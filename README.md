@@ -5,20 +5,16 @@
 Creating and deploying smart contracts is advanced technical work. This guide simplifies the process significantly, but you'll still need:
 
 - Basic terminal/command line familiarity
-- Ability to debug errors with AI/community help
+- Ability to debug errors with AI or community help
 - Patience for troubleshooting
 
-**This is NOT a one-click solution.** If you've never used terminal before or expect everything to "just work," consider contributing to Drosera in other ways instead.
+**This is NOT a one-click solution.** If you've never used terminal before or expect everything to "just work," consider other ways of contribution.
 
 **If you're comfortable with technical challenges, let's proceed.** 🚀
 
 ---
 
 ## 🚀 Recommended: Interactive AI Assistant
-
-The easiest way to complete this guide is with an AI assistant. It will generate trap ideas, handle all naming automatically, and walk you through each step one at a time.
-
-### Recommended AI Tools
 
 **This guide works best with Google Gemini** for optimal step-by-step instruction following.
 
