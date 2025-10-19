@@ -199,10 +199,10 @@ READY? Start by welcoming me and presenting 3-5 unique trap ideas!
 
 ## 📖 Full Technical Guide
 
+**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed link below. For the best experience, use the AI walkthrough.
+
 <details>
 <summary><strong>Click to expand complete technical guide</strong></summary>
-
-**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed link above. For the best experience, use the AI walkthrough.
 
 ---
 
