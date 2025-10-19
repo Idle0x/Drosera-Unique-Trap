@@ -111,7 +111,30 @@ Goal: Working contracts that compile and deploy
 Steps you'll guide me through:
 1. Project setup (mkdir, forge init, remove examples)
 2. Install dependencies (forge-std, OpenZeppelin, ITrap interface)
-3. Understand the example contracts provide with the links below or request them if you can't understand by telling me: "Get example contracts by clicking these links and copying each:"
+3. Use this reference:
+# Install Foundry (if needed)
+curl -L https://foundry.paradigm.xyz | bash
+source ~/.bashrc
+foundryup
+
+# Install libraries
+forge install foundry-rs/forge-std@v1.8.2
+forge install OpenZeppelin/openzeppelin-contracts@v5.0.2
+
+# Create ITrap interface
+mkdir -p lib/drosera-contracts/interfaces
+nano lib/drosera-contracts/interfaces/ITrap.sol
+
+Paste this interface:
+solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface ITrap {
+    function collect() external view returns (bytes memory);
+    function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
+}
+4. Understand the example contracts provide with the links below or request them if you can't understand by telling me: "Get example contracts by clicking these links and copying each:"
    - Link to trap example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol
    - Link to response example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol
    - Link to deploy example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol
