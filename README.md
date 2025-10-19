@@ -27,9 +27,9 @@ While other AIs work, Gemini provides the smoothest experience with this guide's
 ### How to Start:
 
 1. **Copy the entire prompt** from the box below
-2. **Open your AI** (Gemini, Claude, ChatGPT, etc.)
-3. **Paste and follow along** - the AI will guide you step-by-step
-4. You don't need to modify anything
+2. **Open your AI**
+3. **Paste and follow along,** step-by-step
+4. **You don't need to modify anything**
 
 ---
 
@@ -111,8 +111,7 @@ Goal: Working contracts that compile and deploy
 Steps you'll guide me through:
 1. Project setup (mkdir, forge init, remove examples)
 2. Install dependencies (forge-std, OpenZeppelin, ITrap interface)
-3. Request example contracts:
-   - Tell me: "Get example contracts by clicking these links and copying each:"
+3. Understand the example contracts provide with the links below or request them if you can't understand by telling me: "Get example contracts by clicking these links and copying each:"
    - Link to trap example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol
    - Link to response example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol
    - Link to deploy example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol
@@ -125,8 +124,9 @@ Steps you'll guide me through:
 5. Configuration files (foundry.toml, remappings.txt)
 6. Compile: forge build (warn: paste errors if any)
 7. Create .env with private key
-8. Deploy: forge script with proper command
-9. Capture TRAP_ADDRESS and RESPONSE_ADDRESS from output
+8. Ensure the right environment and conditions are met (such as source .env, chmod 600 .env, etc)
+9. Deploy: forge scripts with proper command
+10. Capture TRAP_ADDRESS and RESPONSE_ADDRESS from output
 
 Rules:
 - Give ONE or TWO commands at a time, then wait for "ok/done/next"
@@ -138,20 +138,20 @@ Goal: Trap running on Drosera Network
 
 Steps:
 1. Request deployed addresses and wallet address from me
-2. Tell me: "Open the Full Technical Guide below, find 'Step 1: Create drosera.toml' in Part 2, and copy the complete template"
-3. After I paste the template, YOU tell me exactly which values to replace:
+2. Tell me: "Open the Full Technical Guide below, and copy the drosera.toml. Find 'Step 1: Create drosera.toml' in Part 2, and copy the complete template"
+3. After I paste the template, YOU tell provide the updated drosera.toml by highlight exactly which values was replaced:
    - [traps.{your_snake_case_name}] - the config key name
    - path = "out/{YourTrapName}Trap.sol/{YourTrapName}Trap.json"
    - response_contract = "my response address"
    - response_function = "{functionName}(type1,type2)" - you know this from code you helped generate
    - address = "my trap address"  
    - whitelist = ["my wallet address"]
-4. Guide me to update each value
+4. Provide the complete update drosera.toml
 5. Have me save with: nano drosera.toml
 6. Guide through: drosera dryrun (say: "paste output if errors, otherwise type 'next'")
 7. Guide through drosera apply:
-   - Give exact command: DROSERA_PRIVATE_KEY=your_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
-   - Tell me to replace your_private_key_here with my actual private key
+   - Give exact command: DROSERA_PRIVATE_KEY=xxx drosera apply
+   - Tell me to replace xxx with my actual private key
    - Say: "If it succeeds, type 'next'. If errors, paste output here"
 8. If errors occur, explain common issues (max traps, config mismatch) and help debug
 
@@ -197,7 +197,7 @@ READY? Start by welcoming me and presenting 3-5 unique trap ideas!
 
 ## 📖 Full Technical Guide
 
-**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed link above. For the best experience, use the AI walkthrough.
+**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed section below. Although the AI walkthrough above provides the best experience.
 
 
 <details>
@@ -470,12 +470,14 @@ drosera dryrun
 
 If successful:
 ```bash
-DROSERA_PRIVATE_KEY=your_private_key_here drosera apply --eth-rpc-url https://rpc.hoodi.ethpandaops.io
+DROSERA_PRIVATE_KEY=xxx drosera apply
 ```
 
 **Common Issues**:
 - "Maximum traps reached": You have 2 traps (limit per wallet) - overwrite one or use new wallet
 - Config errors: Paste to AI with your drosera.toml
+
+Replace `xxx` with my actual private key
 
 ---
 
