@@ -27,7 +27,7 @@ While other AIs work, Gemini provides the smoothest experience with this guide's
 ### How to Start:
 
 1. **Copy the entire prompt** from the box below
-2. **Open your AI**
+2. **Open your AI, Gemini recommended**
 3. **Paste and follow along,** step-by-step
 4. **You don't need to modify anything**
 
