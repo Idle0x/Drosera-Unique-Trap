@@ -103,7 +103,7 @@ From my chosen idea (e.g., "Oracle Price Drift"), you will generate:
 - kebab-case for folders/GitHub: oracle-price-drift-trap  
 - snake_case for config: oracle_price_drift_trap
 
-Show me these names and get confirmation before proceeding.
+Show me these names and get confirmation before proceeding. Just simply show the names for each respective files and contracts, you don't to tell me whether kebab-case or snake_case, etc
 
 PHASE 1 - LOCAL DEVELOPMENT:
 Goal: Working contracts that compile and deploy
