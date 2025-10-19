@@ -1,6 +1,16 @@
 # Drosera Trap Creation Guide
 
-Welcome! This guide helps you create and deploy a unique Drosera trap for blockchain anomaly detection.
+## ⚠️ Before You Start
+
+Creating and deploying smart contracts is advanced technical work. This guide simplifies the process significantly, but you'll still need:
+
+- Basic terminal/command line familiarity
+- Ability to debug errors with AI/community help
+- Patience for troubleshooting
+
+**This is NOT a one-click solution.** If you've never used terminal before or expect everything to "just work," consider contributing to Drosera in other ways instead.
+
+**If you're comfortable with technical challenges, let's proceed.** 🚀
 
 ---
 
@@ -8,10 +18,19 @@ Welcome! This guide helps you create and deploy a unique Drosera trap for blockc
 
 The easiest way to complete this guide is with an AI assistant. It will generate trap ideas, handle all naming automatically, and walk you through each step one at a time.
 
+### Recommended AI Tools
+
+For optimal results, use:
+- **Google Gemini** (Recommended) - Best at following step-by-step instructions
+- **Claude AI** - Excellent for detailed guidance and debugging
+- **ChatGPT** - Reliable and widely accessible
+
+All three work well with this guide. Pick whichever you prefer or have access to.
+
 ### How to Start:
 
 1. **Copy the entire prompt** from the box below
-2. **Open your AI** (ChatGPT, Claude, etc.)
+2. **Open your AI** (Gemini, Claude, ChatGPT, etc.)
 3. **Paste and follow along** - the AI will guide you step-by-step
 
 ---
@@ -49,6 +68,15 @@ RESPONSE EFFICIENCY:
 - NO redundant confirmation questions
 - Keep momentum - users want to finish, not discuss
 
+CODE GENERATION BEHAVIOR:
+- When it's time to generate contracts, YOU generate them directly
+- Never redirect user to another AI or chat session
+- Never say "paste this prompt to ChatGPT/another tool"
+- If you need to process a prompt internally, say: "Copy this prompt and send it back to me in this same chat"
+- After generating contracts, provide them ONE file at a time
+- Give file content with nano command, wait for 'next', then give next file
+- Stay in this same conversation throughout the entire process
+
 CRITICAL INSTRUCTIONS:
 
 PHASE 0 - IDEA GENERATION (START HERE):
@@ -85,14 +113,19 @@ Goal: Working contracts that compile and deploy
 Steps you'll guide me through:
 1. Project setup (mkdir, forge init, remove examples)
 2. Install dependencies (forge-std, OpenZeppelin, ITrap interface)
-3. Generate contracts with AI:
-   - Have me get example contracts from reference repos
-   - Give me a modified code-generation prompt with MY trap's naming
-   - Prompt MUST specify Foundry Script format for Deploy.sol
-   - Contracts must use my PascalCase names throughout
-4. Create files (paste contracts into nano, save with Ctrl+X, Y, Enter)
+3. Request example contracts:
+   - Tell me: "Get example contracts by clicking these links and copying each:"
+   - Link to trap example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol
+   - Link to response example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol
+   - Link to deploy example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol
+   - Wait for me to paste all three examples
+4. Generate contracts using examples as reference:
+   - YOU generate the contracts directly (don't redirect me anywhere)
+   - Provide ONE file at a time with nano command
+   - Wait for 'next' before providing the next file
+   - Generate: {TrapName}Trap.sol, {TrapName}Response.sol, Deploy.sol
 5. Configuration files (foundry.toml, remappings.txt)
-6. Compile: forge build
+6. Compile: forge build (warn: paste errors if any)
 7. Create .env with private key
 8. Deploy: forge script with proper command
 9. Capture TRAP_ADDRESS and RESPONSE_ADDRESS from output
