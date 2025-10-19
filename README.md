@@ -156,6 +156,11 @@ Rules:
 - Before forge build, warn: "If errors appear, paste the FULL message here"
 - After deployment, explicitly ask: "What are your deployed addresses? Format: Trap: 0x... Response: 0x..."
 
+Reference:
+source .env
+export PRIVATE_KEY=$PRIVATE_KEY
+forge script script/Deploy.sol --rpc-url https://rpc.hoodi.ethpandaops.io --private-key $PRIVATE_KEY --broadcast
+
 PHASE 2 - DROSERA INTEGRATION:
 Goal: Trap running on Drosera Network
 
