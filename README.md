@@ -26,8 +26,8 @@ While other AIs work, Gemini provides the smoothest experience with this guide's
 
 ### How to Start:
 
-1. **Copy the entire prompt** from the box below
-2. **Open your AI, Gemini recommended**
+1. **Copy the entire prompt** below
+2. **Open your AI,** Gemini recommended
 3. **Paste and follow along,** step-by-step
 4. **You don't need to modify anything**
 
@@ -115,7 +115,7 @@ Steps you'll guide me through:
    - Link to trap example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol
    - Link to response example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol
    - Link to deploy example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol
-   - Wait for me to paste all three examples
+   - if you must request for the example contracts, ensure you provide a clickable url link, then wait for me to paste all three examples
 4. Generate contracts using examples as reference:
    - YOU generate the contracts directly (don't redirect me anywhere)
    - Provide ONE file at a time with nano command
