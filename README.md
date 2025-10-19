@@ -20,12 +20,13 @@ The easiest way to complete this guide is with an AI assistant. It will generate
 
 ### Recommended AI Tools
 
-For optimal results, use:
-- **Google Gemini** (Recommended) - Best at following step-by-step instructions
+**This guide works best with Google Gemini** for optimal step-by-step instruction following.
+
+Alternative options:
 - **Claude AI** - Excellent for detailed guidance and debugging
 - **ChatGPT** - Reliable and widely accessible
 
-All three work well with this guide. Pick whichever you prefer or have access to.
+While other AIs work, Gemini provides the smoothest experience with this guide's structure.
 
 ### How to Start:
 
@@ -199,7 +200,8 @@ READY? Start by welcoming me and presenting 3-5 unique trap ideas!
 
 ## 📖 Full Technical Guide
 
-**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed link below. For the best experience, use the AI walkthrough.
+**Note**: If you prefer to deploy your trap manually, run into errors during your AI session, need to check troubleshooting steps, or if the AI goes off-topic, expand this guide by clicking the collapsed link above. For the best experience, use the AI walkthrough.
+
 
 <details>
 <summary><strong>Click to expand complete technical guide</strong></summary>
@@ -284,9 +286,11 @@ ls lib/forge-std/src lib/openzeppelin-contracts/contracts lib/drosera-contracts/
 ### Step 3: Generate Contracts
 
 **Get Reference Examples** (2 minutes):
-- Visit [this trap](https://github.com/Idle0x/block-time-anomaly-trap) or [Drosera examples](https://github.com/drosera-network/examples/tree/main/defi-automation)
-- Copy any trap contract from `src/`
-- Copy any response contract from `src/`
+
+Click each link below, copy the contract code, and paste to your AI:
+- [Trap Example](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol)
+- [Response Example](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol)
+- [Deploy Example](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol)
 
 **Why**: These teach AI the correct import paths, structure, and patterns.
 
@@ -663,7 +667,12 @@ cast balance YOUR_ADDRESS --rpc-url https://rpc.hoodi.ethpandaops.io  # Check fu
 
 - **Video**: [Reiji's walkthrough](https://x.com/Reiji4kt/status/1973679261547413736)
 - **Docs**: [docs.drosera.io](https://docs.drosera.io) | [Foundry](https://book.getfoundry.sh/)
-- **Examples**: [My trap](https://github.com/Idle0x/block-time-anomaly-trap) | [Drosera examples](https://github.com/drosera-network/examples)
+- **Examples**: 
+  - [ExampleTrap.sol](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol)
+  - [ExampleResponse.sol](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol)
+  - [Deploy.sol](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol)
+  - [Block Time Trap](https://github.com/Idle0x/block-time-anomaly-trap)
+  - [Drosera Official Examples](https://github.com/drosera-network/examples)
 
 ---
 
