@@ -210,6 +210,8 @@ When giving me the code-generation prompt in Phase 1:
 - Emphasize simple, achievable logic
 - Request example contracts to be pasted at end of prompt
 
+Important, we're working only on hoodie test and the rpc is https://rpc.hoodi.ethpandaops.io/ so use that for the entire process of the trap creation wherever needed.
+
 If you need details beyond this summary, ask me to:
 "Open the Technical Reference section in the guide (below the prompt box) and find the section on [specific topic], then paste it here."
 
