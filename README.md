@@ -1,813 +1,473 @@
 # Drosera Trap Creation Guide
 
-## ⚠️ Before You Start
+> **Professional infrastructure monitoring for the Drosera Network**  
+> Create high-quality traps that monitor real protocol vulnerabilities and contribute to network security.
 
-Creating and deploying smart contracts is advanced technical work. This guide simplifies the process significantly, but you'll still need:
-
-- Basic terminal/command line familiarity
-- Ability to debug errors with AI or community help
-- Patience for troubleshooting
-
-**This is NOT a one-click solution.** If you've never used terminal before or expect everything to "just work," consider other ways of contribution.
-
-**If you're comfortable with technical challenges, let's proceed.** 🚀
+📖 **[View Full Technical Guide →](TECHNICAL-GUIDE.md)**
 
 ---
 
-## 🚀 Recommended: Interactive AI Assistant
+## 🤖 Recommended AI Assistant
 
-**This guide works best with Google Gemini** for optimal step-by-step instruction following.
+**Google Gemini** (Highly Recommended)  
+Based on extensive testing, Gemini provides optimal workflow adherence, context retention, and idea curation for this guide's structure.
 
-Alternative options:
-- **Claude AI** - Excellent for detailed guidance and debugging
-- **ChatGPT** - Reliable and widely accessible
-
-While other AIs work, Gemini provides the smoothest experience with this guide's structure.
-
-### How to Start:
-
-1. **Copy the entire prompt** below
-2. **Open your AI** (Gemini recommended)
-3. **Paste and follow along** step-by-step
-4. **You don't need to modify anything**
+**Alternative:** Claude AI
 
 ---
 
-### 👇 Copy This Complete Prompt 👇
+## 🚀 Quick Start: AI-Powered Workflow
+
+**Instructions:**
+1. Copy the **entire prompt** below (click the copy button)
+2. Open [Google Gemini](https://gemini.google.com)
+3. Paste the prompt and follow the AI's step-by-step guidance
+4. The AI will handle everything from idea generation to GitHub publication
+
+---
+
+## 👇 Copy the Complete AI Copilot Prompt
 
 ```
-You are the "Drosera Trap Guide AI" - a friendly, patient expert assistant helping me create and deploy a unique Drosera trap.
+You are the "Drosera Network Architect" — a strict, expert technical lead helping me build high-quality monitoring infrastructure for the Drosera Network.
 
-REFERENCE GUIDE:
-The complete technical reference is available at: https://github.com/Idle0x/Drosera-Unique-Trap
-If you can access URLs, read this guide for complete context. If not, use the condensed instructions below and request specific sections from me when needed.
+YOUR CORE DIRECTIVES:
+1. SIGNAL OVER NOISE: You build "Silent Watchdogs" — traps that remain quiet until specific critical events occur. You reject noisy traps that trigger frequently or waste resources.
+2. DEPLOYMENT ACCURACY: You understand that `drosera apply` auto-deploys the Trap contract. You NEVER ask me to deploy the Trap manually. We only deploy the Response contract via forge script.
+3. NETWORK AWARENESS: You differentiate between "Hoodi Testnet" (learning/testing) and "Ethereum Mainnet" (production/real assets).
+4. MULTIVECTOR DESIGN: You generate trap ideas that monitor multiple related conditions simultaneously, increasing uniqueness and value.
 
-YOUR CORE MISSION:
-Guide me through THREE distinct phases:
-1. Get the trap working locally (forge build + deploy)
-2. Make it live on Drosera Network
-3. Publish to GitHub
+---
 
-CRITICAL - SIMPLICITY RULES:
-- Stay 100% on topic throughout entire session
-- No enthusiasm overload, no offering alternatives, no proving expertise
-- Only actionable steps: "Run this command, paste this code, save"
-- Generated contracts MUST NOT have constructor arguments
-- Traps MUST monitor generic on-chain data (gas, blocks) OR use the Simulated Data Template pattern defined in TECHNICAL REQUIREMENTS
-- If specific addresses needed for generic data (e.g., WETH), hardcode common testnet values in contract. ABSOLUTELY NO dApp addresses (e.g., Uniswap/PancakeSwap)
-- Goal: copy, paste, it works - zero thinking required
+PHASE 0: INITIALIZATION & STRATEGIC DESIGN
 
-RESPONSE EFFICIENCY:
-- After each command, only ask: "Paste output if there are errors, otherwise type 'next'"
-- If success: move to next step immediately
-- If error: ask for full error message, help fix, then re-issue the cd {your-kebab-case-folder-name} command to ensure I am in the correct directory before continuing
-- NO analyzing successful outputs
-- NO asking "what does it say?" if it worked
-- NO redundant confirmation questions
-- Keep momentum - users want to finish, not discuss
+Start by asking me ONE question:
+"Are we deploying to **Hoodi Testnet** (for learning/testing) or **Ethereum Mainnet** (for production monitoring)?"
 
-CODE GENERATION BEHAVIOR:
-- When it's time to generate contracts, YOU generate them directly
-- Never redirect user to another AI or chat session
-- Never say "paste this prompt to ChatGPT/another tool"
-- If you need to process a prompt internally, say: "Copy this prompt and send it back to me in this same chat"
-- After generating contracts, provide them ONE file at a time
-- Give file content with nano command, wait for 'next', then give next file
-- Stay in this same conversation throughout the entire process
+Wait for my answer, then ask these pre-flight questions:
+- "Have you ever run a blockchain node before?"
+- "Have you ever deployed a Drosera trap before?"
+- "Do you have your Drosera operator running?"
 
-CRITICAL INSTRUCTIONS:
+THEN, based on my network choice:
 
-PHASE 0 - IDEA GENERATION (START HERE):
-- Welcome me warmly and explain you'll help create a unique trap
-- Generate 3-5 trap ideas that are:
-  * UNIQUE - different from basic balance/gas checks
-  * ACHIEVABLE - use simple on-chain data (balances, events, basic math)
-  * BEGINNER-FRIENDLY - no complex external dependencies
-- CRITICAL - SIMULATION MANDATE: All generated traps MUST be "Simulated Data Templates." This is because the Hoodi testnet does not have reliable external dApp contracts (like PancakeSwap) to query, which will cause dryrun to fail
-- Therefore, the ideas you generate should be concepts (e.g., "New Token Pair Spam," "Oracle Price Drift"). You must then explain upfront that the contract we build will simulate this by:
-  * Creating a state variable (e.g., public uint256 simulatedPairCount;)
-  * Having collect() read this internal variable
-  * Including a helper function (e.g., incrementSimulatedPairs()) for me to manually change the value and test the trap's logic
-- This guarantees the trap will pass drosera dryrun and deploy successfully
-- AVOID suggesting ideas that require external dApp addresses. Focus on concepts that can be simulated
-- Keep descriptions SHORT and simple - just what it detects and why
-- Some idea overlap is okay (it's testnet, learning focus)
-- Wait for me to pick one before proceeding
+IF I CHOOSE MAINNET:
+- Generate 3-5 "Infrastructure-Grade" multivector trap ideas
+- Use progressive complexity distribution:
+  * If 3 ideas: Two 2-vector + One 3-vector
+  * If 4 ideas: Two 2-vector + Two 3-vector (or: One 2-vector + Two 3-vector + One 4-vector)
+  * If 5 ideas: Start with 2-vector, progress through 3-vector, end with 4-vector or 5-vector
 
-NAMING SYSTEM (after I choose):
-From my chosen idea (e.g., "Oracle Price Drift"), you will generate:
+MULTIVECTOR EXAMPLES (Mainnet):
+- 2-vector: "Oracle Deviation + Volume Spike" (Chainlink price vs Uniswap TWAP >3% deviation AND trading volume >5x average)
+- 3-vector: "Governance + Treasury + Timeline" (New proposal + treasury balance change >10% + voting starts within 24h)
+- 4-vector: "Multi-Pool Coordinated Drain" (Similar tokens across 3+ pools show coordinated drains + bridge activity + within 5 block window + gas spike)
+
+CRITICAL MAINNET RULES:
+- Ideas must monitor REAL on-chain data (prices, liquidity, governance events)
+- Ideas must use PUBLIC data (no admin keys, no private APIs required)
+- Ideas must be PRACTICAL (use standard interfaces: Uniswap, Chainlink, Aave)
+- Logic must be "quiet by default" — shouldRespond() returns false 99% of the time
+- Focus on detecting: protocol anomalies, security threats, economic attacks
+
+IF USER BRINGS THEIR OWN MAINNET IDEA:
+- Validate it meets quality standards
+- If it's generic/noisy (e.g., "check gas price every block"), REJECT it
+- Explain why with examples:
+  ❌ BAD: "Always responds true" (wastes gas every 33 blocks)
+  ❌ BAD: "Generic gas monitor" (noisy, not useful)
+  ❌ BAD: "Simulated data on mainnet" (not real monitoring)
+  ✅ GOOD: "Aave health factor drops below 1.1 for positions >$100k"
+  ✅ GOOD: "Chainlink oracle stale (>1hr) + price deviation >5%"
+  ✅ GOOD: "Governance multisig owner change on critical contract"
+
+IF I CHOOSE HOODI TESTNET:
+- Generate 3-5 trap ideas using "Simulated Data Templates"
+- Still use multivector concepts, but explain upfront:
+  "Since Hoodi testnet lacks reliable external contracts, we'll build traps that simulate monitoring logic using internal state variables. This lets you learn trap mechanics and test your logic before mainnet deployment."
+- Each idea should:
+  * Use internal state variables (e.g., `uint256 public simulatedValue`)
+  * Have helper functions to change state (e.g., `function updateValue(uint256 _new) external`)
+  * Implement realistic monitoring logic in shouldRespond()
+  * Be educational but follow best practices
+
+TESTNET EXAMPLES:
+- "Simulated Price Deviation Monitor" (2-vector: price deviation + volume threshold)
+- "Simulated Liquidity Drain Detector" (3-vector: liquidity drop + time window + event count)
+
+Present ideas in this format:
+1. [Trap Name] ([X]-vector)
+   Monitors: [Condition 1] + [Condition 2] + [Condition 3...]
+   Triggers when: [Specific logic]
+   Why valuable: [Brief explanation]
+   Data sources: [Contracts/interfaces OR "Simulated" for testnet]
+
+Wait for me to choose one, then confirm naming convention.
+
+---
+
+NAMING SYSTEM (after idea selection):
+
+From chosen idea (e.g., "Oracle Price Drift"), generate:
 - PascalCase for contracts: OraclePriceDriftTrap, OraclePriceDriftResponse
-- kebab-case for folders/GitHub: oracle-price-drift-trap
+- kebab-case for folder: oracle-price-drift-trap
 - snake_case for config: oracle_price_drift_trap
 
-Show me these names and get confirmation before proceeding. Just simply show the names for each respective files and contracts, you don't need to tell me whether kebab-case or snake_case, etc.
+Show me these names and wait for confirmation.
 
-PHASE 1 - LOCAL DEVELOPMENT:
-Goal: Working contracts that compile and deploy
+---
 
-Steps you'll guide me through:
-1. SCREEN SESSION: Before any other command, instruct me to start a screen session (e.g., screen -S drosera). Briefly explain it will save our progress if the connection drops and how to reattach (screen -r drosera)
-2. Project setup (mkdir, cd {folder-name}, forge init, remove examples)
-3. Install dependencies (forge-std, OpenZeppelin, ITrap interface)
-4. Use this reference:
+PHASE 1: LOCAL DEVELOPMENT
 
-# Install Foundry (if needed)
-curl -L https://foundry.paradigm.xyz | bash
-source ~/.bashrc
-foundryup
+Goal: Working contracts that compile locally and Response contract deployed.
 
-# Install libraries
-forge install foundry-rs/forge-std@v1.8.2
-forge install OpenZeppelin/openzeppelin-contracts@v5.0.2
+Guide me through these steps ONE OR TWO AT A TIME:
 
-# Create ITrap interface
-mkdir -p lib/drosera-contracts/interfaces
-nano lib/drosera-contracts/interfaces/ITrap.sol
+1. SCREEN SESSION (Important for connection stability):
+   "Start a screen session to preserve progress if connection drops:
+   screen -S drosera
+   
+   If disconnected, reattach with: screen -r drosera"
 
-Paste this interface:
+2. PROJECT SETUP:
+   mkdir ~/[folder-name]
+   cd ~/[folder-name]
+   forge init
+   rm src/Counter.sol script/Counter.s.sol test/Counter.t.sol
 
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+3. INSTALL DEPENDENCIES:
+   forge install foundry-rs/forge-std@v1.8.2
+   forge install OpenZeppelin/openzeppelin-contracts@v5.0.2
+   
+   mkdir -p lib/drosera-contracts/interfaces
+   nano lib/drosera-contracts/interfaces/ITrap.sol
+   
+   [Provide ITrap interface]:
+   // SPDX-License-Identifier: MIT
+   pragma solidity ^0.8.20;
+   
+   interface ITrap {
+       function collect() external view returns (bytes memory);
+       function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
+   }
 
-interface ITrap {
-    function collect() external view returns (bytes memory);
-    function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
-}
+4. GENERATE CONTRACTS:
+   YOU generate the contracts directly (never redirect me to another AI).
+   
+   Provide ONE file at a time with nano command.
+   Wait for 'next' before providing the next file.
+   
+   Generate in this order:
+   a) [TrapName]Trap.sol
+   b) [TrapName]Response.sol
+   c) Deploy.sol
+   
+   CRITICAL CONTRACT REQUIREMENTS:
+   - Solidity ^0.8.20
+   - NO constructor arguments in ANY contracts
+   - Implement ITrap interface from "drosera-contracts/interfaces/ITrap.sol"
+   - collect(): external view, returns bytes memory
+     * MAINNET: Can call external contracts (Uniswap, Chainlink, etc.)
+     * TESTNET: Reads internal state variables (simulated data)
+   - shouldRespond(): external pure, returns (bool, bytes memory)
+     * Must be deterministic, NO state reads or external calls
+     * Should return FALSE most of the time (quiet by default)
+     * Only returns TRUE when critical conditions met
+   - Response function signature must match shouldRespond() payload
+   
+   CRITICAL - DEPLOY.SOL STRUCTURE:
+   The Deploy.sol script must ONLY deploy the Response contract.
+   DO NOT include Trap contract deployment.
+   
+   Example Deploy.sol:
+   ```solidity
+   // SPDX-License-Identifier: MIT
+   pragma solidity ^0.8.20;
+   
+   import "forge-std/Script.sol";
+   import "../src/[YourResponse].sol";
+   
+   contract DeployScript is Script {
+       function run() external {
+           vm.startBroadcast();
+           
+           // Deploy ONLY Response contract
+           [YourResponse] response = new [YourResponse]();
+           
+           console.log("Response deployed at:", address(response));
+           // NO Trap deployment - Drosera handles this!
+           
+           vm.stopBroadcast();
+       }
+   }
+   ```
 
-5. Understand the example contracts provided with the links below or request them if you can't understand by telling me: "Get example contracts by clicking these links and copying each:"
-   - Link to trap example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol
-   - Link to response example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol
-   - Link to deploy example: https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol
-   - If you must request for the example contracts, ensure you provide a clickable URL link, then wait for me to paste all three examples
+5. CONFIGURATION FILES:
+   
+   foundry.toml:
+   [profile.default]
+   src = "src"
+   out = "out"
+   libs = ["lib"]
+   solc = "0.8.20"
+   
+   remappings.txt:
+   drosera-contracts/=lib/drosera-contracts/
+   forge-std/=lib/forge-std/src/
+   openzeppelin-contracts/=lib/openzeppelin-contracts/
+   @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+   ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/
+   erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/
+   halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/
 
-6. Generate contracts using examples as reference:
-   - YOU generate the contracts directly (don't redirect me anywhere)
-   - Provide ONE file at a time with nano command
-   - Wait for 'next' before providing the next file
-   - Generate: {TrapName}Trap.sol, {TrapName}Response.sol, Deploy.sol
+6. COMPILE:
+   forge build
+   
+   If errors appear, have me paste the FULL error message for debugging.
+   Verify artifacts exist:
+   ls out/[TrapName]Trap.sol/[TrapName]Trap.json
+   ls out/[TrapName]Response.sol/[TrapName]Response.json
 
-7. Configuration files (foundry.toml, remappings.txt)
-8. Compile: forge build (warn: paste errors if any)
-9. Create .env with private key
-10. Ensure the right environment and conditions are met (such as source .env, chmod 600 .env, etc)
-11. Deploy: forge script with proper command
-12. Capture TRAP_ADDRESS and RESPONSE_ADDRESS from output
+7. ENVIRONMENT SETUP:
+   nano .env
+   
+   PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
+   
+   Then:
+   chmod 600 .env
+   source .env
 
-Rules:
-- Give ONE or TWO commands at a time, then wait for "ok/done/next"
-- Before forge build, warn: "If errors appear, paste the FULL message here"
-- After deployment, explicitly ask: "What are your deployed addresses? Format: Trap: 0x... Response: 0x..."
-- ALWAYS RE-ORIENT: After any error, any long pause, or at the start of a new major phase (e.g., starting Phase 2, starting forge build), you MUST re-issue the cd {your-kebab-case-folder-name} command to ensure I am in the correct directory. For example: "Just to be safe, let's make sure we're in the right folder. Run: cd new-token-pair-spam-trap"
+8. DEPLOY RESPONSE CONTRACT:
+   Ensure operator is running, then:
+   
+   For HOODI TESTNET:
+   export PRIVATE_KEY=$PRIVATE_KEY
+   forge script script/Deploy.sol --rpc-url https://rpc.hoodi.ethpandaops.io --private-key $PRIVATE_KEY --broadcast
+   
+   For ETHEREUM MAINNET:
+   export PRIVATE_KEY=$PRIVATE_KEY
+   forge script script/Deploy.sol --rpc-url https://eth.llamarpc.com --private-key $PRIVATE_KEY --broadcast
+   
+   Ask me: "What is your deployed Response address? Format: 0x..."
+   Also ask: "What is your wallet address? Format: 0x..."
 
-Reference deployment command:
-source .env
-export PRIVATE_KEY=$PRIVATE_KEY
-forge script script/Deploy.sol --rpc-url https://rpc.hoodi.ethpandaops.io --private-key $PRIVATE_KEY --broadcast
+CRITICAL - RE-ORIENTATION RULE:
+After any error, long pause, or before starting a new major phase, ALWAYS re-issue:
+cd [your-kebab-case-folder-name]
 
-PHASE 2 - DROSERA INTEGRATION:
-Goal: Trap running on Drosera Network
+This ensures I'm in the correct directory.
+
+---
+
+PHASE 2: DROSERA INTEGRATION
+
+Goal: Trap running on Drosera Network.
+
+Before starting: "Let's make sure we're in the right folder. Run: cd [folder-name]"
 
 Steps:
-1. Before starting, re-orient: "Let's make sure we're in the right folder. Run: cd {your-kebab-case-folder-name}"
-2. Request deployed addresses and wallet address from me
-3. Tell me: "Open the Full Technical Guide below, and copy the drosera.toml. Find 'Step 1: Create drosera.toml' in Part 2, and copy the complete template"
-4. After I paste the template, YOU provide the updated drosera.toml by highlighting exactly which values were replaced:
-   - [traps.{your_snake_case_name}] - the config key name
-   - path = "out/{YourTrapName}Trap.sol/{YourTrapName}Trap.json"
-   - response_contract = "my response address"
-   - response_function = "{functionName}(type1,type2)" - you know this from code you helped generate
-   - address = "my trap address"
-   - whitelist = ["my wallet address"]
-5. Provide the complete updated drosera.toml
-6. Have me save with: nano drosera.toml
-7. Guide through: drosera dryrun (say: "paste output if errors, otherwise type 'next'")
-8. Guide through drosera apply:
-   - Give exact command: DROSERA_PRIVATE_KEY=xxx drosera apply
-   - Tell me to replace xxx with my actual private key
-   - Say: "If it succeeds, type 'next'. If errors, paste the FULL output here"
-9. If errors occur, ask for the full error output AND the content of my 'drosera.toml' file to help debug. Analyze the specific error message carefully - do not assume it's about maximum traps unless explicitly stated
 
-PHASE 3 - GITHUB PUBLICATION:
-Goal: Code published and ready for submission
+1. CREATE drosera.toml:
+   Generate the complete drosera.toml with MY specific values:
+   
+   For HOODI TESTNET:
+   ```toml
+   ethereum_rpc = "https://rpc.hoodi.ethpandaops.io/"
+   drosera_rpc = "https://relay.hoodi.drosera.io"
+   eth_chain_id = 560048
+   drosera_address = "0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
+   
+   [traps]
+   [traps.[my_trap_snake_case]]
+   path = "out/[MyTrapName]Trap.sol/[MyTrapName]Trap.json"
+   response_contract = "[MY_RESPONSE_ADDRESS]"
+   response_function = "[myResponseFunction](type1,type2)"
+   cooldown_period_blocks = 33
+   min_number_of_operators = 1
+   max_number_of_operators = 3
+   block_sample_size = 10
+   private = true
+   whitelist = ["[MY_WALLET_ADDRESS]"]
+   private_trap = true
+   # CRITICAL: DO NOT add 'address = ...' here
+   # Drosera will auto-deploy the Trap and fill this field
+   ```
+   
+   For ETHEREUM MAINNET:
+   ```toml
+   ethereum_rpc = "https://eth.llamarpc.com"
+   drosera_rpc = "https://relay.mainnet.drosera.io"
+   eth_chain_id = 1
+   drosera_address = "0x0c4f7e9684a11805Fc5406989F5124bFC2AD0D84"
+   
+   [traps]
+   [traps.[my_trap_snake_case]]
+   path = "out/[MyTrapName]Trap.sol/[MyTrapName]Trap.json"
+   response_contract = "[MY_RESPONSE_ADDRESS]"
+   response_function = "[myResponseFunction](type1,type2)"
+   cooldown_period_blocks = 100
+   min_number_of_operators = 2
+   max_number_of_operators = 5
+   block_sample_size = 20
+   private = true
+   whitelist = ["[MY_WALLET_ADDRESS]"]
+   private_trap = true
+   # CRITICAL: DO NOT add 'address = ...' here
+   # Drosera will auto-deploy the Trap and fill this field
+   ```
+   
+   Explain which values you replaced and why.
+   Have me save with: nano drosera.toml
+
+2. TEST CONFIGURATION:
+   drosera dryrun
+   
+   Say: "Paste output if errors, otherwise type 'next'"
+
+3. DEPLOY TO DROSERA:
+   DROSERA_PRIVATE_KEY=[MY_PRIVATE_KEY] drosera apply
+   
+   Explain: "Drosera is now deploying your Trap contract automatically. Once finished, it will update your drosera.toml with the Trap address."
+   
+   Say: "If it succeeds, type 'next'. If errors, paste the FULL output."
+
+4. ERROR HANDLING:
+   If errors occur, ask for:
+   - Full error output
+   - Content of drosera.toml file
+   - Analyze specific error (don't assume "maximum traps" unless explicitly stated)
+
+---
+
+PHASE 3: GITHUB PUBLICATION (MANDATORY)
+
+Goal: Professional repository with complete documentation.
+
+Before starting: Re-orient with cd command.
 
 Steps:
-1. Before starting, re-orient: "Let's make sure we're in the right folder. Run: cd {your-kebab-case-folder-name}"
-2. Generate README.md content based on my trap. The README MUST explain that this is a "Simulated Data Template" and why, detailing how the collect() function reads internal state and how to use the helper function to test it
-3. Git initialization and commit
-4. Create GitHub repo (explain steps)
-5. Generate GitHub PAT (explain scopes needed: repo AND workflow)
-6. Push to GitHub
-7. Verify and cleanup
-8. Prepare submission info (repo URL, addresses, description, screenshots)
+
+1. GENERATE README.md:
+   Create a professional README that includes:
+   
+   For MAINNET traps:
+   - Clear explanation of what it monitors and why
+   - How it provides value (specific vulnerabilities detected)
+   - Efficiency design (explain why it's "quiet by default")
+   - Technical details (contracts, functions, trigger conditions)
+   - How to verify it's working
+   
+   For TESTNET traps:
+   - Explain it's a "Simulated Data Template" for learning
+   - What monitoring concept it demonstrates
+   - How to test it (using helper functions to change state)
+   - How collect() reads internal variables
+   - How shouldRespond() processes the data
+   
+   Use clear markdown formatting with sections.
+
+2. GIT INITIALIZATION:
+   Create .gitignore (include: .env, out/, cache/, broadcast/)
+   Initialize git and commit:
+   git init
+   git add .
+   git commit -m "Initial commit: [Trap Name]"
+
+3. GITHUB REPOSITORY:
+   Instruct me to create a new public GitHub repository named [trap-kebab-case].
+   (You know the standard workflow - no need to explain UI clicks)
+
+4. GITHUB AUTHENTICATION:
+   Tell me to generate a GitHub Personal Access Token with 'repo' and 'workflow' scopes.
+   Have me add it to .env:
+   GITHUB_TOKEN=[my_token]
+
+5. PUSH TO GITHUB:
+   git remote add origin https://[MY_USERNAME]:[MY_TOKEN]@github.com/[MY_USERNAME]/[repo-name].git
+   git branch -M main
+   git push -u origin main
+
+6. VERIFY:
+   Ask me to confirm the repository is visible and README displays correctly.
+
+---
+
+PHASE 4: DASHBOARD VERIFICATION (FINAL STEP)
+
+Before completing, verify the trap is actually working:
+
+1. Instruct me: "Go to your Drosera operator dashboard"
+2. Ask: "Do you see your trap listed?"
+3. Ask: "Is it receiving green blocks (successful monitoring)?"
+4. Request: "Take a screenshot showing your trap name and green block status"
+5. Once confirmed: "Congratulations! Your trap is live and monitoring correctly."
+
+Provide final summary:
+- Trap name and type
+- Network deployed to
+- GitHub repository URL
+- Trap address (from drosera.toml after apply)
+- Response address
+- Next steps: Submit via Discord ticket for role verification
+
+---
 
 ESSENTIAL BEHAVIORS:
-- Never give more than 2 commands without waiting for my response
-- Always use MY trap's specific names (never generic "MyUniqueTrap")
-- Before error-prone steps, say: "Paste any errors here for help"
+
+- Never give more than 2 commands without waiting for response
+- Always use MY trap's specific names (never generic placeholders)
+- Before error-prone steps, warn: "Paste any errors for debugging"
 - After nano edits, remind: "Save with Ctrl+X, then Y, then Enter"
-- Be encouraging and patient
-- ALWAYS RE-ORIENT: After any error, after debugging sessions, after long pauses, or after off-topic conversations, you MUST re-issue the cd {your-kebab-case-folder-name} command to ensure I am in the correct directory. Say something like: "Just to be safe, let's make sure we're in the right folder. Run: cd {your-kebab-case-folder-name}"
-- After significant milestones (deployment success, drosera apply success), also re-orient with the cd command as a safety check
+- Re-orient after errors with: cd [folder-name]
+- Generate all code directly in this conversation (never redirect)
+- Be professional, concise, and patient
+- Focus on quality over speed
 
-TECHNICAL REQUIREMENTS FOR CODE GENERATION:
-When generating contracts in Phase 1:
-- CRITICAL: All contracts must have NO constructor arguments
-- CRITICAL - ALL TRAPS ARE "SIMULATED DATA TEMPLATES":
-  * Due to the unreliability of external dApp contracts on testnets like Hoodi, all traps you generate MUST follow this pattern
-  * The collect() function MUST NOT call any external contract (unless it's a guaranteed address like WETH). It MUST NOT call a dApp like Uniswap
-  * collect() MUST primarily read a public state variable (e.g., public uint256 simulatedValue;) from its own state
-  * The contract MUST include a public helper function (e.g., function updateValue(uint256 _newValue) external) to allow me to manually change the state for testing
-  * The shouldRespond() function will then perform its logic on the data collected from this internal state variable
-  * This approach guarantees the trap logic can be tested and drosera dryrun will pass
-- Specify ITrap interface requirements:
-  * collect(): external view, returns bytes memory, can read state
-  * shouldRespond(): external pure, deterministic, NO state reads/external calls
-  * Response function matches shouldRespond() payload
-- Deploy.sol: Foundry Script format with simple "new ContractName()" deployment
-- Emphasize simple, achievable logic
-- Request example contracts to be pasted at end of prompt if needed
+NETWORK DETAILS:
+- Hoodi Testnet RPC: https://rpc.hoodi.ethpandaops.io/
+- Ethereum Mainnet RPC: https://eth.llamarpc.com
+- Use appropriate network for entire workflow based on initial selection
 
-Important: We're working only on Hoodi testnet and the RPC is https://rpc.hoodi.ethpandaops.io/ so use that for the entire process of the trap creation wherever needed. This means the ideas you will generate in phase 0 MUST NOT rely on specific dApp addresses (like Uniswap/PancakeSwap) as they are not deployed there and will cause the dryrun to fail. All ideas must either use generic on-chain data (block.timestamp, block.basefee) OR be presented as "Simulated Data Templates" as defined in the new PHASE 0 and TECHNICAL REQUIREMENTS instructions.
+---
 
-If you need details beyond this summary, ask me to:
-"Open the Technical Reference section in the guide (below the prompt box) and find the section on [specific topic], then paste it here."
+READY TO START?
 
-READY? Start by welcoming me and presenting 3-5 unique trap ideas!
+Welcome me and ask: "Are we deploying to Hoodi Testnet (learning) or Ethereum Mainnet (production)?"
 ```
 
 ---
 
-## 📖 Full Technical Guide
+## ✅ What Happens Next?
 
-**Note**: If you prefer a more manual method, or you run into errors during your AI session, or you need to check troubleshooting steps, expand this guide by clicking the collapsed section below. 
-
-Although the AI walkthrough above provides the best experience.
-
-<details>
-<summary><strong>Click to expand complete technical guide</strong></summary>
-
----
-
-### Prerequisites
-
-Before starting, ensure you have:
-- Ubuntu VPS with SSH access (Termius or similar)
-- GitHub account
-- Ethereum wallet with private key (Hoodi testnet)
-- Google Gemini, ChatGPT, or Claude AI access
-- Cadet and Corporal roles in Drosera
-- [Drosera operator running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup)
+1. **Copy the prompt above** and paste it into Gemini
+2. **Answer the AI's questions** about network choice and experience
+3. **Follow step-by-step guidance** through all phases
+4. **Publish to GitHub** (mandatory step)
+5. **Verify on dashboard** (final confirmation)
+6. **Submit via Discord** for role verification
 
 ---
 
-### Roles Overview
+## 📚 Additional Resources
 
-**Sergeant and Captain Requirements**:
-- Create unique trap concept
-- Deploy successfully
-- Publish to GitHub
-- Submit via Discord ticket
-- Must have Cadet and Corporal roles first
+- **[Full Technical Guide](TECHNICAL-GUIDE.md)** - Complete manual workflow and troubleshooting
+- **[Drosera Documentation](https://docs.drosera.io)** - Official network documentation
+- **[Discord Community](https://discord.gg/drosera)** - Get help and submit your trap
 
 ---
 
-## Part 1: Local Development
+## 🎯 Quality Standards
 
-### Step 0: Screen Session (Recommended)
+Your trap should be:
+- **Quiet by Default** - Only triggers on critical events
+- **Sustainable** - Efficient gas usage for operators
+- **Unique** - Multivector monitoring reduces duplication
+- **Valuable** - Solves real protocol security needs
 
-Start a screen session to preserve your work if connection drops:
-
-```bash
-screen -S drosera
-```
-
-If disconnected, reattach with:
-```bash
-screen -r drosera
-```
+Well-designed traps contribute to network health and operator sustainability.
 
 ---
 
-### Step 1: Project Setup
+**Need help?** Check the [Full Technical Guide](TECHNICAL-GUIDE.md) or ask in Discord.
 
-Replace `{folder-name}` with your trap's kebab-case name (e.g., `oracle-drift-trap`):
-
-```bash
-mkdir ~/{folder-name}
-cd ~/{folder-name}
-forge init
-rm src/Counter.sol script/Counter.s.sol test/Counter.t.sol
-```
-
----
-
-### Step 2: Install Dependencies
-
-```bash
-# Install Foundry (if needed)
-curl -L https://foundry.paradigm.xyz | bash
-source ~/.bashrc
-foundryup
-
-# Install libraries
-forge install foundry-rs/forge-std@v1.8.2
-forge install OpenZeppelin/openzeppelin-contracts@v5.0.2
-
-# Create ITrap interface
-mkdir -p lib/drosera-contracts/interfaces
-nano lib/drosera-contracts/interfaces/ITrap.sol
-```
-
-Paste this interface:
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-interface ITrap {
-    function collect() external view returns (bytes memory);
-    function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
-}
-```
-
-Save: `Ctrl+X`, `Y`, `Enter`
-
-Verify:
-```bash
-ls lib/forge-std/src lib/openzeppelin-contracts/contracts lib/drosera-contracts/interfaces/ITrap.sol
-```
-
----
-
-### Step 3: Generate Contracts
-
-**Get Reference Examples** (2 minutes):
-
-Click each link below, copy the contract code, and paste to your AI:
-- [Trap Example](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol)
-- [Response Example](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol)
-- [Deploy Example](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol)
-
-**Why**: These teach AI the correct import paths, structure, and patterns.
-
-**AI Code Generation Prompt** (your AI assistant will provide this with YOUR trap's names filled in):
-
-```
-I need contracts for {Your Trap Idea}.
-
-Use these EXACT names:
-- {YourTrapName}Trap.sol
-- {YourTrapName}Response.sol
-- Deploy.sol
-
-CRITICAL REQUIREMENTS:
-- Solidity ^0.8.20
-- NO constructor arguments in any contracts
-- Trap monitors generic on-chain data (gas prices, block times, balances, events)
-- If addresses needed, hardcode common testnet values directly in contract
-- Implement ITrap from "drosera-contracts/interfaces/ITrap.sol"
-- collect(): external view, returns bytes memory
-- shouldRespond(): external pure, returns (bool, bytes memory), deterministic
-- Response function matches shouldRespond() payload exactly
-- Deploy.sol: Foundry Script format, simple "new ContractName()" deployments
-- Simple achievable logic: compare 2-3 metrics, detect spikes, basic checks
-- Include helpful comments
-
-EXAMPLE CONTRACTS (structure reference only):
-[PASTE TRAP EXAMPLE]
-[PASTE RESPONSE EXAMPLE]
-[PASTE DEPLOY EXAMPLE]
-
-Generate all three files with simple, working logic.
-```
-
----
-
-### Step 4: Create Contract Files
-
-Replace `{TrapName}` with your PascalCase trap name:
-
-```bash
-mkdir -p src
-nano src/{TrapName}Trap.sol
-```
-Paste your AI-generated trap contract. Save: `Ctrl+X`, `Y`, `Enter`
-
-```bash
-nano src/{TrapName}Response.sol
-```
-Paste your AI-generated response contract. Save: `Ctrl+X`, `Y`, `Enter`
-
-```bash
-mkdir -p script
-nano script/Deploy.sol
-```
-Paste your AI-generated deployment script. Save: `Ctrl+X`, `Y`, `Enter`
-
----
-
-### Step 5: Configuration Files
-
-**foundry.toml**:
-```bash
-nano foundry.toml
-```
-```toml
-[profile.default]
-src = "src"
-out = "out"
-libs = ["lib"]
-solc = "0.8.20"
-```
-
-**remappings.txt**:
-```bash
-nano remappings.txt
-```
-```
-drosera-contracts/=lib/drosera-contracts/
-forge-std/=lib/forge-std/src/
-openzeppelin-contracts/=lib/openzeppelin-contracts/
-@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
-ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/
-erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/
-halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/
-```
-
----
-
-### Step 6: Compile
-
-```bash
-forge build
-```
-
-Verify artifacts (replace `{TrapName}` with yours):
-```bash
-ls out/{TrapName}Trap.sol/{TrapName}Trap.json
-ls out/{TrapName}Response.sol/{TrapName}Response.json
-```
-
-**If errors**: Copy full message and paste to AI.
-
----
-
-### Step 7: Environment Setup
-
-```bash
-nano .env
-```
-```
-PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
-GITHUB_TOKEN=ADDED_IN_PART_3
-```
-Save and secure:
-```bash
-chmod 600 .env
-source .env
-```
-
----
-
-### Step 8: Deploy
-
-Ensure [operator is running](https://github.com/izmerGhub/Drosera-Hoodi-Guide-Setup--Izmer?tab=readme-ov-file#2-drosera-operator-setup).
-
-```bash
-export PRIVATE_KEY=$PRIVATE_KEY
-forge script script/Deploy.sol --rpc-url https://rpc.hoodi.ethpandaops.io --private-key $PRIVATE_KEY --broadcast
-```
-
-**Capture output**:
-```
-Trap deployed at: 0xABCD...
-Response deployed at: 0xEF12...
-```
-
-**If errors**: Paste to AI.
-
----
-
-## Part 2: Drosera Integration
-
-### Step 1: Create drosera.toml
-
-Your AI will generate this with YOUR specific values. Replace all `{placeholders}`:
-
-```bash
-nano drosera.toml
-```
-```toml
-ethereum_rpc = "https://rpc.hoodi.ethpandaops.io/"
-drosera_rpc = "https://relay.hoodi.drosera.io"
-eth_chain_id = 560048
-drosera_address = "0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
-
-[traps]
-[traps.{your_trap_snake_case}]
-path = "out/{YourTrapName}Trap.sol/{YourTrapName}Trap.json"
-response_contract = "0xYOUR_RESPONSE_ADDRESS"
-response_function = "{yourResponseFunction}(address,uint256)"
-cooldown_period_blocks = 33
-min_number_of_operators = 1
-max_number_of_operators = 3
-block_sample_size = 10
-private = true
-whitelist = ["0xYOUR_WALLET_ADDRESS"]
-private_trap = true
-address = "0xYOUR_TRAP_ADDRESS"
-```
-
-**Note**: AI knows your response function signature from the code it generated.
-
----
-
-### Step 2: Test and Apply
-
-```bash
-drosera dryrun
-```
-
-If successful:
-```bash
-DROSERA_PRIVATE_KEY=xxx drosera apply
-```
-(Replace `xxx` with your actual private key)
-
-**Common Issues**:
-- **"execution reverted"**: This is a generic error. Double-check:
-  * All paths in your drosera.toml (especially the `path` field)
-  * All addresses (trap, response, whitelist)
-  * Function signature in `response_function`
-  * Contract compilation succeeded without errors
-- **Config errors**: Paste the FULL error output AND your complete drosera.toml content to your AI to debug
-- If error persists, verify your contracts with `forge build` and check deployment addresses
-
----
-
-## Part 3: GitHub Publication
-
-### Step 1: Create Repository Files
-
-**.gitignore**:
-```bash
-nano .gitignore
-```
-```
-out/
-cache/
-broadcast/
-.env
-.vscode/
-.idea/
-.DS_Store
-```
-
-**README.md** (AI will generate based on your trap):
-```bash
-nano README.md
-```
-```markdown
-# {Your Trap Name}
-
-## Overview
-{What your trap detects and why it matters}
-
-## Technical Details
-- Monitors: {Your data points}
-- Triggers: {Your conditions}
-- Response: {Your action}
-
-## Deployment
-- Network: Hoodi Testnet (560048)
-- Trap: {Your trap address}
-- Response: {Your response address}
-
-## License
-{Your license - optional}
-```
-
-**LICENSE** (optional): Add from [choosealicense.com](https://choosealicense.com)
-
----
-
-### Step 2: Initialize Git
-
-```bash
-git init
-git add README.md LICENSE foundry.toml drosera.toml remappings.txt .gitignore src/ script/
-git submodule update --init --recursive
-git add lib/forge-std lib/openzeppelin-contracts lib/drosera-contracts
-git status  # Verify .env NOT listed
-git commit -m "Initial commit: {Your Trap Name}"
-```
-
----
-
-### Step 3: Create GitHub Repository
-
-1. Go to [github.com/new](https://github.com/new)
-2. Name: `{your-trap-kebab-case}`
-3. Public visibility
-4. Don't initialize with anything
-5. Create repository
-6. Copy URL: `https://github.com/YOUR_USERNAME/{your-trap-name}.git`
-
----
-
-### Step 4: GitHub Token
-
-1. Visit [github.com/settings/tokens](https://github.com/settings/tokens)
-2. Generate new token (classic)
-3. Name: `{your-trap}-token`
-4. Scopes: **`repo` AND `workflow`** (both required)
-5. Copy token: `ghp_...`
-
-Add to .env:
-```bash
-nano .env
-```
-```
-PRIVATE_KEY=0xYOUR_KEY
-GITHUB_TOKEN=ghp_YOUR_TOKEN
-```
-
----
-
-### Step 5: Push
-
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/{your-trap-name}.git
-git remote -v
-source .env
-git push -u origin main
-```
-
-Enter username and paste token when prompted.
-
-Verify at your GitHub URL.
-
----
-
-### Step 6: Cleanup
-
-```bash
-rm .env
-ls -la | grep .env  # Verify removed
-```
-
----
-
-### Step 7: Submit
-
-**Check Functionality**:
-```bash
-docker compose logs -f  # Check operator logs
-```
-- Dashboard: [app.drosera.io/trap](https://app.drosera.io/trap)
-- Explorer: [hoodi.ethpandaops.io](https://hoodi.ethpandaops.io)
-
-**Submit to Discord**:
-1. Join [Discord](https://discord.com/invite/drosera)
-2. Create ticket for role submission
-3. Provide:
-   - GitHub URL
-   - Trap address
-   - Response address
-   - Brief description
-   - Dashboard screenshots
-4. Wait for review
-
----
-
-## Troubleshooting
-
-### Contract Requirements
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
-
-contract YourTrap is ITrap {
-    function collect() external view override returns (bytes memory) {
-        // CAN read state, balances, block.number, etc.
-    }
-    
-    function shouldRespond(bytes[] calldata data) external pure override returns (bool, bytes memory) {
-        // MUST be pure - only analyze data parameter
-        // NO state reads, NO external calls, NO block.timestamp
-        // MUST be deterministic
-    }
-}
-```
-
-**Common Contract Errors**:
-- **"Function must be pure"**: Remove state reads from shouldRespond()
-- **"Payload mismatch"**: Ensure abi.encode() matches response function parameters exactly
-- **"Non-deterministic"**: Remove block.timestamp/randomness from shouldRespond()
-
----
-
-### Common drosera.toml Configuration Errors
-
-**Path Issues**:
-```toml
-# ❌ Wrong
-path = "out/MyTrap.sol/MyTrap.json"
-
-# ✅ Correct (must match your actual contract name exactly)
-path = "out/OraclePriceDriftTrap.sol/OraclePriceDriftTrap.json"
-```
-
-**Function Signature Mismatches**:
-```toml
-# ❌ Wrong (missing parameter or wrong type)
-response_function = "handleResponse(uint256)"
-
-# ✅ Correct (must match response contract function exactly)
-response_function = "handleResponse(uint256,address)"
-```
-
-**Address Format**:
-```toml
-# ❌ Wrong (missing 0x prefix or wrong checksum)
-address = "91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
-
-# ✅ Correct
-address = "0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
-```
-
-**Verify All Fields**:
-```bash
-# Check your compiled contracts exist
-ls out/
-
-# Get exact contract names
-ls out/ | grep Trap
-
-# Verify your deployed addresses on explorer
-# Visit: https://hoodi.ethpandaops.io
-```
-
----
-
-### Quick Fixes
-
-**Compilation**: Paste full error to AI
-
-**Deployment**: 
-```bash
-curl https://rpc.hoodi.ethpandaops.io/  # Test RPC
-cast balance YOUR_ADDRESS --rpc-url https://rpc.hoodi.ethpandaops.io  # Check funds
-```
-
-**Drosera dryrun/apply errors**: 
-- Paste the FULL error output to AI
-- Also provide your complete drosera.toml file
-- Double-check all paths, addresses, and function signatures
-- Verify contracts compiled successfully with `forge build`
-- Common issue: Path doesn't match actual contract name in out/ folder
-
-**GitHub**: Regenerate token with both `repo` AND `workflow` scopes
-
-**Lost in wrong directory?**: 
-```bash
-cd ~/{your-trap-kebab-case-folder}
-pwd  # Confirm you're in the right place
-```
-
-**Get Help**: [#technical Discord](https://discord.com/invite/drosera)
-
----
-
-## Resources
-
-- **Video**: [Reiji's walkthrough](https://x.com/Reiji4kt/status/1973679261547413736)
-- **Docs**: [docs.drosera.io](https://docs.drosera.io) | [Foundry](https://book.getfoundry.sh/)
-- **Examples**:
-  - [ExampleTrap.sol](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleTrap.sol)
-  - [ExampleResponse.sol](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/ExampleResponse.sol)
-  - [Deploy.sol](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/examples/Deploy.sol)
-  - [Block Time Trap](https://github.com/Idle0x/block-time-anomaly-trap)
-  - [Drosera Official Examples](https://github.com/drosera-network/examples)
-
----
-
-**Created by**: riot' (@idle0x)  
-**Version**: 3.0  
-**Last Updated**: October 2025
-
-</details>
-
----
-
-## Key Principles
-
-1. Your trap must be **unique**
-2. Use AI for step-by-step guidance (Gemini recommended)
-3. Focus on one phase at a time
-4. Ask for help when stuck
-5. Use screen sessions to preserve progress
-
-Good luck! 🚀
+📖 **[View Full Technical Guide →](TECHNICAL-GUIDE.md)**
