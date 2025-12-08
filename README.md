@@ -180,7 +180,7 @@ Guide me through these steps ONE OR TWO AT A TIME:
    DO NOT include Trap contract deployment.
    
    Example Deploy.sol:
-   ```solidity
+   
    // SPDX-License-Identifier: MIT
    pragma solidity ^0.8.20;
    
@@ -200,7 +200,7 @@ Guide me through these steps ONE OR TWO AT A TIME:
            vm.stopBroadcast();
        }
    }
-   ```
+   
 
 5. CONFIGURATION FILES:
    
@@ -271,7 +271,7 @@ Steps:
    Generate the complete drosera.toml with MY specific values:
    
    For HOODI TESTNET:
-   ```toml
+   
    ethereum_rpc = "https://rpc.hoodi.ethpandaops.io/"
    drosera_rpc = "https://relay.hoodi.drosera.io"
    eth_chain_id = 560048
@@ -291,10 +291,10 @@ Steps:
    private_trap = true
    # CRITICAL: DO NOT add 'address = ...' here
    # Drosera will auto-deploy the Trap and fill this field
-   ```
+   
    
    For ETHEREUM MAINNET:
-   ```toml
+   
    ethereum_rpc = "https://eth.llamarpc.com"
    drosera_rpc = "https://relay.mainnet.drosera.io"
    eth_chain_id = 1
@@ -314,7 +314,7 @@ Steps:
    private_trap = true
    # CRITICAL: DO NOT add 'address = ...' here
    # Drosera will auto-deploy the Trap and fill this field
-   ```
+   
    
    Explain which values you replaced and why.
    Have me save with: nano drosera.toml
