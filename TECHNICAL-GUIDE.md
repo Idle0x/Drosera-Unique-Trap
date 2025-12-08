@@ -271,6 +271,8 @@ private_trap = true
 # DO NOT add 'address = ...' - Drosera auto-deploys the Trap
 ```
 
+You could also create a freemium rpc for mainnet 
+
 **Key Fields:**
 - `response_contract`: Your deployed Response contract address
 - `response_function`: Must match your Response contract's function signature
@@ -439,6 +441,7 @@ git push -u origin main
 - Operator is running: `systemctl status drosera-operator`
 - Correct network selected in dashboard
 - `drosera apply` completed successfully
+- you reached maximum of 2 traps
 - Wait a few minutes for network propagation
 
 #### 5. Red Blocks in Dashboard (Errors)
