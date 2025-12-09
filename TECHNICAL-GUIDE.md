@@ -271,8 +271,6 @@ private_trap = true
 # DO NOT add 'address = ...' - Drosera auto-deploys the Trap
 ```
 
-You could also create a freemium rpc for mainnet 
-
 **Key Fields:**
 - `response_contract`: Your deployed Response contract address
 - `response_function`: Must match your Response contract's function signature
@@ -441,7 +439,6 @@ git push -u origin main
 - Operator is running: `systemctl status drosera-operator`
 - Correct network selected in dashboard
 - `drosera apply` completed successfully
-- you reached maximum of 2 traps
 - Wait a few minutes for network propagation
 
 #### 5. Red Blocks in Dashboard (Errors)
@@ -466,8 +463,21 @@ git push -u origin main
 - **Returns false most of the time** - Only triggers on critical events
 - **Efficient gas usage** - Operators can run sustainably
 - **Clear trigger conditions** - Well-defined thresholds
+- **Flexible thresholds (3+ vectors)** - Adapts to partial attack patterns
 
-#### Example: Good Mainnet Trap
+#### Flexible Threshold Logic (NEW)
+For traps with 3+ conditions, implement flexible triggering:
+- **3-vector traps:** Trigger if ANY 2 or ALL 3 conditions met
+- **4-vector traps:** Trigger if ANY 3 or ALL 4 conditions met
+- **5-vector traps:** Trigger if ANY 3+ or ALL 5 conditions met
+
+**Why this matters:**
+- ✅ Catches threats even if one data source fails
+- ✅ Reduces false negatives
+- ✅ Still maintains low noise (requires multiple confirmations)
+- ✅ More resilient to oracle issues or network delays
+
+#### Example: Good Mainnet Trap (with Flexible Threshold)
 ```solidity
 function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
     (uint256 oraclePrice, uint256 dexPrice, uint256 volume) = abi.decode(
@@ -475,13 +485,21 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
         (uint256, uint256, uint256)
     );
     
-    // Only respond if BOTH conditions met
+    // Check each condition independently
     uint256 deviation = abs(oraclePrice - dexPrice) * 100 / oraclePrice;
-    bool priceDeviation = deviation > 5; // >5% deviation
-    bool unusualVolume = volume > 1000000 * 10**18; // >1M tokens
+    bool condition1_priceDeviation = deviation > 5; // >5% deviation
+    bool condition2_unusualVolume = volume > 1000000 * 10**18; // >1M tokens
+    bool condition3_extremeDeviation = deviation > 10; // >10% extreme case
     
-    if (priceDeviation && unusualVolume) {
-        return (true, abi.encode(oraclePrice, dexPrice, volume));
+    // Count met conditions
+    uint8 metConditions = 0;
+    if (condition1_priceDeviation) metConditions++;
+    if (condition2_unusualVolume) metConditions++;
+    if (condition3_extremeDeviation) metConditions++;
+    
+    // Trigger if ANY 2 of 3 conditions met (flexible threshold)
+    if (metConditions >= 2) {
+        return (true, abi.encode(oraclePrice, dexPrice, volume, metConditions));
     }
     
     return (false, "");
@@ -491,8 +509,9 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 **Why this is good:**
 - Monitors multiple conditions (multivector)
 - Has meaningful thresholds
-- Returns false unless both conditions met
-- Detects potential price manipulation
+- Uses flexible triggering (ANY 2 of 3)
+- Returns false unless threshold reached
+- Detects potential price manipulation even if volume data fails
 
 #### What to Avoid
 
@@ -539,13 +558,14 @@ contract BadTrap is ITrap {
 - Provides no useful monitoring
 - Adds noise to the network
 
-### ✅ Good Example: Multivector Liquidity Monitor
+### ✅ Good Example: Multivector Liquidity Monitor (Flexible Threshold)
 
 ```solidity
 contract LiquidityDrainTrap is ITrap {
     IUniswapV2Pair public immutable pair;
     uint256 public constant DRAIN_THRESHOLD = 30; // 30% drop
     uint256 public constant TIME_WINDOW = 10; // blocks
+    uint256 public constant EXTREME_DRAIN = 50; // 50% drop
     
     function collect() external view returns (bytes memory) {
         (uint112 reserve0, uint112 reserve1, uint32 timestamp) = pair.getReserves();
@@ -564,12 +584,23 @@ contract LiquidityDrainTrap is ITrap {
             (uint112, uint112, uint256, uint32)
         );
         
-        // Check if significant drain occurred recently
+        // Check three conditions independently
         uint256 reserveDrop = ((oldReserve0 - newReserve0) * 100) / oldReserve0;
         uint256 blockDelta = newBlock - oldBlock;
         
-        if (reserveDrop >= DRAIN_THRESHOLD && blockDelta <= TIME_WINDOW) {
-            return (true, abi.encode(oldReserve0, newReserve0, blockDelta));
+        bool condition1_significantDrain = reserveDrop >= DRAIN_THRESHOLD;
+        bool condition2_recentTime = blockDelta <= TIME_WINDOW;
+        bool condition3_extremeDrain = reserveDrop >= EXTREME_DRAIN;
+        
+        // Count met conditions
+        uint8 metConditions = 0;
+        if (condition1_significantDrain) metConditions++;
+        if (condition2_recentTime) metConditions++;
+        if (condition3_extremeDrain) metConditions++;
+        
+        // Trigger if ANY 2 of 3 conditions met (flexible threshold)
+        if (metConditions >= 2) {
+            return (true, abi.encode(oldReserve0, newReserve0, blockDelta, metConditions));
         }
         
         return (false, "");
@@ -579,10 +610,15 @@ contract LiquidityDrainTrap is ITrap {
 
 **Why this is good:**
 - Monitors specific vulnerability (liquidity drain)
-- Has clear thresholds (30% in 10 blocks)
-- Multivector (amount + time window)
+- Has clear thresholds (30% and 50% drain, 10 block window)
+- **Uses flexible triggering (ANY 2 of 3)**
+- Triggers scenarios:
+  * Significant drain (30%) + Recent (10 blocks) = TRIGGER
+  * Significant drain (30%) + Extreme (50%) = TRIGGER
+  * Recent (10 blocks) + Extreme (50%) = TRIGGER
 - Only triggers on actual anomalies
 - Provides actionable data
+- Resilient to timing or measurement edge cases
 
 ### ✅ Good Example: Oracle Deviation Detector
 
