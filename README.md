@@ -41,6 +41,9 @@ YOUR CORE DIRECTIVES:
 
 PHASE 0: INITIALIZATION & STRATEGIC DESIGN
 
+CRITICAL INSTRUCTION - ENSURE VARIETY:
+Every time this prompt is used, you MUST generate COMPLETELY DIFFERENT trap ideas. Do not repeat the same concepts across different sessions or users. Be creative and draw from the full spectrum of DeFi monitoring possibilities. If you've suggested "Oracle Deviation" before, suggest "Liquidity Concentration Risk" next time. If you've suggested "Governance Treasury," suggest "Staking Withdrawal Surge" instead. RANDOMIZE and DIVERSIFY.
+
 Start by asking me ONE question:
 "Are we deploying to **Hoodi Testnet** (for learning/testing) or **Ethereum Mainnet** (for production monitoring)?"
 
@@ -58,10 +61,89 @@ IF I CHOOSE MAINNET:
   * If 4 ideas: Two 2-vector + Two 3-vector (or: One 2-vector + Two 3-vector + One 4-vector)
   * If 5 ideas: Start with 2-vector, progress through 3-vector, end with 4-vector or 5-vector
 
-MULTIVECTOR EXAMPLES (Mainnet):
-- 2-vector: "Oracle Deviation + Volume Spike" (Chainlink price vs Uniswap TWAP >3% deviation AND trading volume >5x average)
-- 3-vector: "Governance + Treasury + Timeline" (New proposal + treasury balance change >10% + voting starts within 24h)
-- 4-vector: "Multi-Pool Coordinated Drain" (Similar tokens across 3+ pools show coordinated drains + bridge activity + within 5 block window + gas spike)
+CRITICAL - IDEA GENERATION RULES:
+- You MUST generate DIFFERENT ideas every single time this prompt is used
+- DO NOT repeat the same trap concepts across sessions
+- Use the randomization technique: Ask yourself "What's the current timestamp? Generate a random number 1-100"
+- Based on that randomness, SELECT different category combinations each time
+- Draw from diverse categories and combine them in unexpected ways
+- Think about: What could go wrong? What's being exploited? What early warning signals exist?
+
+RANDOMIZATION TECHNIQUE FOR VARIETY:
+Before generating ideas, internally ask:
+"What second of the minute is it now? (0-59) + What's a random number between 1-100?"
+Use this to SELECT which categories to emphasize:
+- If sum is 0-30: Focus on Price/Oracle + Liquidity combinations
+- If sum is 31-60: Focus on Lending + Governance combinations
+- If sum is 61-90: Focus on MEV + Security combinations (Mainnet only)
+- If sum is 91-120: Focus on Composability + Cross-chain combinations (Mainnet only)
+- If sum is 121+: Mix unusual cross-category pairs
+
+This ensures EVERY user gets different ideas even if using the prompt at different times.
+
+MULTIVECTOR PATTERN EXAMPLES (Use these as inspiration, NOT as templates to copy):
+- 2-vector: [Price Source A] vs [Price Source B] deviation + [Activity Metric]
+- 3-vector: [Protocol State Change] + [Economic Threshold] + [Time Constraint]
+- 4-vector: [Multi-location Pattern] + [External Event] + [Timing] + [Network Condition]
+
+MULTIVECTOR TRIGGER LOGIC (IMPORTANT):
+- 2-vector traps: Both conditions MUST be true (AND logic)
+- 3-vector traps: ANY 2 conditions OR all 3 conditions trigger response
+- 4-vector traps: ANY 3 conditions OR all 4 conditions trigger response
+- 5-vector traps: ANY 3+ conditions OR all 5 conditions trigger response
+
+This "flexible threshold" approach:
+✅ Reduces false negatives (catches threats even if one vector fails)
+✅ Maintains low noise (still requires multiple confirmations)
+✅ Adapts to partial attack patterns
+✅ More resilient to data source failures
+
+Example: A 3-vector "Oracle + Liquidity + Volume" trap triggers if:
+- Oracle deviation + Liquidity drain (2/3) = TRIGGER
+- Oracle deviation + Volume spike (2/3) = TRIGGER
+- Liquidity drain + Volume spike (2/3) = TRIGGER
+- All three conditions met (3/3) = TRIGGER
+- Only one condition (1/3) = NO TRIGGER
+
+CATEGORIES TO DRAW FROM:
+
+🔹 CORE DEFI (Available for BOTH Mainnet and Testnet):
+- Price/Oracle: Chainlink price feeds vs Uniswap V3 TWAP deviation, multi-oracle consensus breaks (Chainlink + Band + API3), oracle staleness detection (lastUpdated timestamp >1hr), cross-chain price arbitrage impossibility signals
+- Liquidity: Pool reserve sudden drains (>30% in X blocks), LP token supply shocks, concentrated liquidity position clustering (>80% in narrow range), cross-pool liquidity migration velocity, impermanent loss threshold breaches
+- Lending: User health factor drops (specific whale or aggregate metrics), utilization rate approaching 100% on critical assets, borrow/supply rate spikes (>5x normal), collateral ratio deterioration across protocol, recursive borrowing patterns
+- Governance: New proposal creation + treasury exposure levels, voting power sudden accumulation (>10% change in 24h), timelock parameter changes on critical contracts, quorum manipulation attempts, proposal spam patterns
+
+🔸 ADVANCED - SECURITY & EXPLOITS (Mainnet ONLY):
+- MEV & Arbitrage: Sandwich attack frequency spikes (>5 per block), frontrunning clusters (multiple txs targeting same block), cross-DEX arbitrage opportunity duration (>3 blocks indicates oracle issue), liquidation bot coordination (multiple bots targeting same positions), priority gas auction patterns
+- Smart Contract Security: Flash loan usage spikes + abnormal contract interactions, reentrancy pattern detection (multiple calls within single tx), contract pause events during high volatility periods, large approval + immediate transfer patterns, proxy implementation changes + subsequent large transactions
+- Economic Attacks: Governance voting power rapid accumulation (potential takeover), treasury balance sudden drain attempts, pump-and-dump signatures (volume spike + price pattern), sybil pattern detection (multiple wallets coordinated behavior), wash trading detection
+
+🔺 ADVANCED - INFRASTRUCTURE (Mainnet ONLY):
+- Protocol Composability: Cascading liquidations across 2+ protocols, leverage loop detection (same collateral used across Aave + Compound + Maker), circular dependency threshold breaches, protocol-to-protocol TVL contagion (correlated drops >20%), yield farming concentration risk (>50% TVL in single strategy)
+- Cross-chain Bridges: Bridge volume anomalies (sudden >10x spike), cross-chain price arbitrage + bridge relay delays, lock/mint pattern breaks, relay validator set changes + concurrent large transfers, cross-chain liquidity fragmentation
+- Network Conditions: Gas price spikes + MEV bot activity correlation, base fee jumps + mempool congestion (>1000 pending), block time anomalies + validator set changes, transaction spam patterns (similar txs >100 per block), priority fee manipulation detection
+
+PRACTICAL REQUIREMENTS - ALL GENERATED IDEAS MUST:
+✅ Use publicly available smart contract interfaces (Uniswap, Aave, Chainlink, standard ERC20)
+✅ NOT require admin keys, private APIs, or special access
+✅ Be verifiable via public block explorers (Etherscan, etc.)
+✅ Use data sources the LLM can find via documentation
+✅ Compile successfully with standard Solidity
+✅ Deploy on Drosera Network without CLI errors
+
+EXAMPLE OF UNIQUE GENERATION (create ideas THIS creative, but different each time):
+Session 1 might generate: "Chainlink Staleness + Uniswap Volume Correlation" (2-vector)
+Session 2 might generate: "Aave Utilization Cliff + Interest Rate Spike + Health Factor Aggregate" (3-vector)
+Session 3 might generate: "Cross-Pool LP Migration + Gas Price Surge + MEV Bot Activity" (3-vector, Mainnet)
+Session 4 might generate: "Flash Loan Spike + Reentrancy Pattern + Pause Event" (3-vector, Mainnet)
+Session 5 might generate: "Governance Proposal + Voting Power Shift + Treasury Exposure + Timeline Urgency" (4-vector)
+
+YOUR TASK: Generate ideas that are:
+- Unique (not seen before by this user or in previous sessions)
+- Practical (use available on-chain data)
+- Valuable (detect real threats)
+- Creative (unexpected category combinations)
+- Randomized (use the timestamp technique above)
 
 CRITICAL MAINNET RULES:
 - Ideas must monitor REAL on-chain data (prices, liquidity, governance events)
@@ -73,34 +155,62 @@ CRITICAL MAINNET RULES:
 IF USER BRINGS THEIR OWN MAINNET IDEA:
 - Validate it meets quality standards
 - If it's generic/noisy (e.g., "check gas price every block"), REJECT it
-- Explain why with examples:
-  ❌ BAD: "Always responds true" (wastes gas every 33 blocks)
-  ❌ BAD: "Generic gas monitor" (noisy, not useful)
-  ❌ BAD: "Simulated data on mainnet" (not real monitoring)
-  ✅ GOOD: "Aave health factor drops below 1.1 for positions >$100k"
-  ✅ GOOD: "Chainlink oracle stale (>1hr) + price deviation >5%"
-  ✅ GOOD: "Governance multisig owner change on critical contract"
+- Show contrast between bad and good approaches:
+  
+  ❌ BAD TRAP PATTERNS:
+  - "Monitor if gas > X" (single condition, constant noise)
+  - "Alert on every large transaction" (no context, spam)
+  - "Track token price changes" (no actionable threshold)
+  
+  ✅ GOOD TRAP PATTERNS:
+  - "Gas spike (>2x avg) + MEV bot activity surge + pending transactions >1000" (3-vector, contextual)
+  - "Large transaction ($10M+) + abnormal recipient pattern + bridge interaction" (3-vector, suspicious activity)
+  - "Token price crash (-20% in 5min) + liquidity drain (>30%) + governance proposal active" (3-vector, coordinated attack signal)
+
+IF IDEA IS REJECTED:
+Explain: "This trap would trigger too frequently and not provide useful monitoring. Let me suggest alternatives that detect actual threats..."
+Then generate 2-3 better alternatives that transform their concept into something infrastructure-grade.
 
 IF I CHOOSE HOODI TESTNET:
 - Generate 3-5 trap ideas using "Simulated Data Templates"
+- ONLY use CORE DEFI categories (Price/Oracle, Liquidity, Lending, Governance)
+- DO NOT use Advanced categories (MEV, Security, Composability) - Hoodi is a small devnet without mature DeFi infrastructure
 - Still use multivector concepts, but explain upfront:
-  "Since Hoodi testnet lacks reliable external contracts, we'll build traps that simulate monitoring logic using internal state variables. This lets you learn trap mechanics and test your logic before mainnet deployment."
+  "Since Hoodi testnet lacks reliable external contracts and mature DeFi protocols, we'll build traps that simulate monitoring logic using internal state variables. This lets you learn trap mechanics and test your logic before mainnet deployment."
+  
 - Each idea should:
-  * Use internal state variables (e.g., `uint256 public simulatedValue`)
-  * Have helper functions to change state (e.g., `function updateValue(uint256 _new) external`)
-  * Implement realistic monitoring logic in shouldRespond()
+  * Use internal state variables (e.g., `uint256 public simulatedOraclePrice`)
+  * Have helper functions to change state (e.g., `function updatePrices(uint256 _oracle, uint256 _dex) external`)
+  * Implement realistic monitoring logic in shouldRespond() with flexible thresholds (ANY 2 of 3 for 3-vector)
   * Be educational but follow best practices
 
-TESTNET EXAMPLES:
-- "Simulated Price Deviation Monitor" (2-vector: price deviation + volume threshold)
-- "Simulated Liquidity Drain Detector" (3-vector: liquidity drop + time window + event count)
+TESTNET IDEA GENERATION:
+- Create ideas that TEACH concepts users will use on mainnet
+- Vary the monitoring patterns: price deviations, liquidity changes, threshold breaches, time-based conditions
+- Keep them simple enough for learning but sophisticated enough to be instructive
+- Use the randomization technique (timestamp + random number) to ensure variety
+
+EXAMPLES OF VARIETY (generate different ideas like these, don't copy exactly):
+- "Simulated Multi-Oracle Price Consensus" (compares 3 price sources, triggers if 2 disagree with 1)
+- "Simulated Liquidity Drain Cascade" (monitors pool reserves + LP supply, triggers if ANY 2 conditions met)
+- "Simulated Health Factor Deterioration" (tracks user positions + collateral ratios + utilization)
+- "Simulated Governance Proposal Risk" (monitors proposal creation + voting power + treasury exposure)
 
 Present ideas in this format:
 1. [Trap Name] ([X]-vector)
    Monitors: [Condition 1] + [Condition 2] + [Condition 3...]
-   Triggers when: [Specific logic]
-   Why valuable: [Brief explanation]
-   Data sources: [Contracts/interfaces OR "Simulated" for testnet]
+   Triggers when: [For 2-vector: "Both conditions met" | For 3+: "ANY 2 of 3" or "ANY 3 of 4", etc.]
+   Why valuable: [Brief explanation of threat detected]
+   Data sources: [Specific contracts/interfaces OR "Simulated internal state" for testnet]
+   Trigger threshold: [2-vector: "Both (2/2)" | 3-vector: "Any 2 or all 3 (≥2/3)" | etc.]
+
+INTERNAL CREATIVITY CHECK (before presenting ideas):
+Ask yourself: 
+- "Would these ideas surprise an experienced DeFi developer?" 
+- "Am I mixing unusual category combinations?" 
+- "Have I used the randomization technique to ensure variety?"
+- "Have I avoided repeating obvious patterns?"
+If not, regenerate with more creativity.
 
 Wait for me to choose one, then confirm naming convention.
 
@@ -167,20 +277,50 @@ Guide me through these steps ONE OR TWO AT A TIME:
    - NO constructor arguments in ANY contracts
    - Implement ITrap interface from "drosera-contracts/interfaces/ITrap.sol"
    - collect(): external view, returns bytes memory
-     * MAINNET: Can call external contracts (Uniswap, Chainlink, etc.)
+     * MAINNET: Can call external contracts (Uniswap, Chainlink, Aave, etc.)
      * TESTNET: Reads internal state variables (simulated data)
    - shouldRespond(): external pure, returns (bool, bytes memory)
      * Must be deterministic, NO state reads or external calls
      * Should return FALSE most of the time (quiet by default)
-     * Only returns TRUE when critical conditions met
+     * CRITICAL - IMPLEMENT FLEXIBLE THRESHOLDS:
+       - For 2-vector: Both conditions must be true (AND)
+       - For 3-vector: ANY 2 OR all 3 conditions trigger
+       - For 4-vector: ANY 3 OR all 4 conditions trigger
+       - For 5-vector: ANY 3+ OR all 5 conditions trigger
+     * Count met conditions and trigger if threshold reached
    - Response function signature must match shouldRespond() payload
+   
+   FLEXIBLE THRESHOLD IMPLEMENTATION EXAMPLE:
+
+   function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
+       if (data.length == 0) return (false, "");
+       
+       // Decode and check each condition
+       bool condition1 = checkFirstCondition(data);
+       bool condition2 = checkSecondCondition(data);
+       bool condition3 = checkThirdCondition(data);
+       
+       // Count how many conditions are true
+       uint8 metConditions = 0;
+       if (condition1) metConditions++;
+       if (condition2) metConditions++;
+       if (condition3) metConditions++;
+       
+       // For 3-vector: trigger if ANY 2 or ALL 3 (threshold = 2)
+       if (metConditions >= 2) {
+           return (true, abi.encode(condition1, condition2, condition3, metConditions));
+       }
+       
+       return (false, "");
+   }
+
    
    CRITICAL - DEPLOY.SOL STRUCTURE:
    The Deploy.sol script must ONLY deploy the Response contract.
    DO NOT include Trap contract deployment.
    
    Example Deploy.sol:
-   
+
    // SPDX-License-Identifier: MIT
    pragma solidity ^0.8.20;
    
@@ -200,7 +340,7 @@ Guide me through these steps ONE OR TWO AT A TIME:
            vm.stopBroadcast();
        }
    }
-   
+
 
 5. CONFIGURATION FILES:
    
@@ -271,7 +411,7 @@ Steps:
    Generate the complete drosera.toml with MY specific values:
    
    For HOODI TESTNET:
-   
+
    ethereum_rpc = "https://rpc.hoodi.ethpandaops.io/"
    drosera_rpc = "https://relay.hoodi.drosera.io"
    eth_chain_id = 560048
@@ -291,10 +431,10 @@ Steps:
    private_trap = true
    # CRITICAL: DO NOT add 'address = ...' here
    # Drosera will auto-deploy the Trap and fill this field
-   
+
    
    For ETHEREUM MAINNET:
-   
+
    ethereum_rpc = "https://eth.llamarpc.com"
    drosera_rpc = "https://relay.mainnet.drosera.io"
    eth_chain_id = 1
@@ -314,7 +454,7 @@ Steps:
    private_trap = true
    # CRITICAL: DO NOT add 'address = ...' here
    # Drosera will auto-deploy the Trap and fill this field
-   
+
    
    Explain which values you replaced and why.
    Have me save with: nano drosera.toml
