@@ -71,7 +71,7 @@ forge init
 rm src/Counter.sol script/Counter.s.sol test/Counter.t.sol
 ```
 
-### Step 3: Install Dependencies
+### Step 3: Install Dependencies & Interface
 
 ```bash
 # Install Foundry (if needed)
@@ -88,7 +88,7 @@ mkdir -p lib/drosera-contracts/interfaces
 nano lib/drosera-contracts/interfaces/ITrap.sol
 ```
 
-Paste the ITrap interface:
+**Paste the Exact ITrap interface (CRITICAL):**
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -99,6 +99,8 @@ interface ITrap {
     function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
 }
 ```
+
+**⚠️ CRITICAL:** Note that `shouldRespond` takes `bytes[]` (array), NOT `bytes` (singular). This is non-negotiable for Drosera compatibility.
 
 Save: `Ctrl+X`, `Y`, `Enter`
 
@@ -113,16 +115,61 @@ ls lib/drosera-contracts/interfaces/ITrap.sol
 
 Create your trap contracts. For AI-generated code, follow the copilot prompt. For manual creation:
 
-**Trap Contract (`src/{TrapName}Trap.sol`):**
-- Implements ITrap interface
+#### 1. Trap Contract (`src/{TrapName}Trap.sol`):
+
+- Must implement `ITrap` interface
 - `collect()`: Gathers monitoring data
 - `shouldRespond()`: Evaluates trigger conditions
 
-**Response Contract (`src/{TrapName}Response.sol`):**
-- Contains the action to execute when trap triggers
-- Function signature must match shouldRespond() payload
+**CRITICAL REQUIREMENTS:**
+- `shouldRespond` MUST use signature: `function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory)`
+- `data[0]` contains the **newest** block data (Drosera ordering)
+- Always check `if (data.length == 0 || data[0].length == 0)` before decoding
+- Return `bytes("")` for empty returns (not `""`)
 
-**Deploy Script (`script/Deploy.sol`):**
+#### 2. Response Contract (`src/{TrapName}Response.sol`):
+
+Contains the action to execute when trap triggers.
+
+**⚠️ CRITICAL AUTHORIZATION WARNING:**
+- **DO NOT** use `require(msg.sender == address(trap))`
+- The Trap contract does NOT call your Response function
+- The Drosera Operator network calls it
+- For testing: allow any caller OR restrict to your wallet address
+- For production: use an owner-based access control
+
+Example of **CORRECT** authorization:
+
+```solidity
+address public owner;
+
+constructor() {
+    owner = msg.sender;
+}
+
+modifier onlyOwner() {
+    require(msg.sender == owner, "Only owner");
+    _;
+}
+
+function handleAlert(uint256 value) external onlyOwner {
+    // Your response logic
+}
+```
+
+Example of **WRONG** authorization (will fail):
+
+```solidity
+// ❌ BAD - This will revert when Drosera calls it
+address public trapAddress;
+
+modifier onlyTrap() {
+    require(msg.sender == trapAddress, "Only trap");
+    _;
+}
+```
+
+#### 3. Deploy Script (`script/Deploy.sol`):
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -135,16 +182,23 @@ contract DeployScript is Script {
     function run() external {
         vm.startBroadcast();
         
-        // Deploy ONLY Response contract
+        // 1. Deploy ONLY the Response contract
         YourResponse response = new YourResponse();
-        
         console.log("Response deployed at:", address(response));
-        // DO NOT deploy Trap - Drosera handles this!
+
+        // 2. STOP HERE - Do NOT deploy the Trap Contract
+        // Drosera reads the Trap logic from your compiled JSON artifact
+        // Attempting to deploy the Trap will cause issues
         
         vm.stopBroadcast();
     }
 }
 ```
+
+**Why you don't deploy the Trap:**
+- Drosera operators run trap logic in their own execution environment
+- They read the bytecode from your `out/` JSON artifact
+- Deploying it yourself creates address conflicts
 
 ### Step 5: Configuration Files
 
@@ -238,13 +292,14 @@ drosera_address = "0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
 path = "out/YourTrap.sol/YourTrap.json"
 response_contract = "0xYOUR_RESPONSE_ADDRESS"
 response_function = "yourFunction(address,uint256)"
-cooldown_period_blocks = 33
+cooldown_period_blocks = 20
 min_number_of_operators = 1
-max_number_of_operators = 3
-block_sample_size = 10
+max_number_of_operators = 2
+block_sample_size = 1
 private = true
 whitelist = ["0xYOUR_WALLET_ADDRESS"]
 private_trap = true
+
 # DO NOT add 'address = ...' - Drosera auto-deploys the Trap
 ```
 
@@ -264,18 +319,22 @@ response_function = "yourFunction(address,uint256)"
 cooldown_period_blocks = 100
 min_number_of_operators = 2
 max_number_of_operators = 5
-block_sample_size = 20
+block_sample_size = 5
 private = true
 whitelist = ["0xYOUR_WALLET_ADDRESS"]
 private_trap = true
+
 # DO NOT add 'address = ...' - Drosera auto-deploys the Trap
 ```
 
 **Key Fields:**
+
 - `response_contract`: Your deployed Response contract address
-- `response_function`: Must match your Response contract's function signature
+- `response_function`: Must match your Response contract's function signature exactly
 - `whitelist`: Your wallet address that can trigger the trap
-- **CRITICAL**: Do NOT include an `address` field - Drosera will auto-fill this
+- `block_sample_size`: Number of historical blocks to pass to `shouldRespond()` (1 for simple traps, 5+ for trend analysis)
+
+**CRITICAL:** Do NOT include an `address` field - Drosera will auto-fill this when you run `drosera apply`
 
 ### Step 2: Test Configuration
 
@@ -422,15 +481,16 @@ git push -u origin main
 #### 3. Compilation Errors (`forge build` fails)
 
 **Common causes:**
-- Missing dependencies (re-run forge install commands)
-- Incorrect import paths (check remappings.txt)
-- Solidity version mismatch (ensure ^0.8.20)
-- Syntax errors in contracts
+- Missing dependencies (re-run `forge install` commands)
+- Incorrect import paths (check `remappings.txt`)
+- Solidity version mismatch (ensure `^0.8.20`)
+- Wrong `shouldRespond` signature (must be `bytes[]`, not `bytes`)
 
 **Solution:**
 - Read full error message carefully
 - Verify all dependencies installed: `ls lib/`
 - Check import statements match remappings
+- Verify ITrap interface matches exactly
 - Use AI assistant for debugging specific errors
 
 #### 4. Trap Not Appearing in Dashboard
@@ -446,10 +506,12 @@ git push -u origin main
 **Causes:**
 - `collect()` function reverts (external call fails)
 - `shouldRespond()` function has bugs
+- Missing safety check: `if (data.length == 0)` before decoding
 - Network connectivity issues
 
 **Solution:**
 - Review trap logic for potential revert conditions
+- Add defensive checks in `shouldRespond()`
 - Test with `drosera dryrun` on current network state
 - Check operator logs for specific error messages
 
@@ -480,29 +542,34 @@ For traps with 3+ conditions, implement flexible triggering:
 #### Example: Good Mainnet Trap (with Flexible Threshold)
 ```solidity
 function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
+    // 1. Safety Check: Ensure data exists
+    if (data.length == 0 || data[0].length == 0) return (false, bytes(""));
+
+    // 2. Decode NEWEST data (Index 0)
     (uint256 oraclePrice, uint256 dexPrice, uint256 volume) = abi.decode(
         data[0], 
         (uint256, uint256, uint256)
     );
     
-    // Check each condition independently
+    // 3. Check each condition independently
     uint256 deviation = abs(oraclePrice - dexPrice) * 100 / oraclePrice;
     bool condition1_priceDeviation = deviation > 5; // >5% deviation
     bool condition2_unusualVolume = volume > 1000000 * 10**18; // >1M tokens
     bool condition3_extremeDeviation = deviation > 10; // >10% extreme case
     
-    // Count met conditions
+    // 4. Count met conditions
     uint8 metConditions = 0;
     if (condition1_priceDeviation) metConditions++;
     if (condition2_unusualVolume) metConditions++;
     if (condition3_extremeDeviation) metConditions++;
     
-    // Trigger if ANY 2 of 3 conditions met (flexible threshold)
+    // 5. Trigger if ANY 2 of 3 conditions met (flexible threshold)
     if (metConditions >= 2) {
         return (true, abi.encode(oraclePrice, dexPrice, volume, metConditions));
     }
     
-    return (false, "");
+    // 6. Default Return
+    return (false, bytes(""));
 }
 ```
 
@@ -512,6 +579,8 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 - Uses flexible triggering (ANY 2 of 3)
 - Returns false unless threshold reached
 - Detects potential price manipulation even if volume data fails
+- Includes safety check for empty data
+- Uses `bytes("")` for empty returns
 
 #### What to Avoid
 
@@ -553,7 +622,7 @@ contract BadTrap is ITrap {
 ```
 
 **Problems:**
-- Triggers every 33 blocks (testnet) or 100 blocks (mainnet)
+- Triggers every 20 blocks (testnet) or 100 blocks (mainnet)
 - Wastes gas constantly
 - Provides no useful monitoring
 - Adds noise to the network
@@ -573,14 +642,15 @@ contract LiquidityDrainTrap is ITrap {
     }
     
     function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
-        if (data.length < 2) return (false, "");
+        // Safety check
+        if (data.length < 2) return (false, bytes(""));
         
         (uint112 oldReserve0, , uint256 oldBlock, ) = abi.decode(
-            data[0], 
+            data[1], 
             (uint112, uint112, uint256, uint32)
         );
         (uint112 newReserve0, , uint256 newBlock, ) = abi.decode(
-            data[1], 
+            data[0], 
             (uint112, uint112, uint256, uint32)
         );
         
@@ -603,7 +673,7 @@ contract LiquidityDrainTrap is ITrap {
             return (true, abi.encode(oldReserve0, newReserve0, blockDelta, metConditions));
         }
         
-        return (false, "");
+        return (false, bytes(""));
     }
 }
 ```
@@ -619,6 +689,7 @@ contract LiquidityDrainTrap is ITrap {
 - Only triggers on actual anomalies
 - Provides actionable data
 - Resilient to timing or measurement edge cases
+- Proper safety checks for data array
 
 ### ✅ Good Example: Oracle Deviation Detector
 
@@ -640,6 +711,9 @@ contract OracleDeviationTrap is ITrap {
     }
     
     function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
+        // Safety check
+        if (data.length == 0 || data[0].length == 0) return (false, bytes(""));
+
         (uint256 chainlinkPrice, uint256 uniswapPrice, ) = abi.decode(
             data[0], 
             (uint256, uint256, uint256)
@@ -655,7 +729,7 @@ contract OracleDeviationTrap is ITrap {
             return (true, abi.encode(chainlinkPrice, uniswapPrice, deviationPercent));
         }
         
-        return (false, "");
+        return (false, bytes(""));
     }
 }
 ```
@@ -666,6 +740,8 @@ contract OracleDeviationTrap is ITrap {
 - Has meaningful threshold (5% deviation)
 - Detects potential price manipulation or oracle issues
 - Quiet by default, loud when critical
+- Includes proper safety checks
+- Uses correct `bytes[]` signature
 
 ---
 
