@@ -173,6 +173,8 @@ modifier onlyTrap() {
 
 #### 3. Deploy Script (`script/Deploy.sol`):
 
+To deploy the Response Contract ONLY
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
@@ -197,7 +199,7 @@ contract DeployScript is Script {
 }
 ```
 
-**Why you don't deploy the Trap:**
+**Why you don't deploy the Trap Contract?:**
 - Drosera operators run trap logic in their own execution environment
 - They read the bytecode from your `out/` JSON artifact
 - Deploying it yourself creates address conflicts
