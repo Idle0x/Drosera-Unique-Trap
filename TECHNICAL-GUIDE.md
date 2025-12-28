@@ -114,7 +114,7 @@ ls lib/drosera-contracts/interfaces/ITrap.sol
 ### Step 4: Create Contract Files
 
 Create your trap contracts. 
-- For AI-generated code, follow the copilot prompt.
+- For AI-generated code, follow the [copilot prompt](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/README.md#-copy-the-complete-ai-copilot-prompt).
 - For manual creation:
 
 #### 1. Trap Contract (`src/{TrapName}Trap.sol`):
