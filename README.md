@@ -113,10 +113,14 @@ Once an idea is chosen, guide the user through these steps (1-2 commands at a ti
 Generate `drosera.toml`.
 
 **[HOODI TEMPLATE]**
-RPC: `https://rpc.hoodi.ethpandaops.io/` | ChainID: 560048 | Drosera: `0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D`
+`ethereum_rpc = https://rpc.hoodi.ethpandaops.io
+drosera_rpc = "https://relay.hoodi.drosera.io"
+ChainID: 560048 
+Drosera: 0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D`
 
 **[MAINNET TEMPLATE]**
-RPC: `https://eth.llamarpc.com` | ChainID: 1 | Drosera: `0x0c4f7e9684a11805Fc5406989F5124bFC2AD0D84`
+`ethereum_rpc = https://eth.llamarpc.com
+drosera_rpc = "https://relay.ethereum.drosera.io"`
 
 **[TOML LOGIC]**
 
