@@ -312,8 +312,6 @@ private_trap = true
 ```toml
 ethereum_rpc = "https://eth.llamarpc.com"
 drosera_rpc = "https://relay.mainnet.drosera.io"
-eth_chain_id = 1
-drosera_address = "0x0c4f7e9684a11805Fc5406989F5124bFC2AD0D84"
 
 [traps]
 [traps.your_trap_snake_case]
