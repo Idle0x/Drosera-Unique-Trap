@@ -69,7 +69,11 @@ drosera --version
 
 ## Phase 1: Local Development
 
-### 🔧 Step 1: Screen Session (Recommended)
+<details open>
+<summary>▶️ Click to expand/collapse</summary>
+
+<details open>
+<summary>Step 1: Screen Session (Recommended)</summary>
 
 Preserve your work if connection drops:
 
@@ -89,9 +93,12 @@ screen -r drosera
 exit
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 2: Project Setup
+<details open>
+<summary>Step 2: Project Setup</summary>
 
 Replace `{folder-name}` with your trap's kebab-case name:
 
@@ -108,9 +115,12 @@ pwd
 ```
 Expected: `/home/your-username/{folder-name}`
 
+</details>
+
 ---
 
-### 🔧 Step 3: Install Dependencies & Interface
+<details open>
+<summary>Step 3: Install Dependencies & Interface</summary>
 
 ```bash
 # Install Foundry (if needed)
@@ -155,9 +165,12 @@ ls lib/openzeppelin-contracts/contracts
 cat lib/drosera-contracts/interfaces/ITrap.sol
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 4: Create Contract Files
+<details open>
+<summary>Step 4: Create Contract Files</summary>
 
 Create your trap contracts. 
 - For AI-generated code, follow the [copilot prompt](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/README.md#-copy-the-complete-ai-copilot-prompt).
@@ -282,9 +295,12 @@ contract DeployScript is Script {
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
+</details>
+
 ---
 
-### 🔧 Step 5: Configuration Files
+<details open>
+<summary>Step 5: Configuration Files</summary>
 
 **Create foundry.toml:**
 ```bash
@@ -322,9 +338,12 @@ halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
+</details>
+
 ---
 
-### 🔧 Step 6: Compile
+<details open>
+<summary>Step 6: Compile</summary>
 
 ```bash
 forge build
@@ -347,9 +366,12 @@ ls out/{TrapName}Response.sol/{TrapName}Response.json
 
 **If compilation fails, see [Troubleshooting](#troubleshooting)**
 
+</details>
+
 ---
 
-### 🔧 Step 7: Environment Setup
+<details open>
+<summary>Step 7: Environment Setup</summary>
 
 ```bash
 nano .env
@@ -368,9 +390,12 @@ chmod 600 .env
 source .env
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 8: Deploy Response Contract
+<details open>
+<summary>Step 8: Deploy Response Contract</summary>
 
 **For Hoodi Testnet:**
 ```bash
@@ -398,18 +423,25 @@ cast code 0xYOUR_RESPONSE_ADDRESS --rpc-url https://rpc.hoodi.ethpandaops.io
 ```
 Expected: Long hex string (bytecode). If you see `0x`, the contract was NOT deployed.
 
+</details>
+
 ---
 
 ### ✅ Phase 1 Complete
 
 **Next Step:** Proceed to [Phase 2: Drosera Integration](#phase-2-drosera-integration) to deploy your trap to the Drosera Network.
 
+</details>
+
 ---
 
-<details>
-<summary><h2>Phase 2: Drosera Integration</h2></summary>
+## Phase 2: Drosera Integration
 
-### 🔧 Step 1: Create drosera.toml
+<details>
+<summary>▶️ Click to expand/collapse</summary>
+
+<details>
+<summary>Step 1: Create drosera.toml</summary>
 
 ```bash
 cd ~/{your-folder-name}
@@ -490,9 +522,12 @@ private_trap = true
 cat drosera.toml
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 2: Verify Response Function Matches
+<details>
+<summary>Step 2: Verify Response Function Matches</summary>
 
 **CRITICAL CHECK:** The `response_function` in TOML must EXACTLY match your Response contract.
 
@@ -510,9 +545,12 @@ Example:
 - ❌ Wrong function name
 - ❌ Wrong parameter types or count
 
+</details>
+
 ---
 
-### 🔧 Step 3: Test Configuration (Dry Run)
+<details>
+<summary>Step 3: Test Configuration (Dry Run)</summary>
 
 ```bash
 drosera dryrun
@@ -528,9 +566,12 @@ drosera dryrun
 
 **If errors occur, see [Troubleshooting](#troubleshooting)**
 
+</details>
+
 ---
 
-### 🔧 Step 4: Deploy to Drosera Network
+<details>
+<summary>Step 4: Deploy to Drosera Network</summary>
 
 ```bash
 source .env
@@ -559,9 +600,12 @@ Expected to see: `address = "0x..."`
 
 **If errors, see [Troubleshooting](#troubleshooting)**
 
+</details>
+
 ---
 
-### 🔧 Step 5: Authorize Operator in Response Contract
+<details>
+<summary>Step 5: Authorize Operator in Response Contract</summary>
 
 **Find your operator address:**
 ```bash
@@ -589,6 +633,8 @@ cast call YOUR_RESPONSE_ADDRESS \
 
 Expected: `true` (shown as hex: `0x0000...0001`)
 
+</details>
+
 ---
 
 ### ✅ Phase 2 Complete
@@ -599,14 +645,17 @@ Expected: `true` (shown as hex: `0x0000...0001`)
 
 ---
 
+## Phase 3: Operator Setup
+
 <details>
-<summary><h2>Phase 3: Operator Setup</h2></summary>
+<summary>▶️ Click to expand/collapse</summary>
 
 Now that your trap is deployed, you need to run an **Operator Node** to monitor it. The operator executes your trap's logic every block and triggers your Response contract when needed.
 
 ---
 
-### 🔧 Step 1: Create Operator Directory
+<details>
+<summary>Step 1: Create Operator Directory</summary>
 
 ```bash
 cd ~
@@ -614,9 +663,12 @@ mkdir drosera-operator
 cd drosera-operator
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 2: Install Docker (Skip if Already Installed)
+<details>
+<summary>Step 2: Install Docker (Skip if Already Installed)</summary>
 
 Check if Docker is installed:
 ```bash
@@ -649,9 +701,12 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo docker run hello-world
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 3: Create Environment File
+<details>
+<summary>Step 3: Create Environment File</summary>
 
 ```bash
 nano .env
@@ -674,9 +729,12 @@ VPS_IP=203.0.113.45
 
 **Save:** `Ctrl+X`, `Y`, `Enter`
 
+</details>
+
 ---
 
-### 🔧 Step 4: Create Docker Configuration
+<details>
+<summary>Step 4: Create Docker Configuration</summary>
 
 ```bash
 nano docker-compose.yaml
@@ -730,9 +788,12 @@ volumes:
 
 **Save:** `Ctrl+X`, `Y`, `Enter`
 
+</details>
+
 ---
 
-### 🔧 Step 5: Configure Firewall
+<details>
+<summary>Step 5: Configure Firewall</summary>
 
 ```bash
 sudo ufw allow 22/tcp
@@ -742,9 +803,12 @@ sudo ufw enable
 sudo ufw status
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 6: Start the Operator
+<details>
+<summary>Step 6: Start the Operator</summary>
 
 ```bash
 docker pull ghcr.io/drosera-network/drosera-operator:latest
@@ -756,9 +820,12 @@ docker compose logs -f --tail=30
 
 Press `Ctrl+C` to exit logs.
 
+</details>
+
 ---
 
-### 🔧 Step 7: Register Your Operator
+<details>
+<summary>Step 7: Register Your Operator</summary>
 
 **Hoodi Testnet:**
 ```bash
@@ -780,9 +847,12 @@ source .env && docker run -it --rm ghcr.io/drosera-network/drosera-operator:late
 
 ✅ **Expected:** `Transaction hash: 0x...` and `Successfully registered operator.`
 
+</details>
+
 ---
 
-### 🔧 Step 8: Opt-In to Your Trap
+<details>
+<summary>Step 8: Opt-In to Your Trap</summary>
 
 Replace `YOUR_TRAP_ADDRESS_HERE` with your trap config address from Phase 2.
 
@@ -804,9 +874,12 @@ source .env && docker run -it --rm ghcr.io/drosera-network/drosera-operator:late
 
 ✅ **Expected:** `Successfully opted into trap.`
 
+</details>
+
 ---
 
-### 🔧 Step 9: Verify Operation
+<details>
+<summary>Step 9: Verify Operation</summary>
 
 ```bash
 docker compose logs -f --tail=50
@@ -820,9 +893,12 @@ shouldRespond returned: false
 
 This confirms your operator is monitoring your trap.
 
+</details>
+
 ---
 
-### 🔧 Step 10: Dashboard Verification
+<details>
+<summary>Step 10: Dashboard Verification</summary>
 
 1. Go to https://app.drosera.io/
 2. Connect your wallet
@@ -830,9 +906,12 @@ This confirms your operator is monitoring your trap.
 4. Navigate to "My Traps"
 5. Check your trap shows **Green (Active)** status
 
+</details>
+
 ---
 
-### Useful Commands
+<details>
+<summary>Useful Commands</summary>
 
 **View logs:**
 ```bash
@@ -857,6 +936,8 @@ docker compose up -d
 
 **Monitor multiple traps:** Repeat Step 8 with different trap addresses.
 
+</details>
+
 ---
 
 ### ✅ Phase 3 Complete
@@ -867,10 +948,13 @@ docker compose up -d
 
 ---
 
-<details>
-<summary><h2>Phase 4: GitHub Publication</h2></summary>
+## Phase 4: GitHub Publication
 
-### 🔧 Step 1: Create README.md
+<details>
+<summary>▶️ Click to expand/collapse</summary>
+
+<details>
+<summary>Step 1: Create README.md</summary>
 
 ```bash
 nano README.md
@@ -894,9 +978,12 @@ Your README should include:
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
+</details>
+
 ---
 
-### 🔧 Step 2: Create .gitignore
+<details>
+<summary>Step 2: Create .gitignore</summary>
 
 ```bash
 nano .gitignore
@@ -924,9 +1011,12 @@ node_modules/
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
+</details>
+
 ---
 
-### 🔧 Step 3: Git Initialization
+<details>
+<summary>Step 3: Git Initialization</summary>
 
 ```bash
 git init
@@ -940,9 +1030,12 @@ git status
 git log
 ```
 
+</details>
+
 ---
 
-### 🔧 Step 4: Create GitHub Repository
+<details>
+<summary>Step 4: Create GitHub Repository</summary>
 
 1. Go to **https://github.com/new**
 2. **Repository name**: Use kebab-case (e.g., `oracle-staleness-trap`)
@@ -950,9 +1043,12 @@ git log
 4. **Do NOT** initialize with README (you already have one)
 5. Click **Create repository**
 
+</details>
+
 ---
 
-### 🔧 Step 5: Generate GitHub Token
+<details>
+<summary>Step 5: Generate GitHub Token</summary>
 
 1. Go to **https://github.com/settings/tokens**
 2. Click **Generate new token (classic)**
@@ -960,9 +1056,12 @@ git log
 4. Click **Generate token**
 5. **Copy the token** immediately
 
+</details>
+
 ---
 
-### 🔧 Step 6: Push to GitHub
+<details>
+<summary>Step 6: Push to GitHub</summary>
 
 ```bash
 git remote add origin https://github.com/YOUR_USERNAME/your-trap-name.git
@@ -974,14 +1073,19 @@ git push -u origin main
 - **Username**: Your GitHub username
 - **Password**: Use your **Personal Access Token** (not your GitHub password)
 
+</details>
+
 ---
 
-### 🔧 Step 7: Verify Repository
+<details>
+<summary>Step 7: Verify Repository</summary>
 
 1. Visit your GitHub repository URL
 2. Verify README displays correctly
 3. Check that `.env` is NOT visible (should be in .gitignore)
 4. Confirm all contract files are present
+
+</details>
 
 ---
 
@@ -993,25 +1097,34 @@ git push -u origin main
 
 ---
 
-<details>
-<summary><h2>Phase 5: Dashboard Verification</h2></summary>
+## Phase 5: Dashboard Verification
 
-### 🔧 Step 1: Access Dashboard
+<details>
+<summary>▶️ Click to expand/collapse</summary>
+
+<details>
+<summary>Step 1: Access Dashboard</summary>
 
 Navigate to **https://app.drosera.io/**
 
+</details>
+
 ---
 
-### 🔧 Step 2: Connect Wallet
+<details>
+<summary>Step 2: Connect Wallet</summary>
 
 1. Click "Connect Wallet"
 2. Select your wallet provider
 3. Approve connection
 4. Switch to correct network (Hoodi or Mainnet)
 
+</details>
+
 ---
 
-### 🔧 Step 3: Locate Your Trap
+<details>
+<summary>Step 3: Locate Your Trap</summary>
 
 1. Go to "My Traps" or "Operators" section
 2. Find your trap by:
@@ -1019,9 +1132,12 @@ Navigate to **https://app.drosera.io/**
    - Status: Active
    - Recent blocks
 
+</details>
+
 ---
 
-### 🔧 Step 4: Understand Block Colors
+<details>
+<summary>Step 4: Understand Block Colors</summary>
 
 **Green Blocks:**
 - ✅ Trap monitoring successfully
@@ -1038,9 +1154,12 @@ Navigate to **https://app.drosera.io/**
 - Check operator status
 - Verify TOML configuration
 
+</details>
+
 ---
 
-### 🔧 Step 5: Check Operator Logs
+<details>
+<summary>Step 5: Check Operator Logs</summary>
 
 ```bash
 # View recent logs
@@ -1058,9 +1177,12 @@ journalctl -u drosera-operator -f
 - "Trap result: true" (alert - threat detected)
 - Any error messages
 
+</details>
+
 ---
 
-### 🔧 Step 6: Success Confirmation
+<details>
+<summary>Step 6: Success Confirmation</summary>
 
 ✅ **Your trap is successfully deployed if:**
 - Trap appears in dashboard
@@ -1068,15 +1190,20 @@ journalctl -u drosera-operator -f
 - Operator logs show successful execution
 - No error messages in logs
 
+</details>
+
 ---
 
-### 🔧 Step 7: Submit for Verification
+<details>
+<summary>Step 7: Submit for Verification</summary>
 
 Once working:
 1. Take screenshot of dashboard showing trap name and green blocks
 2. Go to Drosera Discord
 3. Create ticket in verification channel
 4. Submit: Screenshot, GitHub link, Trap address, Network
+
+</details>
 
 ---
 
@@ -1088,11 +1215,13 @@ Once working:
 
 ---
 
-<details>
-<summary><h2>Troubleshooting</h2></summary>
+## Troubleshooting
 
 <details>
-<summary>❌ Issue 1: Compilation Errors (`forge build` fails)</summary>
+<summary>▶️ Click to expand/collapse</summary>
+
+<details>
+<summary>Issue 1: Compilation Errors (`forge build` fails)</summary>
 
 **Common causes:**
 - Missing dependencies
@@ -1130,7 +1259,7 @@ Must be: `function shouldRespond(bytes[] calldata data)` not `function shouldRes
 ---
 
 <details>
-<summary>❌ Issue 2: Storage Variable Error (CRITICAL)</summary>
+<summary>Issue 2: Storage Variable Error (CRITICAL)</summary>
 
 **Symptoms:**
 - Trap compiles but never triggers
@@ -1160,7 +1289,7 @@ contract GoodTrap is ITrap {
 ---
 
 <details>
-<summary>❌ Issue 3: ABI Mismatch (CRITICAL)</summary>
+<summary>Issue 3: ABI Mismatch (CRITICAL)</summary>
 
 **Symptoms:**
 ```
@@ -1199,7 +1328,7 @@ grep "response_function" drosera.toml
 ---
 
 <details>
-<summary>❌ Issue 4: Authorization Error</summary>
+<summary>Issue 4: Authorization Error</summary>
 
 **Symptoms:**
 ```
@@ -1243,7 +1372,7 @@ cast send RESPONSE_ADDRESS "setOperator(address,bool)" OPERATOR_ADDRESS true --r
 ---
 
 <details>
-<summary>❌ Issue 5: Data Length Guard Missing</summary>
+<summary>Issue 5: Data Length Guard Missing</summary>
 
 **Symptoms:**
 - Red blocks in dashboard
@@ -1270,7 +1399,7 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 ---
 
 <details>
-<summary>❌ Issue 6: TOML Address Field Error</summary>
+<summary>Issue 6: TOML Address Field Error</summary>
 
 **Symptoms:**
 ```
@@ -1294,7 +1423,7 @@ Drosera fills this automatically after `drosera apply`
 ---
 
 <details>
-<summary>❌ Issue 7: Response Contract Not Found</summary>
+<summary>Issue 7: Response Contract Not Found</summary>
 
 **Symptoms:**
 ```
@@ -1322,7 +1451,7 @@ forge script script/Deploy.sol --rpc-url $RPC_URL --private-key $PRIVATE_KEY --b
 ---
 
 <details>
-<summary>❌ Issue 8: Trap Not Appearing in Dashboard</summary>
+<summary>Issue 8: Trap Not Appearing in Dashboard</summary>
 
 **Checks:**
 
@@ -1349,7 +1478,7 @@ Should see trap address. If not, `drosera apply` didn't succeed.
 ---
 
 <details>
-<summary>❌ Issue 9: "drosera dryrun" Fails</summary>
+<summary>Issue 9: "drosera dryrun" Fails</summary>
 
 **Common causes:**
 
@@ -1377,7 +1506,7 @@ cast code RESPONSE_ADDRESS --rpc-url $RPC_URL
 ---
 
 <details>
-<summary>❌ Issue 10: Red Blocks (Determining Cause)</summary>
+<summary>Issue 10: Red Blocks (Determining Cause)</summary>
 
 **Check operator logs:**
 ```bash
@@ -1424,20 +1553,27 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 
 ---
 
+## Trap Quality Standards
+
 <details>
-<summary><h2>Trap Quality Standards</h2></summary>
+<summary>▶️ Click to expand/collapse</summary>
 
-### What Makes a Good Trap?
+<details>
+<summary>What Makes a Good Trap?</summary>
 
-#### Silent Watchdog Pattern
+### Silent Watchdog Pattern
 - **Returns false most of the time** - Only triggers on critical events
 - **Efficient gas usage** - Operators can run sustainably
 - **Clear trigger conditions** - Well-defined thresholds
 - **Flexible thresholds (3+ vectors)** - Adapts to partial attack patterns
 
+</details>
+
 ---
 
-#### Flexible Threshold Logic (For 3+ Vector Traps)
+<details>
+<summary>Flexible Threshold Logic (For 3+ Vector Traps)</summary>
+
 For traps monitoring multiple conditions:
 - **3-vector traps:** Trigger if ANY 2 or ALL 3 conditions met
 - **4-vector traps:** Trigger if ANY 3 or ALL 4 conditions met
@@ -1449,9 +1585,7 @@ For traps monitoring multiple conditions:
 - ✅ Still maintains low noise (requires multiple confirmations)
 - ✅ More resilient to oracle issues or network delays
 
----
-
-#### Example: Good Flexible Threshold Logic
+**Example: Good Flexible Threshold Logic**
 ```solidity
 function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
     // 1. Safety Check
@@ -1480,9 +1614,12 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 }
 ```
 
+</details>
+
 ---
 
-### What to Avoid
+<details>
+<summary>What to Avoid</summary>
 
 ❌ **Always True Logic:**
 ```solidity
@@ -1502,9 +1639,12 @@ if (block.basefee > 50 gwei) return (true, abi.encode(block.basefee));
 - No specific vulnerability being monitored
 - Wastes operator resources
 
+</details>
+
 ---
 
-### Best Practices
+<details>
+<summary>Best Practices</summary>
 
 ✅ **Use constants for thresholds:**
 ```solidity
@@ -1541,13 +1681,17 @@ return (false, "");          // ❌ Wrong
 
 </details>
 
+</details>
+
 ---
 
-<details>
-<summary><h2>Examples: Good vs Bad Traps</h2></summary>
+## Examples: Good vs Bad Traps
 
 <details>
-<summary>❌ Bad Example: Always-Respond Trap</summary>
+<summary>▶️ Click to expand/collapse</summary>
+
+<details>
+<summary>Bad Example: Always-Respond Trap</summary>
 
 ```solidity
 contract BadTrap is ITrap {
@@ -1573,7 +1717,7 @@ contract BadTrap is ITrap {
 ---
 
 <details>
-<summary>❌ Bad Example: Generic Gas Monitor</summary>
+<summary>Bad Example: Generic Gas Monitor</summary>
 
 ```solidity
 contract GenericGasTrap is ITrap {
@@ -1607,7 +1751,7 @@ contract GenericGasTrap is ITrap {
 ---
 
 <details>
-<summary>✅ Good Example: Multivector Liquidity Monitor</summary>
+<summary>Good Example: Multivector Liquidity Monitor</summary>
 
 ```solidity
 contract LiquidityDrainTrap is ITrap {
@@ -1670,7 +1814,7 @@ contract LiquidityDrainTrap is ITrap {
 ---
 
 <details>
-<summary>✅ Good Example: Oracle Deviation Detector</summary>
+<summary>Good Example: Oracle Deviation Detector</summary>
 
 ```solidity
 contract OracleDeviationTrap is ITrap {
