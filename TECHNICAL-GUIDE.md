@@ -1494,11 +1494,16 @@ ports:
 
 Also update `DRO__NETWORK__P2P_PORT` accordingly.
 
-If none of the fixes above are working:
+</details>
+
+---
+
+<details>
+<summary>Still having issues?</summary>
 
 1. Copy your error logs or take a screenshot of the issue.
 2. Join the Drosera Discord and post in **#technical-support** with your error, current step, network, and what you’ve tried.
-3. Paste the full error into an AI tool (e.g., ChatGPT or Claude) for troubleshooting help.
+3. Paste the full error into an AI tool (e.g., Gemini) for troubleshooting help.
 4. Check the official Drosera documentation, GitHub releases, or network status for known issues.
 
 </details>
