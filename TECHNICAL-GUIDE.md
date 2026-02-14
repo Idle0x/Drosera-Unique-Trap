@@ -97,52 +97,59 @@ exit
 ---
 
 <details>
-<summary>Step 2: Project Setup</summary>
+<summary>Step 2: Project Setup with Foundry Template</summary>
 
 Replace `{folder-name}` with your trap's kebab-case name:
 
 ```bash
 mkdir ~/{folder-name}
 cd ~/{folder-name}
-forge init
-rm src/Counter.sol script/Counter.s.sol test/Counter.t.sol
+forge init -t drosera-network/trap-foundry-template
 ```
 
-**Verify you're in the right directory:**
+**What this does:**
+- Initializes a Foundry project with Drosera's official template
+- Includes ITrap interface automatically (no manual creation needed)
+- Pre-configured with correct remappings and dependencies
+- Includes example contracts as reference
+
+**Verify setup:**
 ```bash
 pwd
+ls src/
+ls lib/
 ```
-Expected: `/home/your-username/{folder-name}`
+
+Expected:
+- Directory: `/home/your-username/{folder-name}`
+- `src/` contains example Trap contracts
+- `lib/` contains dependencies including `drosera-contracts`
 
 </details>
 
 ---
 
 <details>
-<summary>Step 3: Install Dependencies & Interface</summary>
+<summary>Step 3: Install Additional Dependencies</summary>
+
+The template includes basic dependencies, but you may need additional ones:
 
 ```bash
-# Install Foundry (if needed)
+# Install Foundry (if not already installed)
 curl -L https://foundry.paradigm.xyz | bash
 source ~/.bashrc
 foundryup
 
-# Install libraries
-forge install foundry-rs/forge-std@v1.8.2
+# Install OpenZeppelin if needed for your trap logic
 forge install OpenZeppelin/openzeppelin-contracts@v5.0.2
-forge install Drosera-Network/drosera-contracts
 ```
 
-> **⚠️ IMPORTANT:** Do NOT manually create the ITrap interface file. The `drosera-contracts` package contains the canonical interface that you should import.
-
-**Verify installation:**
+**Verify ITrap interface is available:**
 ```bash
-ls lib/forge-std/src
-ls lib/openzeppelin-contracts/contracts
 ls lib/drosera-contracts/src/interfaces/ITrap.sol
 ```
 
-**The ITrap interface signature (for reference only - do NOT create this file):**
+**The ITrap interface signature (for reference):**
 
 ```solidity
 interface ITrap {
@@ -152,6 +159,11 @@ interface ITrap {
 ```
 
 > **⚠️ CRITICAL:** Note that `shouldRespond` takes `bytes[]` (array), NOT `bytes` (singular). This is non-negotiable for Drosera compatibility.
+
+> **⚠️ IMPORTANT:** Do NOT manually create the ITrap interface. The template includes it from the `drosera-contracts` package. Always import it:
+> ```solidity
+> import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
+> ```
 
 </details>
 
@@ -362,11 +374,14 @@ contract DeployScript is Script {
 <details>
 <summary>Step 5: Configuration Files</summary>
 
-**Create foundry.toml:**
+The Foundry template includes pre-configured `foundry.toml` and `remappings.txt` files. You can verify or customize them:
+
+**Check foundry.toml:**
 ```bash
-nano foundry.toml
+cat foundry.toml
 ```
 
+**Expected (template default):**
 ```toml
 [profile.default]
 src = "src"
@@ -375,23 +390,34 @@ libs = ["lib"]
 solc = "0.8.20"
 ```
 
+If you need to modify it:
+```bash
+nano foundry.toml
+```
+
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
 ---
 
-**Create remappings.txt:**
+**Check remappings.txt:**
+```bash
+cat remappings.txt
+```
+
+The template should include:
+```
+drosera-contracts/=lib/drosera-contracts/src/
+forge-std/=lib/forge-std/src/
+```
+
+If you installed OpenZeppelin and need to add it:
 ```bash
 nano remappings.txt
 ```
 
+Add:
 ```
-drosera-contracts/=lib/drosera-contracts/src/
-forge-std/=lib/forge-std/src/
-openzeppelin-contracts/=lib/openzeppelin-contracts/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
-ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/
-erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/
-halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/
 ```
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
@@ -598,7 +624,60 @@ cd ~/Drosera-Network
 ---
 
 <details>
-<summary>Step 2: Create docker-compose.yaml</summary>
+<summary>Step 2: Install Operator CLI</summary>
+
+The operator CLI is needed for registration and opt-in commands. This script automatically detects your system architecture and installs the latest version:
+
+```bash
+# Detect latest version
+LATEST=$(curl -s https://api.github.com/repos/drosera-network/releases/releases/latest | grep tag_name | cut -d '"' -f 4)
+
+# Detect system architecture
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+  TARGET="x86_64-unknown-linux-gnu"
+elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+  TARGET="aarch64-unknown-linux-gnu"
+else
+  echo "Unsupported architecture: $ARCH"
+  exit 1
+fi
+
+# Download operator CLI
+curl -LO "https://github.com/drosera-network/releases/releases/download/${LATEST}/drosera-operator-${LATEST}-${TARGET}.tar.gz"
+
+# Extract
+tar -xvf drosera-operator-${LATEST}-${TARGET}.tar.gz
+chmod +x drosera-operator
+
+# Install (sudo-safe)
+if command -v sudo >/dev/null 2>&1; then
+  sudo cp drosera-operator /usr/bin/
+else
+  mkdir -p $HOME/.local/bin
+  cp drosera-operator $HOME/.local/bin/
+  export PATH="$HOME/.local/bin:$PATH"
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+fi
+
+# Verify installation
+drosera-operator --version
+```
+
+**Expected output:** Version number (e.g., `drosera-operator 1.23.1`)
+
+**What this does:**
+- ✅ Auto-detects latest version (future-proof)
+- ✅ Auto-detects CPU architecture (x86_64 or ARM)
+- ✅ Works with or without sudo access
+- ✅ Installs globally for easy access
+
+</details>
+
+---
+
+<details>
+<summary>Step 3: Create docker-compose.yaml</summary>
 
 ```bash
 nano docker-compose.yaml
@@ -689,7 +768,7 @@ volumes:
 ---
 
 <details>
-<summary>Step 3: Create .env File</summary>
+<summary>Step 4: Create .env File</summary>
 
 **Create .env file in the same folder:**
 ```bash
@@ -714,7 +793,7 @@ chmod 600 .env
 ---
 
 <details>
-<summary>Step 4: Pull Docker Image</summary>
+<summary>Step 5: Pull Docker Image</summary>
 
 ```bash
 docker pull ghcr.io/drosera-network/drosera-operator:latest
@@ -730,7 +809,7 @@ docker images | grep drosera-operator
 ---
 
 <details>
-<summary>Step 5: Start Operator Container</summary>
+<summary>Step 6: Start Operator Container</summary>
 
 **Stop and remove any existing containers (clean start):**
 ```bash
@@ -761,7 +840,7 @@ Expected: Container `drosera-operator` should be running
 ---
 
 <details>
-<summary>Step 6: Register Operator</summary>
+<summary>Step 7: Register Operator</summary>
 
 **For Hoodi Testnet:**
 ```bash
@@ -785,7 +864,7 @@ This registers your BLS public key with the Drosera registry.
 ---
 
 <details>
-<summary>Step 7: Opt-In Operator to Trap</summary>
+<summary>Step 8: Opt-In Operator to Trap</summary>
 
 **Get your trap address from `drosera.toml`:**
 ```bash
@@ -815,7 +894,7 @@ drosera opt-in \
 ---
 
 <details>
-<summary>Step 8: Monitor Operator Logs</summary>
+<summary>Step 9: Monitor Operator Logs</summary>
 
 **Follow logs in real-time:**
 ```bash
