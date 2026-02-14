@@ -1496,70 +1496,14 @@ ports:
 
 Also update `DRO__NETWORK__P2P_PORT` accordingly.
 
+If none of the fixes above are working:
+
+1. Copy your error logs or take a screenshot of the issue.
+2. Join the Drosera Discord and post in **#technical-support** with your error, current step, network, and what you’ve tried.
+3. Paste the full error into an AI tool (e.g., ChatGPT or Claude) for troubleshooting help.
+4. Check the official Drosera documentation, GitHub releases, or network status for known issues.
+
 </details>
-
----
-
-## Still Having Issues?
-
-If your error isn't listed above or the solutions don't work, here are your next steps:
-
-### Option 1: Community Support (Recommended)
-
-1. **Copy your error logs:**
-   ```bash
-   # For operator errors
-   docker compose logs --tail=100 > error-logs.txt
-   
-   # For trap deployment errors
-   forge build 2>&1 | tee build-error.txt
-   ```
-
-2. **Take a screenshot** of the error in your terminal
-
-3. **Join Drosera Discord:** [discord.gg/drosera](https://discord.gg/drosera)
-
-4. **Post in #technical-support** with:
-   - Your error message or screenshot
-   - What phase/step you're on
-   - What you've already tried
-   - Network you're deploying to (Hoodi/Mainnet)
-
-The community and Drosera team are active and helpful!
-
----
-
-### Option 2: AI Troubleshooting
-
-1. **Copy your full error log** (commands above)
-
-2. **Use ChatGPT or Claude** with this prompt template:
-   ```
-   I'm deploying a Drosera trap and encountered this error:
-   
-   [Paste your error here]
-   
-   Context:
-   - I'm at Phase X, Step Y
-   - Network: Hoodi/Mainnet
-   - What I've tried: [list what you tried]
-   
-   Can you help identify the issue and suggest a fix?
-   ```
-
-3. **AI can help with:**
-   - Solidity compilation errors
-   - Docker/container issues
-   - Configuration problems
-   - ABI encoding/decoding issues
-
----
-
-### Option 3: Check Official Resources
-
-- **[Drosera Documentation](https://docs.drosera.io)** - Official technical docs
-- **[GitHub Releases](https://github.com/drosera-network/releases)** - Check for known issues
-- **[Network Status](https://status.drosera.io)** - Check if there are network-wide issues
 
 ---
 
