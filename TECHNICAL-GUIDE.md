@@ -9,7 +9,7 @@
 1. [Prerequisites](#prerequisites)
 2. [Phase 1: Local Development](#phase-1-local-development)
 3. [Phase 2: Drosera Integration](#phase-2-drosera-integration)
-4. [Phase 3: Operator Setup](#phase-3-operator-setup)
+4. [Phase 3: Operator Setup (Optional)](#phase-3-operator-setup-optional)
 5. [Phase 4: GitHub Publication](#phase-4-github-publication)
 6. [Phase 5: Dashboard Verification](#phase-5-dashboard-verification)
 7. [Troubleshooting](#troubleshooting)
@@ -570,7 +570,7 @@ DROSERA_PRIVATE_KEY=$PRIVATE_KEY drosera apply
 
 ---
 
-## Phase 3: Operator Setup
+## Phase 3: Operator Setup (Optional)
 
 <details>
 <summary>Step 1: Create Drosera Network Folder</summary>
