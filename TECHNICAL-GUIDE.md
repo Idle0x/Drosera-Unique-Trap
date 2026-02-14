@@ -160,11 +160,6 @@ interface ITrap {
 
 > **⚠️ CRITICAL:** Note that `shouldRespond` takes `bytes[]` (array), NOT `bytes` (singular). This is non-negotiable for Drosera compatibility.
 
-> **⚠️ IMPORTANT:** Do NOT manually create the ITrap interface. The template includes it from the `drosera-contracts` package. Always import it:
-> ```solidity
-> import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
-> ```
-
 </details>
 
 ---
@@ -372,57 +367,7 @@ contract DeployScript is Script {
 ---
 
 <details>
-<summary>Step 5: Configuration Files</summary>
-
-The Foundry template includes pre-configured `foundry.toml` and `remappings.txt` files. You can verify or customize them:
-
-**Check foundry.toml:**
-```bash
-cat foundry.toml
-```
-
-**Expected (template default):**
-```toml
-[profile.default]
-src = "src"
-out = "out"
-libs = ["lib"]
-solc = "0.8.20"
-```
-
-If you need to modify it:
-```bash
-nano foundry.toml
-```
-
-**Save with:** `Ctrl+X`, `Y`, `Enter`
-
----
-
-**Check remappings.txt:**
-```bash
-cat remappings.txt
-```
-
-The template should include:
-```
-drosera-contracts/=lib/drosera-contracts/src/
-forge-std/=lib/forge-std/src/
-```
-
-If you installed OpenZeppelin and need to add it:
-```bash
-nano remappings.txt
-```
-
-Add:
-```
-@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
-```
-
-**Save with:** `Ctrl+X`, `Y`, `Enter`
-
----
+<summary>Step 5: Setup Environment</summary>
 
 **Create .env:**
 ```bash
@@ -472,11 +417,11 @@ ls out/{TrapName}Response.sol/{TrapName}Response.json
 ---
 
 <details>
-<summary>Step 7: Deploy Response Contract</summary>
+<summary>Step 7: Deploy Response Contract & Dependencies</summary>
 
 **For Hoodi Testnet:**
 ```bash
-export PRIVATE_KEY=$PRIVATE_KEY
+source .env
 forge script script/Deploy.sol \
   --rpc-url https://rpc.hoodi.ethpandaops.io \
   --private-key $PRIVATE_KEY \
@@ -485,14 +430,28 @@ forge script script/Deploy.sol \
 
 **For Ethereum Mainnet:**
 ```bash
-export PRIVATE_KEY=$PRIVATE_KEY
+source .env
 forge script script/Deploy.sol \
   --rpc-url https://eth.llamarpc.com \
   --private-key $PRIVATE_KEY \
   --broadcast
 ```
 
+**What gets deployed:**
+- Response contract (required)
+- Any mock contracts (oracles, vaults, etc.) if your trap needs them for testing
+- Any other on-chain dependencies your trap requires
+
+**Important:** The Trap contract itself is NOT deployed - Drosera deploys it automatically via `drosera apply`.
+
 **Save your Response contract address from the output!**
+
+Expected output:
+```
+Response deployed at: 0xYourResponseAddress
+```
+
+Copy this address - you'll need it for `drosera.toml` in Phase 2.
 
 </details>
 
@@ -520,7 +479,6 @@ cooldown_period_blocks = 20
 min_number_of_operators = 1
 max_number_of_operators = 2
 block_sample_size = 1
-private = true
 whitelist = ["0xYOUR_WALLET_ADDRESS"]
 private_trap = true
 
@@ -542,7 +500,6 @@ cooldown_period_blocks = 100
 min_number_of_operators = 2
 max_number_of_operators = 5
 block_sample_size = 5
-private = true
 whitelist = ["0xYOUR_WALLET_ADDRESS"]
 private_trap = true
 
@@ -566,7 +523,7 @@ private_trap = true
 - **Example:** "Trigger if gas > 100 gwei" → Use 1
 - **Example:** "Trigger if price dropped >30% in last 5 blocks" → Use 5
 
-**CRITICAL:** Do NOT include an `address` field - Drosera will auto-fill this when you run `drosera apply`
+**CRITICAL:** Unless you want to update an existing trap that you own, Do Not include an `address` field. otherwise this will cause error when you run `drosera apply`
 
 </details>
 
@@ -588,8 +545,14 @@ This validates your trap logic without deploying. If successful, proceed to appl
 <details>
 <summary>Step 3: Deploy to Drosera Network</summary>
 
+**Load environment variables:**
 ```bash
-DROSERA_PRIVATE_KEY=your_actual_private_key drosera apply
+source .env
+```
+
+**Deploy trap configuration:**
+```bash
+DROSERA_PRIVATE_KEY=$PRIVATE_KEY drosera apply
 ```
 
 **What happens:**
@@ -823,17 +786,17 @@ docker rm drosera-node 2>/dev/null || true
 docker compose up -d
 ```
 
-**View live logs:**
-```bash
-docker compose logs -f
-```
-
 **Check container status:**
 ```bash
 docker ps
 ```
 
 Expected: Container `drosera-operator` should be running
+
+**View live logs:**
+```bash
+docker compose logs -f
+```
 
 </details>
 
@@ -842,11 +805,16 @@ Expected: Container `drosera-operator` should be running
 <details>
 <summary>Step 7: Register Operator</summary>
 
+**Load environment variables:**
+```bash
+source .env
+```
+
 **For Hoodi Testnet:**
 ```bash
 drosera-operator register \
   --eth-rpc-url https://rpc.hoodi.ethpandaops.io \
-  --eth-private-key your_eth_private_key_here \
+  --eth-private-key $PRIVATE_KEY \
   --drosera-address 0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D
 ```
 
@@ -854,7 +822,7 @@ drosera-operator register \
 ```bash
 drosera-operator register \
   --eth-rpc-url https://eth.llamarpc.com \
-  --eth-private-key your_eth_private_key_here
+  --eth-private-key $PRIVATE_KEY
 ```
 
 This registers your BLS public key with the Drosera registry.
@@ -875,7 +843,7 @@ cat ~/your-trap-folder/drosera.toml | grep "address"
 ```bash
 drosera-operator optin \
   --eth-rpc-url https://rpc.hoodi.ethpandaops.io \
-  --eth-private-key your_eth_private_key_here \
+  --eth-private-key $PRIVATE_KEY \
   --trap-config-address your_trap_address_here
 ```
 
@@ -884,10 +852,10 @@ drosera-operator optin \
 drosera opt-in \
   --trap-address your_trap_address_here \
   --eth-rpc-url https://eth.llamarpc.com \
-  --eth-private-key your_eth_private_key_here
+  --eth-private-key $PRIVATE_KEY
 ```
 
-> **Note:** If using one operator, ensure `min_number_of_operators = 1` in your `drosera.toml`.
+> **Note:** Replace `your_trap_address_here` with the actual trap address. If confused, opt-in from the dashboard.
 
 </details>
 
@@ -1076,10 +1044,9 @@ nano README.md
 This trap is monitored by Drosera operators. When trigger conditions are met, the Response contract's `handleAlert` function is called automatically.
 
 ## Testing
-```bash
+
 forge build
 forge test
-```
 
 ## Deployment
 See [TECHNICAL-GUIDE.md](TECHNICAL-GUIDE.md) for full deployment instructions.
@@ -1092,63 +1059,51 @@ See [TECHNICAL-GUIDE.md](TECHNICAL-GUIDE.md) for full deployment instructions.
 ---
 
 <details>
-<summary>Step 3: Commit and Push to GitHub</summary>
+<summary>Step 3: Create GitHub Repository & Push Code</summary>
 
-**Stage files:**
+**1. Create Personal Access Token (PAT):**
+
+GitHub no longer accepts password authentication. You need a token:
+
+- Go to https://github.com/settings/tokens
+- Click **"Generate new token (classic)"**
+- Select scopes: `repo` (all)
+- Click **"Generate token"**
+- **Copy the token** (you won't see it again)
+
+---
+
+**2. Configure Git:**
+
 ```bash
-git add .
+git config --global user.email "your_email@example.com"
+git config --global user.name "Your Name"
 ```
 
-**Commit:**
-```bash
-git commit -m "Initial trap implementation"
-```
+---
 
-**Create GitHub repository:**
-1. Go to https://github.com/new
-2. Repository name: `{your-trap-name}` (same as in drosera.toml)
-3. Public or Private: **Public** (required for Drosera dashboard)
-4. Do NOT initialize with README (you already have one)
-5. Click "Create repository"
+**3. Create GitHub Repository:**
 
-**Add remote and push:**
+- Go to https://github.com/new
+- **Repository name:** `{your-trap-name}` (match your trap folder name)
+- **Visibility:** Public (required for Drosera dashboard)
+- **Do NOT** initialize with README (you already have files)
+- Click **"Create repository"**
+
+---
+
+**4. Push Your Code:**
+
 ```bash
 git remote add origin https://github.com/{username}/{repo-name}.git
 git branch -M main
 git push -u origin main
 ```
 
+When prompted for password, **paste your PAT token** (not your GitHub password).
+
 **Verify:**
 Visit `https://github.com/{username}/{repo-name}` - you should see your code.
-
-</details>
-
----
-
-<details>
-<summary>Step 4: Verify drosera.toml URL Matches</summary>
-
-**Check your drosera.toml:**
-```bash
-cat drosera.toml | grep "url"
-```
-
-**Should show:**
-```toml
-url = "{username}/{repo-name}"
-```
-
-**If it doesn't match your GitHub repo:**
-```bash
-nano drosera.toml
-```
-
-Update the `url` field, save, then:
-```bash
-drosera apply
-```
-
-(This updates the trap configuration)
 
 </details>
 
@@ -1159,11 +1114,11 @@ drosera apply
 <details>
 <summary>Step 1: Access Drosera Dashboard</summary>
 
-**Navigate to:**
-- Hoodi: https://dashboard.drosera.io/hoodi
-- Mainnet: https://dashboard.drosera.io/mainnet
+**Navigate to:** https://app.drosera.io
 
 **Connect wallet** (the one you used to deploy)
+
+**Switch Network** (Hoodi or Mainnet)
 
 </details>
 
@@ -1172,42 +1127,39 @@ drosera apply
 <details>
 <summary>Step 2: Find Your Trap</summary>
 
+Navigate to **Traps Explorer**
+
 **Search by:**
-- Trap ID: `0xYourTrapId`
-- Trap name: `{your-trap-name}`
-- Your address
+- Trap address (or config): `0xYourTrapAddress`
+- Creator address: `0xYourWalletAddress`
+- Operator address: `0xWhitelistedAddresses`
 
 **Verify displayed information:**
-- ✅ Trap name matches drosera.toml
-- ✅ GitHub link works and shows your repo
-- ✅ Status shows "Active"
+- ✅ Response function matches drosera.toml
 - ✅ Response contract address correct
-- ✅ Recent collect() calls visible
+- ✅ Liveness data records green blocks
 
 </details>
 
 ---
 
 <details>
-<summary>Step 3: Monitor Activity</summary>
+<summary>Step 3: Send Bloom Boost (Optional but Recommended)</summary>
 
-**Dashboard shows:**
-- **Last Collect:** When `collect()` was last called
-- **Last Trigger:** When trap last returned `true`
-- **Total Triggers:** Lifetime count
-- **Operators:** How many operators are monitoring
-- **Cooldown Status:** Blocks until next trigger allowed
+**What is Bloom Boost?**
+A gas fund that pays operators for executing your trap's response function on-chain. When your trap triggers, the operator who submits the transaction gets reimbursed for gas costs plus a priority fee.
 
-**Healthy trap indicators:**
-- Regular collect() calls (every block or every few blocks)
-- Trigger count is low (0-5 for most traps)
-- Operator count > 0
-- No error messages
+**How to send:**
 
-**Concerning patterns:**
-- No recent collect() calls → Operator not running
-- High trigger count (>20) → Trap too noisy, needs refinement
-- Error messages → Check logs and fix issues
+1. Open your trap on the dashboard: https://app.drosera.io/trap?trapId=0xYourTrapAddress
+2. Click **"Send Bloom Boost"**
+3. Send any amount you're comfortable with, depending on expected gas costs and network activity
+
+**Why this matters:**
+Without Bloom Boost, operators won't be reimbursed for executing your trap's response, which may cause them to skip monitoring it.
+
+**Check your balance:**
+View current Bloom Boost balance on your trap's dashboard page.
 
 </details>
 
@@ -1565,63 +1517,59 @@ uint256 public immutable deployedAt;
 ---
 
 <details>
-<summary>Understanding Multi-Vector Traps</summary>
+<summary>Advanced: Multi-Signal Monitoring (Optional) </summary>
 
-Multi-vector traps monitor **multiple independent signals** and trigger when conditions align.
+**For experienced users only.** If you're building your first trap, skip this section and keep your logic simple.
 
-### Why Multi-Vector?
+### What is Multi-Signal Monitoring?
 
-**Single-vector traps** rely on one data point:
-- Vulnerable to oracle failures
-- Higher false positive rate
-- Miss attacks that avoid that specific metric
+Checking multiple independent data sources and triggering only when several agree.
 
-**Multi-vector traps** cross-reference multiple sources:
-- Resilient to single-point failures
-- Lower false positive rate (requires agreement)
-- Catch sophisticated attacks from multiple angles
+**Example:** Instead of just monitoring pool reserves, also check price deviation and transaction volume. Trigger only if 2 out of 3 signals indicate a threat.
 
-### Flexible Threshold Pattern
+### When to Use
 
-For traps monitoring multiple conditions:
-- **3-vector traps:** Trigger if ANY 2 or ALL 3 conditions met
-- **4-vector traps:** Trigger if ANY 3 or ALL 4 conditions met
-- **5-vector traps:** Trigger if ANY 3+ or ALL 5 conditions met
+- ✅ Monitoring complex DeFi protocols where single metrics can be manipulated
+- ✅ Reducing false positives from oracle failures or temporary anomalies
+- ✅ Catching sophisticated attacks that avoid single detection vectors
 
-**Why this matters:**
-- ✅ Catches threats even if one data source fails
-- ✅ Reduces false negatives
-- ✅ Still maintains low noise (requires multiple confirmations)
-- ✅ More resilient to oracle issues or network delays
+### When NOT to Use
 
-**Example: Good Flexible Threshold Logic**
+- ❌ Simple threshold checks (e.g., "trigger if gas > 100 gwei")
+- ❌ Your first trap (start simple, add complexity later if needed)
+- ❌ Single data source monitoring (no benefit to multi-signal)
+
+### Pattern Example
+
 ```solidity
 function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
-    // 1. Safety Check
+    // Safety check
     if (data.length == 0 || data[0].length == 0) return (false, bytes(""));
 
-    // 2. Decode data
-    (uint256 val1, uint256 val2, uint256 val3) = abi.decode(data[0], (uint256, uint256, uint256));
+    // Decode independent signals
+    (uint256 reserves, uint256 priceDeviation, uint256 volume) = abi.decode(data[0], (uint256, uint256, uint256));
     
-    // 3. Check each condition independently
-    bool condition1 = val1 > THRESHOLD_1;
-    bool condition2 = val2 > THRESHOLD_2;
-    bool condition3 = val3 > THRESHOLD_3;
+    // Check each signal independently
+    bool signal1 = reserves < RESERVE_THRESHOLD;
+    bool signal2 = priceDeviation > PRICE_THRESHOLD;
+    bool signal3 = volume > VOLUME_THRESHOLD;
     
-    // 4. Count met conditions
-    uint8 metConditions = 0;
-    if (condition1) metConditions++;
-    if (condition2) metConditions++;
-    if (condition3) metConditions++;
+    // Count how many signals detected threat
+    uint8 triggered = 0;
+    if (signal1) triggered++;
+    if (signal2) triggered++;
+    if (signal3) triggered++;
     
-    // 5. Trigger if ANY 2 of 3 conditions met
-    if (metConditions >= 2) {
-        return (true, abi.encode(val1, val2, val3, metConditions));
+    // Trigger if 2 of 3 signals agree
+    if (triggered >= 2) {
+        return (true, abi.encode(reserves, priceDeviation, volume));
     }
     
     return (false, bytes(""));
 }
 ```
+
+**Key principle:** Each signal should be truly independent (different data sources, not just different thresholds on the same data).
 
 </details>
 
@@ -1755,48 +1703,40 @@ contract GenericGasTrap is ITrap {
 ---
 
 <details>
-<summary>Good Example: Multivector Liquidity Monitor</summary>
+<summary>Good Example: Simple Reserve Monitor</summary>
 
 ```solidity
-contract LiquidityDrainTrap is ITrap {
-    IUniswapV2Pair public immutable pair;
-    uint256 public constant DRAIN_THRESHOLD = 30; // 30% drop
-    uint256 public constant TIME_WINDOW = 10; // blocks
-    uint256 public constant EXTREME_DRAIN = 50; // 50% drop
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
+
+interface IVault {
+    function totalAssets() external view returns (uint256);
+}
+
+contract ReserveMonitorTrap is ITrap {
+    IVault public immutable vault;
+    uint256 public constant MIN_RESERVE = 1000 ether;
     
-    constructor(address _pair) {
-        pair = IUniswapV2Pair(_pair);
+    constructor(address _vault) {
+        vault = IVault(_vault);
     }
     
     function collect() external view override returns (bytes memory) {
-        (uint112 reserve0, uint112 reserve1, uint32 timestamp) = pair.getReserves();
-        return abi.encode(reserve0, reserve1, block.number, timestamp);
+        uint256 reserves = vault.totalAssets();
+        return abi.encode(reserves, block.number);
     }
     
     function shouldRespond(bytes[] calldata data) external pure override returns (bool, bytes memory) {
         // Safety check
-        if (data.length < 2) return (false, bytes(""));
+        if (data.length == 0 || data[0].length == 0) return (false, bytes(""));
         
-        (uint112 oldReserve0, , uint256 oldBlock, ) = abi.decode(data[1], (uint112, uint112, uint256, uint32));
-        (uint112 newReserve0, , uint256 newBlock, ) = abi.decode(data[0], (uint112, uint112, uint256, uint32));
+        (uint256 reserves, uint256 blockNumber) = abi.decode(data[0], (uint256, uint256));
         
-        // Check three conditions independently
-        uint256 reserveDrop = ((oldReserve0 - newReserve0) * 100) / oldReserve0;
-        uint256 blockDelta = newBlock - oldBlock;
-        
-        bool condition1_significantDrain = reserveDrop >= DRAIN_THRESHOLD;
-        bool condition2_recentTime = blockDelta <= TIME_WINDOW;
-        bool condition3_extremeDrain = reserveDrop >= EXTREME_DRAIN;
-        
-        // Count met conditions
-        uint8 metConditions = 0;
-        if (condition1_significantDrain) metConditions++;
-        if (condition2_recentTime) metConditions++;
-        if (condition3_extremeDrain) metConditions++;
-        
-        // Flexible threshold: Trigger if ANY 2 of 3 conditions met
-        if (metConditions >= 2) {
-            return (true, abi.encode(oldReserve0, newReserve0, blockDelta, metConditions));
+        // Trigger if reserves drop below minimum
+        if (reserves < MIN_RESERVE) {
+            return (true, abi.encode(reserves, blockNumber));
         }
         
         return (false, bytes(""));
@@ -1805,13 +1745,12 @@ contract LiquidityDrainTrap is ITrap {
 ```
 
 **Why this is good:**
-- Monitors specific vulnerability (liquidity drain attacks)
-- Multiple independent conditions (multivector)
-- Flexible triggering (ANY 2 of 3)
-- Clear thresholds (30%, 50%, 10 blocks)
-- Only triggers on actual anomalies
-- Resilient to timing issues
+- Monitors specific vulnerability (reserve depletion)
+- Single clear threshold (1000 ETH minimum)
+- Minimal external dependencies
 - Proper safety checks
+- Easy to understand and modify
+- Silent unless reserves are critically low
 
 </details>
 
@@ -1821,6 +1760,25 @@ contract LiquidityDrainTrap is ITrap {
 <summary>Good Example: Oracle Deviation Detector</summary>
 
 ```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {ITrap} from "drosera-contracts/interfaces/ITrap.sol";
+
+interface AggregatorV3Interface {
+    function latestRoundData() external view returns (
+        uint80 roundId,
+        int256 answer,
+        uint256 startedAt,
+        uint256 updatedAt,
+        uint80 answeredInRound
+    );
+}
+
+interface IUniswapV2Pair {
+    function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
+}
+
 contract OracleDeviationTrap is ITrap {
     AggregatorV3Interface public immutable chainlinkFeed;
     IUniswapV2Pair public immutable uniswapPair;
@@ -1833,13 +1791,25 @@ contract OracleDeviationTrap is ITrap {
     
     function collect() external view override returns (bytes memory) {
         // Get Chainlink price
-        (, int256 chainlinkPrice, , , ) = chainlinkFeed.latestRoundData();
+        (, int256 answer, , uint256 updatedAt, ) = chainlinkFeed.latestRoundData();
+        
+        // Validate Chainlink data
+        if (answer <= 0 || updatedAt == 0) {
+            return bytes("");
+        }
         
         // Get Uniswap price
         (uint112 reserve0, uint112 reserve1, ) = uniswapPair.getReserves();
+        
+        // Validate reserves
+        if (reserve0 == 0 || reserve1 == 0) {
+            return bytes("");
+        }
+        
+        uint256 chainlinkPrice = uint256(answer);
         uint256 uniswapPrice = (uint256(reserve1) * 1e18) / uint256(reserve0);
         
-        return abi.encode(uint256(chainlinkPrice), uniswapPrice, block.timestamp);
+        return abi.encode(chainlinkPrice, uniswapPrice, block.timestamp);
     }
     
     function shouldRespond(bytes[] calldata data) external pure override returns (bool, bytes memory) {
@@ -1850,6 +1820,9 @@ contract OracleDeviationTrap is ITrap {
             data[0], 
             (uint256, uint256, uint256)
         );
+        
+        // Additional safety - both prices must be valid
+        if (chainlinkPrice == 0 || uniswapPrice == 0) return (false, bytes(""));
         
         // Calculate deviation
         uint256 diff = chainlinkPrice > uniswapPrice 
@@ -1867,12 +1840,13 @@ contract OracleDeviationTrap is ITrap {
 ```
 
 **Why this is good:**
-- Monitors critical infrastructure (oracles)
-- Compares multiple data sources (multivector)
+- Monitors critical infrastructure (oracle price feeds)
+- Compares multiple independent data sources (Chainlink vs Uniswap)
 - Clear threshold (5% deviation)
-- Detects real vulnerability (price manipulation, oracle failures)
+- Detects real vulnerabilities (price manipulation, oracle failures)
+- Proper validation (zero checks, staleness checks)
 - Silent by default
-- Proper data validation
+- Handles edge cases safely (returns empty bytes if data invalid)
 
 </details>
 
