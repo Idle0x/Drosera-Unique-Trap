@@ -30,10 +30,10 @@ Based on extensive testing, Gemini provides optimal workflow adherence, context 
 ## 🚀 Quick Start: AI-Powered Workflow
 
 **Instructions:**
-1. Copy the **entire prompt** below (click the copy button)
-2. Open [Google Gemini](https://gemini.google.com)
+1. Copy the **entire prompt** below (click the copy button in the toggle)
+2. Open [Google Gemini](https://gemini.google.com) or [Claude AI](https://claude.ai)
 3. Paste the prompt and follow the AI's step-by-step guidance
-4. The AI will handle everything from idea generation to GitHub publication
+4. The AI will handle everything from contract creation to deployment
 
 ---
 
@@ -43,16 +43,18 @@ Based on extensive testing, Gemini provides optimal workflow adherence, context 
 
 Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabilities.
 
-## Prerequisites
+<details>
+<summary>Prerequisites</summary>
 
 - Basic command line familiarity
 - VPS or local Linux machine with Foundry installed
 - Private key with small amount of Hoodi ETH or Mainnet ETH
 - GitHub account
 
-## The Prompt
+</details>
 
-Copy and paste this entire prompt into Claude or ChatGPT:
+<details>
+<summary>📋 COPY PROMPT A - Click to Expand</summary>
 
 ```
 # DROSERA TRAP DEPLOYMENT ARCHITECT
@@ -397,6 +399,8 @@ VALIDATE EVERYTHING: Before user saves/deploys
 You are building critical security infrastructure. Precision matters.
 ```
 
+</details>
+
 ## What You Get
 
 - Complete Foundry project with trap contracts
@@ -427,14 +431,14 @@ Sets up Docker-based operator infrastructure to monitor Drosera traps (yours and
 
 ## When To Use This
 
-✅ You want to monitor your own traps
-✅ You have VPS or local machine with Docker
+✅ You want to monitor your own traps  
+✅ You have VPS or local machine with Docker  
 ✅ Setting up operator for first time OR adding new network (Hoodi/Mainnet)
 
 ## Skip This If
 
-❌ You already have an operator running on the same network - just opt-in your new trap (Fast Path included in prompt)
-❌ You only want to create traps without running infrastructure
+❌ You already have an operator running on the same network - just opt-in your new trap (Fast Path included in prompt)  
+❌ You only want to create traps without running infrastructure  
 ❌ Someone else will run operators for your traps
 
 ## Important For Existing Operator Users
@@ -449,16 +453,18 @@ If you previously set up an operator (Cadet trap, earlier Drosera participation)
 
 This allows running operators on both networks simultaneously. The prompt includes automatic detection of existing setups and a Fast Path to opt-in new traps without reinstalling.
 
-## Prerequisites
+<details>
+<summary>Prerequisites</summary>
 
 - VPS or local machine with Docker installed
 - Trap already deployed (you have trap address from Prompt A)
 - Private key with small amount of ETH/Hoodi ETH for gas
 - Public IP address (if running on VPS)
 
-## The Prompt
+</details>
 
-Copy and paste this entire prompt into Claude or ChatGPT:
+<details>
+<summary>📋 COPY PROMPT B - Click to Expand</summary>
 
 ```
 # DROSERA OPERATOR SETUP ARCHITECT
@@ -504,9 +510,29 @@ Ports: 31313 (P2P), 31314 (HTTP)
 
 WORKFLOW PHASES
 
-PHASE 0: ENVIRONMENT SETUP
-Ask user: Same network as trap deployment (Hoodi or Mainnet)?
-Create operator directory: mkdir -p ~/Drosera-Network && cd ~/Drosera-Network
+PHASE 0: NETWORK AND DIRECTORY SETUP
+
+Ask user: Which network for this operator? (Hoodi testnet or Ethereum mainnet)
+
+Set directory based on network:
+Hoodi: ~/Drosera-Network-Hoodi
+Mainnet: ~/Drosera-Network-Mainnet
+
+Check if directory exists with operator:
+ls ~/Drosera-Network-[Network]
+
+IF DIRECTORY EXISTS WITH FILES:
+"Found existing operator setup. Three options:
+1. OPT-IN ONLY - Keep running operator, just add your new trap (jump to Phase 5)
+2. REINSTALL - Clean setup from scratch (backup first)
+3. CUSTOM PATH - Use different directory
+
+Choose option:"
+
+IF DIRECTORY EMPTY OR DOESN'T EXIST:
+mkdir -p ~/Drosera-Network-[Network]
+cd ~/Drosera-Network-[Network]
+Proceed with full installation (Phase 1-7)
 
 WAIT FOR USER CONFIRMATION
 
@@ -767,7 +793,10 @@ DASHBOARD VERIFICATION: Always verify trap shows activity on dashboard
 You are setting up critical monitoring infrastructure. Precision matters.
 ```
 
-## What You Get
+</details>
+
+<details>
+<summary>What You Get</summary>
 
 - Installed operator CLI (auto-detects latest version and system architecture)
 - Docker-based operator infrastructure
@@ -775,7 +804,10 @@ You are setting up critical monitoring infrastructure. Precision matters.
 - Running operator monitoring your trap(s)
 - Real-time log monitoring system
 
-## What Happens Next
+</details>
+
+<details>
+<summary>What Happens Next</summary>
 
 Your operator is monitoring trap(s). Verify:
 
@@ -792,9 +824,12 @@ Your operator is monitoring trap(s). Verify:
 - Deploy additional traps (Prompt A) and opt-in your existing operator
 - Run operators on both networks (separate directories)
 
+</details>
+
 ---
 
-## 🔧 TECHNICAL SPECIFICATIONS
+<details>
+<summary>🔧 TECHNICAL SPECIFICATIONS</summary>
 
 ### Trap Requirements
 - Stateless (no storage variables)
@@ -824,13 +859,16 @@ Your operator is monitoring trap(s). Verify:
 - Cooldown: 100 blocks
 - Operators: 2-5
 
+</details>
+
 ---
 
-## 🆘 TROUBLESHOOTING
+<details>
+<summary>🆘 TROUBLESHOOTING</summary>
 
 Having issues? Check the comprehensive troubleshooting guide in the Technical Guide:
 
-**[View Complete Troubleshooting Section](LINK_TO_TECHNICAL_GUIDE.md#troubleshooting)**
+**[View Complete Troubleshooting Section](TECHNICAL-GUIDE.md#troubleshooting)**
 
 Common issues covered:
 - Trap deployment errors
@@ -847,6 +885,8 @@ For quick help, also check:
 - **Drosera Discord:** https://discord.gg/drosera (Technical channel)
 - **Documentation:** https://docs.drosera.io
 
+</details>
+
 ---
 
 ## 📚 RESOURCES
@@ -858,7 +898,8 @@ For quick help, also check:
 
 ---
 
-## ⚠️ IMPORTANT NOTES
+<details>
+<summary>⚠️ IMPORTANT NOTES</summary>
 
 **Security:**
 - Never commit .env files with private keys
@@ -875,9 +916,11 @@ For quick help, also check:
 - Mainnet operators should use standard ports (31313/31314) for peer discovery
 - Testnet operators can use custom ports (50000+) if running simultaneously
 
+</details>
+
 ---
 
-**Ready to build? Copy Prompt A and paste into Claude or ChatGPT to get started!**
+**Ready to build? Copy Prompt A and paste into Google Gemini or Claude AI to get started!**
 
 **Need help?** Check the [Full Technical Guide](TECHNICAL-GUIDE.md) or ask in Discord.
 
