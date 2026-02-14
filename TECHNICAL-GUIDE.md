@@ -18,8 +18,9 @@
 
 ---
 
+## Prerequisites
+
 <details>
-<summary><h2>Prerequisites</h2></summary>
 
 ### Essential Requirements
 
@@ -44,8 +45,9 @@ drosera --version
 
 ---
 
+## Network Selection
+
 <details>
-<summary><h2>Network Selection</h2></summary>
 
 **Hoodi Testnet:**
 - For learning and testing trap logic
@@ -70,7 +72,6 @@ drosera --version
 ## Phase 1: Local Development
 
 <details open>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details open>
 <summary>Step 1: Screen Session (Recommended)</summary>
@@ -427,10 +428,6 @@ Expected: Long hex string (bytecode). If you see `0x`, the contract was NOT depl
 
 ---
 
-### ✅ Phase 1 Complete
-
-**Next Step:** Proceed to [Phase 2: Drosera Integration](#phase-2-drosera-integration) to deploy your trap to the Drosera Network.
-
 </details>
 
 ---
@@ -438,7 +435,6 @@ Expected: Long hex string (bytecode). If you see `0x`, the contract was NOT depl
 ## Phase 2: Drosera Integration
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details>
 <summary>Step 1: Create drosera.toml</summary>
@@ -637,10 +633,6 @@ Expected: `true` (shown as hex: `0x0000...0001`)
 
 ---
 
-### ✅ Phase 2 Complete
-
-**Next Step:** Proceed to [Phase 3: Operator Setup](#phase-3-operator-setup) to run your operator node.
-
 </details>
 
 ---
@@ -648,7 +640,6 @@ Expected: `true` (shown as hex: `0x0000...0001`)
 ## Phase 3: Operator Setup
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 Now that your trap is deployed, you need to run an **Operator Node** to monitor it. The operator executes your trap's logic every block and triggers your Response contract when needed.
 
@@ -940,10 +931,6 @@ docker compose up -d
 
 ---
 
-### ✅ Phase 3 Complete
-
-**Next Step:** Proceed to [Phase 4: GitHub Publication](#phase-4-github-publication) to publish your trap repository.
-
 </details>
 
 ---
@@ -951,7 +938,6 @@ docker compose up -d
 ## Phase 4: GitHub Publication
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details>
 <summary>Step 1: Create README.md</summary>
@@ -1089,10 +1075,6 @@ git push -u origin main
 
 ---
 
-### ✅ Phase 4 Complete
-
-**Next Step:** Proceed to [Phase 5: Dashboard Verification](#phase-5-dashboard-verification) to confirm everything is working.
-
 </details>
 
 ---
@@ -1100,7 +1082,6 @@ git push -u origin main
 ## Phase 5: Dashboard Verification
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details>
 <summary>Step 1: Access Dashboard</summary>
@@ -1207,10 +1188,6 @@ Once working:
 
 ---
 
-### ✅ All Phases Complete
-
-**Congratulations!** Your Drosera trap is fully operational. Monitor the dashboard regularly and check the [Troubleshooting](#troubleshooting) section if issues arise.
-
 </details>
 
 ---
@@ -1218,7 +1195,6 @@ Once working:
 ## Troubleshooting
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details>
 <summary>Issue 1: Compilation Errors (`forge build` fails)</summary>
@@ -1556,7 +1532,6 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 ## Trap Quality Standards
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details>
 <summary>What Makes a Good Trap?</summary>
@@ -1688,7 +1663,6 @@ return (false, "");          // ❌ Wrong
 ## Examples: Good vs Bad Traps
 
 <details>
-<summary>▶️ Click to expand/collapse</summary>
 
 <details>
 <summary>Bad Example: Always-Respond Trap</summary>
