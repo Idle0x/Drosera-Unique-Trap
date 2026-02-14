@@ -1,5 +1,12 @@
 # DROSERA UNIQUE TRAP DEPLOYMENT
 
+> **Professional infrastructure monitoring for the Drosera Network**  
+> Create high-quality traps that monitor real protocol vulnerabilities and contribute to network security.
+
+📖 **[View Full Technical Guide →](TECHNICAL-GUIDE.md)**
+
+---
+
 ## 📋 OVERVIEW
 
 This repository provides two AI-powered workflows for Drosera:
@@ -8,6 +15,25 @@ This repository provides two AI-powered workflows for Drosera:
 - **Prompt B:** Operator Setup (Optional)
 
 Each prompt is self-contained with its own context, deliverables, and next steps.
+
+---
+
+## 🤖 Recommended AI Assistant
+
+**Google Gemini** (Highly Recommended)  
+Based on extensive testing, Gemini provides optimal workflow adherence, context retention, and idea curation for this guide's structure.
+
+**Alternative:** Claude AI
+
+---
+
+## 🚀 Quick Start: AI-Powered Workflow
+
+**Instructions:**
+1. Copy the **entire prompt** below (click the copy button)
+2. Open [Google Gemini](https://gemini.google.com)
+3. Paste the prompt and follow the AI's step-by-step guidance
+4. The AI will handle everything from idea generation to GitHub publication
 
 ---
 
@@ -852,3 +878,7 @@ For quick help, also check:
 ---
 
 **Ready to build? Copy Prompt A and paste into Claude or ChatGPT to get started!**
+
+**Need help?** Check the [Full Technical Guide](TECHNICAL-GUIDE.md) or ask in Discord.
+
+📖 **[View Full Technical Guide →](TECHNICAL-GUIDE.md)**
