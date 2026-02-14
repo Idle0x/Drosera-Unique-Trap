@@ -1502,7 +1502,7 @@ Also update `DRO__NETWORK__P2P_PORT` accordingly.
 <summary>Still having issues? Try one of the following options:</summary>
 
 - Copy your error logs or take a screenshot of the issue.  
-- Join the [Drosera Discord](https://discord.gg/drosera) and post in **#technical-support** with your error, current step, network, and what you’ve tried.  
+- Join the [Drosera Discord](https://discord.gg/drosera) and post in **[#technical](https://discord.com/channels/1195369272554303508/1207372870972604447)** with your error, current step, network, and what you’ve tried.  
 - Paste the full error into an AI tool (e.g., ChatGPT or Claude) for troubleshooting help.  
 - Check the official Drosera documentation, GitHub releases, or network status for known issues.
 
