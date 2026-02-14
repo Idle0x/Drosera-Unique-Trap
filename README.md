@@ -36,12 +36,14 @@ Each prompt is self-contained with its own context, deliverables, and next steps
 
 ## 🎯 TRAP DEPLOYMENT
 
-<details open>
+<details>
 <summary>What This Does</summary>
 
 Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabilities.
 
 </details>
+
+---
 
 <details>
 <summary>Prerequisites</summary>
@@ -52,6 +54,8 @@ Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabil
 - GitHub account
 
 </details>
+
+---
 
 <details>
 <summary>📋 COPY DEPLOYMENT PROMPT - Click to Expand</summary>
@@ -401,7 +405,9 @@ You are building critical security infrastructure. Precision matters.
 
 </details>
 
-<details open>
+---
+
+<details>
 <summary>What You Get</summary>
 
 - Complete Foundry project with trap contracts
@@ -414,7 +420,9 @@ You are building critical security infrastructure. Precision matters.
 
 </details>
 
-<details open>
+---
+
+<details>
 <summary>What Happens Next</summary>
 
 Your trap is deployed and visible at https://app.drosera.io/
@@ -431,14 +439,16 @@ Your trap is ready - operators can now monitor it and execute responses when con
 
 ## OPERATOR SETUP (OPTIONAL)
 
-<details open>
+<details>
 <summary>What This Does</summary>
 
 Sets up Docker-based operator infrastructure to monitor Drosera traps (yours and others).
 
 </details>
 
-<details open>
+---
+
+<details>
 <summary>When To Use This</summary>
 
 ✅ You want to monitor your own traps  
@@ -447,7 +457,9 @@ Sets up Docker-based operator infrastructure to monitor Drosera traps (yours and
 
 </details>
 
-<details open>
+---
+
+<details>
 <summary>Skip This If</summary>
 
 ❌ You already have an operator running on the same network - just opt-in your new trap (Fast Path included in prompt)  
@@ -456,7 +468,9 @@ Sets up Docker-based operator infrastructure to monitor Drosera traps (yours and
 
 </details>
 
-<details open>
+---
+
+<details>
 <summary>Important For Existing Operator Users</summary>
 
 If you previously set up an operator (Cadet trap, earlier Drosera participation), you likely have:
@@ -471,6 +485,8 @@ This allows running operators on both networks simultaneously. The prompt includ
 
 </details>
 
+---
+
 <details>
 <summary>Prerequisites</summary>
 
@@ -481,6 +497,8 @@ This allows running operators on both networks simultaneously. The prompt includ
 
 </details>
 
+---
+
 <details>
 <summary>📋 COPY OPERATOR PROMPT - Click to Expand</summary>
 
@@ -489,6 +507,8 @@ This allows running operators on both networks simultaneously. The prompt includ
 ```
 
 </details>
+
+---
 
 <details>
 <summary>What You Get</summary>
@@ -500,6 +520,8 @@ This allows running operators on both networks simultaneously. The prompt includ
 - Real-time log monitoring system
 
 </details>
+
+---
 
 <details>
 <summary>What Happens Next</summary>
