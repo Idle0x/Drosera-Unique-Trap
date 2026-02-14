@@ -60,7 +60,7 @@ Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabil
 ---
 
 <details open>
-<summary>📋 COPY DEPLOYMENT PROMPT - Click to Expand</summary>
+<summary>📋 COPY DEPLOYMENT PROMPT</summary>
 
 ```
 # DROSERA TRAP DEPLOYMENT ARCHITECT
