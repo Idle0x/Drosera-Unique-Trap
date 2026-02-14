@@ -1348,7 +1348,7 @@ docker compose logs -f
 ---
 
 <details>
-<summary>Issue 9: "InsufficientPeers" Warning</summary>
+<summary>Operator Error 1: "InsufficientPeers" Warning</summary>
 
 **Error Message:**
 ```
@@ -1374,7 +1374,7 @@ WARN drosera_services::network::service: Failed to gossip message: InsufficientP
 ---
 
 <details>
-<summary>Issue 10: RPC Connection Failed / Timeout</summary>
+<summary>Operator Error 2: RPC Connection Failed / Timeout</summary>
 
 **Error Messages:**
 ```
@@ -1411,7 +1411,7 @@ curl -X POST https://rpc.hoodi.ethpandaops.io \
 ---
 
 <details>
-<summary>Issue 11: Port Already in Use</summary>
+<summary>Operator Error 3: Port Already in Use</summary>
 
 **Error Message:**
 ```
@@ -1442,6 +1442,121 @@ ports:
 ```
 
 Also update `DRO__NETWORK__P2P_PORT` accordingly.
+
+</details>
+
+---
+
+<details>
+<summary>Operator Error 4: Port Conflicts Running Both Hoodi and Mainnet</summary>
+
+**Problem:** You want to run operators on both Hoodi testnet and Ethereum mainnet simultaneously on the same machine, but encounter port conflicts.
+
+**Error Messages:**
+```
+Error starting userland proxy: listen tcp 0.0.0.0:31313: bind: address already in use
+```
+OR
+```
+HEARTBEAT: Mesh low. Topic contains: 0 needs: 6
+RANDOM PEERS: Got 0 peers
+```
+(Mainnet operator can't find peers when using non-standard ports)
+
+**Why This Happens:**
+- Both networks try to use the same default ports (31313/31314)
+- Only one service can bind to a port at a time
+- Mainnet operators need standard ports (31313/31314) for peer discovery on the network
+- Testnet operators can use custom ports since they primarily connect to known peers
+
+**Solution: Port Assignment Strategy**
+
+**Mainnet Operator (needs standard ports for peer discovery):**
+- Directory: `~/Drosera-Network-Mainnet`
+- P2P Port: `31313` (standard - required for network peer discovery)
+- Server Port: `31314`
+
+**Hoodi Testnet Operator (can use custom ports):**
+- Directory: `~/Drosera-Network-Hoodi`
+- P2P Port: `50000` (custom)
+- Server Port: `50001`
+
+**Step-by-Step Fix:**
+
+1. **Check what's using the ports:**
+```bash
+sudo lsof -i :31313
+sudo lsof -i :31314
+```
+
+2. **Stop existing operators:**
+```bash
+# Stop Hoodi operator
+cd ~/Drosera-Network-Hoodi
+docker compose down
+
+# Stop Mainnet operator (if running)
+cd ~/Drosera-Network-Mainnet
+docker compose down
+```
+
+3. **Update Mainnet docker-compose.yaml (use standard ports):**
+```yaml
+services:
+  drosera-operator:
+    environment:
+      - DRO__NETWORK__P2P_PORT=31313
+      - DRO__SERVER__PORT=31314
+    ports:
+      - "31313:31313"
+      - "31314:31314"
+```
+
+4. **Update Hoodi docker-compose.yaml (use custom ports):**
+```yaml
+services:
+  drosera-operator:
+    environment:
+      - DRO__NETWORK__P2P_PORT=50000
+      - DRO__SERVER__PORT=50001
+    ports:
+      - "50000:50000"
+      - "50001:50001"
+```
+
+5. **Open firewall for both sets of ports:**
+```bash
+# Mainnet ports
+sudo ufw allow 31313/tcp
+sudo ufw allow 31314/tcp
+
+# Hoodi ports
+sudo ufw allow 50000/tcp
+sudo ufw allow 50001/tcp
+```
+
+6. **Restart operators:**
+```bash
+# Start mainnet first (gets standard ports)
+cd ~/Drosera-Network-Mainnet
+docker compose up -d
+
+# Start Hoodi (uses custom ports)
+cd ~/Drosera-Network-Hoodi
+docker compose up -d
+```
+
+7. **Verify both are running:**
+```bash
+docker ps | grep drosera
+sudo netstat -tulpn | grep -E "31313|31314|50000|50001"
+```
+
+**Why This Configuration Works:**
+- Mainnet operators on the broader network use standard ports for peer discovery - your mainnet operator will find peers
+- Hoodi testnet operators can use custom ports and still function properly
+- No port conflicts between the two networks
+- Both operators run simultaneously on the same machine
 
 </details>
 
