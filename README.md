@@ -22,23 +22,11 @@ Each prompt is self-contained with its own context, deliverables, and next steps
 ---
 
 <details open>
-<summary>🤖 Recommended AI Assistant</summary>
-
-**Google Gemini** (Highly Recommended)  
-Based on extensive testing, Gemini provides optimal workflow adherence, context retention, and idea curation for this guide's structure.
-
-**Alternative:** Claude AI
-
-</details>
-
----
-
-<details open>
 <summary>🚀 Quick Start: AI-Powered Workflow</summary>
 
 **Instructions:**
 1. Copy the **entire prompt** below (click the copy button in the toggle)
-2. Open [Google Gemini](https://gemini.google.com) or [Claude AI](https://claude.ai)
+2. Open [Google Gemini](https://gemini.google.com), [Claude AI](https://claude.ai) or any AI of your choice
 3. Paste the prompt and follow the AI's step-by-step guidance
 4. The AI will handle everything from contract creation to deployment
 
