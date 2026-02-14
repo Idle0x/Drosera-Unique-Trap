@@ -18,7 +18,8 @@
 
 ---
 
-## Prerequisites
+<details>
+<summary><h2>Prerequisites</h2></summary>
 
 ### Essential Requirements
 
@@ -28,9 +29,7 @@
 - **Drosera operator running** (Cadet and Corporal roles completed)
 - **Basic terminal familiarity**
 
-<details>
-<summary>🔍 Click to expand: Verify operator status</summary>
-
+**Verify operator status:**
 ```bash
 systemctl status drosera-operator
 ```
@@ -45,7 +44,8 @@ drosera --version
 
 ---
 
-### Network Selection
+<details>
+<summary><h2>Network Selection</h2></summary>
 
 **Hoodi Testnet:**
 - For learning and testing trap logic
@@ -63,11 +63,11 @@ drosera --version
 - Chain ID: `1`
 - Drosera Address: `0x0c4f7e9684a11805Fc5406989F5124bFC2AD0D84`
 
+</details>
+
 ---
 
 ## Phase 1: Local Development
-
----
 
 ### 🔧 Step 1: Screen Session (Recommended)
 
@@ -400,9 +400,14 @@ Expected: Long hex string (bytecode). If you see `0x`, the contract was NOT depl
 
 ---
 
-## Phase 2: Drosera Integration
+### ✅ Phase 1 Complete
+
+**Next Step:** Proceed to [Phase 2: Drosera Integration](#phase-2-drosera-integration) to deploy your trap to the Drosera Network.
 
 ---
+
+<details>
+<summary><h2>Phase 2: Drosera Integration</h2></summary>
 
 ### 🔧 Step 1: Create drosera.toml
 
@@ -586,7 +591,16 @@ Expected: `true` (shown as hex: `0x0000...0001`)
 
 ---
 
-## Phase 3: Operator Setup
+### ✅ Phase 2 Complete
+
+**Next Step:** Proceed to [Phase 3: Operator Setup](#phase-3-operator-setup) to run your operator node.
+
+</details>
+
+---
+
+<details>
+<summary><h2>Phase 3: Operator Setup</h2></summary>
 
 Now that your trap is deployed, you need to run an **Operator Node** to monitor it. The operator executes your trap's logic every block and triggers your Response contract when needed.
 
@@ -845,9 +859,16 @@ docker compose up -d
 
 ---
 
-## Phase 4: GitHub Publication
+### ✅ Phase 3 Complete
+
+**Next Step:** Proceed to [Phase 4: GitHub Publication](#phase-4-github-publication) to publish your trap repository.
+
+</details>
 
 ---
+
+<details>
+<summary><h2>Phase 4: GitHub Publication</h2></summary>
 
 ### 🔧 Step 1: Create README.md
 
@@ -964,9 +985,16 @@ git push -u origin main
 
 ---
 
-## Phase 5: Dashboard Verification
+### ✅ Phase 4 Complete
+
+**Next Step:** Proceed to [Phase 5: Dashboard Verification](#phase-5-dashboard-verification) to confirm everything is working.
+
+</details>
 
 ---
+
+<details>
+<summary><h2>Phase 5: Dashboard Verification</h2></summary>
 
 ### 🔧 Step 1: Access Dashboard
 
@@ -1052,9 +1080,16 @@ Once working:
 
 ---
 
-## Troubleshooting
+### ✅ All Phases Complete
+
+**Congratulations!** Your Drosera trap is fully operational. Monitor the dashboard regularly and check the [Troubleshooting](#troubleshooting) section if issues arise.
+
+</details>
 
 ---
+
+<details>
+<summary><h2>Troubleshooting</h2></summary>
 
 <details>
 <summary>❌ Issue 1: Compilation Errors (`forge build` fails)</summary>
@@ -1385,11 +1420,12 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 
 </details>
 
----
-
-## Trap Quality Standards
+</details>
 
 ---
+
+<details>
+<summary><h2>Trap Quality Standards</h2></summary>
 
 ### What Makes a Good Trap?
 
@@ -1503,11 +1539,12 @@ return (false, bytes(""));  // ✅ Correct
 return (false, "");          // ❌ Wrong
 ```
 
----
-
-## Examples: Good vs Bad Traps
+</details>
 
 ---
+
+<details>
+<summary><h2>Examples: Good vs Bad Traps</h2></summary>
 
 <details>
 <summary>❌ Bad Example: Always-Respond Trap</summary>
@@ -1688,6 +1725,8 @@ contract OracleDeviationTrap is ITrap {
 - Detects real vulnerability (price manipulation, oracle failures)
 - Silent by default
 - Proper data validation
+
+</details>
 
 </details>
 
