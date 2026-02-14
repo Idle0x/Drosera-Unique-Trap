@@ -1144,7 +1144,7 @@ Navigate to **Traps Explorer**
 ---
 
 <details>
-<summary>Step 3: Send Bloom Boost (Optional but Recommended)</summary>
+<summary>Step 3: Send Bloom Boost (Recommended)</summary>
 
 **What is Bloom Boost?**
 A gas fund that pays operators for executing your trap's response function on-chain. When your trap triggers, the operator who submits the transaction gets reimbursed for gas costs plus a priority fee.
