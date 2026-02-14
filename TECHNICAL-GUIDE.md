@@ -1218,7 +1218,7 @@ drosera apply
 
 ## Troubleshooting
 
-### Common Issues and Solutions
+### Common Issues and Operator Errors
 
 <details>
 <summary>Issue 1: "Execution Reverted" Error During `drosera apply`</summary>
@@ -1398,10 +1398,8 @@ docker compose logs -f
 
 ---
 
-## Common Operator Errors
-
 <details>
-<summary>Operator Error 1: "InsufficientPeers" Warning</summary>
+<summary>Issue 9: "InsufficientPeers" Warning</summary>
 
 **Error Message:**
 ```
@@ -1427,7 +1425,7 @@ WARN drosera_services::network::service: Failed to gossip message: InsufficientP
 ---
 
 <details>
-<summary>Operator Error 2: RPC Connection Failed / Timeout</summary>
+<summary>Issue 10: RPC Connection Failed / Timeout</summary>
 
 **Error Messages:**
 ```
@@ -1464,7 +1462,7 @@ curl -X POST https://rpc.hoodi.ethpandaops.io \
 ---
 
 <details>
-<summary>Operator Error 3: Port Already in Use</summary>
+<summary>Issue 11: Port Already in Use</summary>
 
 **Error Message:**
 ```
