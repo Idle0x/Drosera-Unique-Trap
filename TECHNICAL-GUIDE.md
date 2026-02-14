@@ -65,11 +65,11 @@ drosera --version
 
 ---
 
-# 📍 Phase 1: Local Development
+## Phase 1: Local Development
 
 ---
 
-## 🔧 Step 1: Screen Session (Recommended)
+### 🔧 Step 1: Screen Session (Recommended)
 
 Preserve your work if connection drops:
 
@@ -91,7 +91,7 @@ exit
 
 ---
 
-## 🔧 Step 2: Project Setup
+### 🔧 Step 2: Project Setup
 
 Replace `{folder-name}` with your trap's kebab-case name:
 
@@ -110,7 +110,7 @@ Expected: `/home/your-username/{folder-name}`
 
 ---
 
-## 🔧 Step 3: Install Dependencies & Interface
+### 🔧 Step 3: Install Dependencies & Interface
 
 ```bash
 # Install Foundry (if needed)
@@ -157,13 +157,13 @@ cat lib/drosera-contracts/interfaces/ITrap.sol
 
 ---
 
-## 🔧 Step 4: Create Contract Files
+### 🔧 Step 4: Create Contract Files
 
 Create your trap contracts. 
 - For AI-generated code, follow the [copilot prompt](https://github.com/Idle0x/Drosera-Unique-Trap/blob/main/README.md#-copy-the-complete-ai-copilot-prompt).
 - For manual creation, use the guidelines below:
 
-### 1. Trap Contract (`src/{TrapName}Trap.sol`):
+#### 1. Trap Contract (`src/{TrapName}Trap.sol`):
 
 ```bash
 nano src/{YourTrapName}Trap.sol
@@ -187,7 +187,7 @@ nano src/{YourTrapName}Trap.sol
 
 ---
 
-### 2. Response Contract (`src/{TrapName}Response.sol`):
+#### 2. Response Contract (`src/{TrapName}Response.sol`):
 
 ```bash
 nano src/{YourTrapName}Response.sol
@@ -243,7 +243,7 @@ modifier onlyTrap() {
 
 ---
 
-### 3. Deploy Script (`script/Deploy.sol`):
+#### 3. Deploy Script (`script/Deploy.sol`):
 
 ```bash
 nano script/Deploy.sol
@@ -284,7 +284,7 @@ contract DeployScript is Script {
 
 ---
 
-## 🔧 Step 5: Configuration Files
+### 🔧 Step 5: Configuration Files
 
 **Create foundry.toml:**
 ```bash
@@ -311,200 +311,288 @@ nano remappings.txt
 ```
 
 ```
-forge-std/=lib/forge-std/src/
 drosera-contracts/=lib/drosera-contracts/
-@openzeppelin/=lib/openzeppelin-contracts/
+forge-std/=lib/forge-std/src/
+openzeppelin-contracts/=lib/openzeppelin-contracts/
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/
+erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/
+halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/
 ```
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
 ---
 
-## 🔧 Step 6: Build & Test
+### 🔧 Step 6: Compile
 
-**Compile contracts:**
 ```bash
 forge build
 ```
 
-✅ **Expected output:** `Compiler run successful`
-
-**Test locally (optional):**
-```bash
-forge test
+**Expected output:**
+```
+[⠊] Compiling...
+[⠒] Compiling X files with 0.8.20
+[⠑] Solc 0.8.20 finished in X.XXs
+Compiler run successful!
 ```
 
+**Verify artifacts were created:**
+```bash
+ls out/
+ls out/{TrapName}Trap.sol/{TrapName}Trap.json
+ls out/{TrapName}Response.sol/{TrapName}Response.json
+```
+
+**If compilation fails, see [Troubleshooting](#troubleshooting)**
+
 ---
 
-# 📍 Phase 2: Drosera Integration
-
----
-
-## 🔧 Step 1: Deploy Response Contract
-
-Set up environment variables:
+### 🔧 Step 7: Environment Setup
 
 ```bash
 nano .env
 ```
 
-```env
-PRIVATE_KEY=your_private_key_here
-RPC_URL=your_rpc_url_here
-ETHERSCAN_API_KEY=your_api_key_here
+Add your private key:
 ```
-
-**For Hoodi Testnet:**
-```env
-RPC_URL=https://rpc.hoodi.ethpandaops.io
-```
-
-**For Ethereum Mainnet:**
-```env
-RPC_URL=https://eth.llamarpc.com
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
 ```
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
----
-
-**Deploy the Response contract:**
-
+**Secure and load:**
 ```bash
+chmod 600 .env
 source .env
-forge script script/Deploy.sol:DeployScript --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast
 ```
 
-✅ **Expected output:** `Response deployed at: 0x...`
+---
 
-**Copy the Response contract address** - you'll need it for the next step.
+### 🔧 Step 8: Deploy Response Contract
+
+**For Hoodi Testnet:**
+```bash
+forge script script/Deploy.sol \
+  --rpc-url https://rpc.hoodi.ethpandaops.io \
+  --private-key $PRIVATE_KEY \
+  --broadcast \
+  --legacy
+```
+
+**For Ethereum Mainnet:**
+```bash
+forge script script/Deploy.sol \
+  --rpc-url https://eth.llamarpc.com \
+  --private-key $PRIVATE_KEY \
+  --broadcast
+```
+
+**Save your Response contract address from the output!**
+
+**Verify deployment:**
+```bash
+# Replace with your actual Response address
+cast code 0xYOUR_RESPONSE_ADDRESS --rpc-url https://rpc.hoodi.ethpandaops.io
+```
+Expected: Long hex string (bytecode). If you see `0x`, the contract was NOT deployed.
 
 ---
 
-## 🔧 Step 2: Configure drosera.toml
+## Phase 2: Drosera Integration
 
-Create the Drosera configuration file:
+---
+
+### 🔧 Step 1: Create drosera.toml
 
 ```bash
+cd ~/{your-folder-name}
 nano drosera.toml
 ```
 
 **For Hoodi Testnet:**
 
 ```toml
-ethereum_rpc = "https://rpc.hoodi.ethpandaops.io"
-drosera_rpc  = "https://relay.hoodi.drosera.io"
+ethereum_rpc = "https://rpc.hoodi.ethpandaops.io/"
+drosera_rpc = "https://relay.hoodi.drosera.io"
 eth_chain_id = 560048
 drosera_address = "0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
 
-[traps.your_trap_name]
+[traps]
+[traps.your_trap_snake_case]
 path = "out/YourTrap.sol/YourTrap.json"
 response_contract = "0xYOUR_RESPONSE_ADDRESS"
-response_function = "yourFunction(uint256,address)"
-cooldown_period_blocks = 50
+response_function = "yourFunction(type1,type2)"
+cooldown_period_blocks = 33
 min_number_of_operators = 1
 max_number_of_operators = 3
 block_sample_size = 1
-private_trap = true
+private = true
 whitelist = ["0xYOUR_WALLET_ADDRESS"]
-gas_limit = 500000
+private_trap = true
+
+# CRITICAL: DO NOT add 'address = ...' here
+# Drosera will auto-deploy the Trap and fill this field
 ```
 
 **For Ethereum Mainnet:**
 
 ```toml
 ethereum_rpc = "https://eth.llamarpc.com"
-drosera_rpc  = "https://relay.drosera.io"
+drosera_rpc = "https://relay.mainnet.drosera.io"
 eth_chain_id = 1
 drosera_address = "0x0c4f7e9684a11805Fc5406989F5124bFC2AD0D84"
 
-[traps.your_trap_name]
+[traps]
+[traps.your_trap_snake_case]
 path = "out/YourTrap.sol/YourTrap.json"
 response_contract = "0xYOUR_RESPONSE_ADDRESS"
-response_function = "yourFunction(uint256,address)"
-cooldown_period_blocks = 50
-min_number_of_operators = 1
-max_number_of_operators = 3
+response_function = "yourFunction(type1,type2)"
+cooldown_period_blocks = 100
+min_number_of_operators = 2
+max_number_of_operators = 5
 block_sample_size = 1
-private_trap = true
+private = true
 whitelist = ["0xYOUR_WALLET_ADDRESS"]
-gas_limit = 500000
+private_trap = true
+
+# CRITICAL: DO NOT add 'address = ...' here
+# Drosera will auto-deploy the Trap and fill this field
 ```
 
-**Replace:**
-- `your_trap_name`: Snake_case identifier for your trap
-- `YourTrap.sol/YourTrap.json`: Your actual trap filename
-- `0xYOUR_RESPONSE_ADDRESS`: Address from Step 1
-- `yourFunction(uint256,address)`: Your Response contract's function signature
-- `0xYOUR_WALLET_ADDRESS`: Your operator wallet address
+**Key Fields Explained:**
+
+- **`path`**: Location of your compiled Trap JSON artifact
+- **`response_contract`**: Address where you deployed your Response contract
+- **`response_function`**: EXACT function signature from your Response contract
+  - Format: `"functionName(type1,type2,type3)"`
+  - No spaces, must match exactly
+  - Example: `"handleAlert(uint256,uint256,bytes32)"`
+- **`cooldown_period_blocks`**: Minimum blocks between trap responses (prevents spam)
+- **`block_sample_size`**: Historical blocks passed to `shouldRespond()`
+  - `1` = Only current block data
+  - `5-10` = Time-series analysis (requires loop in shouldRespond)
+- **`whitelist`**: Your operator wallet address
+- **`private_trap`**: Set to `true` to keep trap private to your operators
+
+> **⚠️ CRITICAL:** Do NOT manually add `address = "0x..."` field. Drosera fills this automatically when you run `drosera apply`.
 
 **Save with:** `Ctrl+X`, `Y`, `Enter`
 
+**Verify configuration:**
+```bash
+cat drosera.toml
+```
+
 ---
 
-## 🔧 Step 3: Dry Run Test
+### 🔧 Step 2: Verify Response Function Matches
 
-Test your trap logic locally before deploying:
+**CRITICAL CHECK:** The `response_function` in TOML must EXACTLY match your Response contract.
+
+```bash
+# Check your Response contract's function
+grep "function" src/YourResponse.sol
+```
+
+Example:
+- If Response has: `function handleAlert(uint256 price, uint256 timestamp)`
+- TOML must have: `response_function = "handleAlert(uint256,uint256)"`
+
+**Common mistakes:**
+- ❌ Including spaces: `"handleAlert(uint256, uint256)"`
+- ❌ Wrong function name
+- ❌ Wrong parameter types or count
+
+---
+
+### 🔧 Step 3: Test Configuration (Dry Run)
 
 ```bash
 drosera dryrun
 ```
 
-✅ **Expected output:**
+**Expected output:**
 ```
-Testing trap(s) execution...
-trap_name: your_trap_name
-result: Success
-should_respond: false
+✓ Configuration valid
+✓ Trap artifact found
+✓ Response contract exists
+✓ Planning successful
 ```
 
-If `should_respond: true`, verify this is expected behavior (e.g., you're testing an alert condition).
+**If errors occur, see [Troubleshooting](#troubleshooting)**
 
 ---
 
-## 🔧 Step 4: Apply Trap Configuration
-
-Deploy your trap to the Drosera Network:
+### 🔧 Step 4: Deploy to Drosera Network
 
 ```bash
-DROSERA_PRIVATE_KEY=your_private_key_here drosera apply
+source .env
+DROSERA_PRIVATE_KEY=$PRIVATE_KEY drosera apply
 ```
 
-When prompted, type `ofc` and press Enter.
+**What happens:**
+1. Drosera reads your compiled Trap from `path` in TOML
+2. Drosera deploys the Trap contract automatically
+3. Drosera registers trap with operator network
+4. Drosera updates your `drosera.toml` with the Trap address
 
-✅ **Expected output:**
+**Expected output:**
 ```
-Transaction Hash: 0x...
-Created Trap Config for your_trap_name
-address: 0x...
+Deploying trap...
+✓ Trap deployed at: 0xABC123...
+✓ Configuration updated
 ```
 
-**Copy the trap config address** - you'll need it for Phase 3.
-
----
-
-**Update drosera.toml with trap address:**
-
+**Verify Trap address was added to TOML:**
 ```bash
-nano drosera.toml
+cat drosera.toml | grep "address ="
 ```
 
-Add this line under your trap configuration:
-```toml
-address = "0xYOUR_TRAP_CONFIG_ADDRESS"
-```
+Expected to see: `address = "0x..."`
 
-**Save with:** `Ctrl+X`, `Y`, `Enter`
+**If errors, see [Troubleshooting](#troubleshooting)**
 
 ---
 
-# 📍 Phase 3: Operator Setup
+### 🔧 Step 5: Authorize Operator in Response Contract
+
+**Find your operator address:**
+```bash
+drosera operator info
+```
+Or check the `whitelist` field in your drosera.toml
+
+**Authorize the operator to call your Response contract:**
+```bash
+cast send YOUR_RESPONSE_ADDRESS \
+  "setOperator(address,bool)" \
+  YOUR_OPERATOR_ADDRESS \
+  true \
+  --rpc-url https://rpc.hoodi.ethpandaops.io \
+  --private-key $PRIVATE_KEY
+```
+
+**Verify authorization:**
+```bash
+cast call YOUR_RESPONSE_ADDRESS \
+  "authorizedOperators(address)(bool)" \
+  YOUR_OPERATOR_ADDRESS \
+  --rpc-url https://rpc.hoodi.ethpandaops.io
+```
+
+Expected: `true` (shown as hex: `0x0000...0001`)
+
+---
+
+## Phase 3: Operator Setup
 
 Now that your trap is deployed, you need to run an **Operator Node** to monitor it. The operator executes your trap's logic every block and triggers your Response contract when needed.
 
 ---
 
-## 🔧 Step 1: Create Operator Directory
+### 🔧 Step 1: Create Operator Directory
 
 ```bash
 cd ~
@@ -514,7 +602,7 @@ cd drosera-operator
 
 ---
 
-## 🔧 Step 2: Install Docker (Skip if Already Installed)
+### 🔧 Step 2: Install Docker (Skip if Already Installed)
 
 Check if Docker is installed:
 ```bash
@@ -549,7 +637,7 @@ sudo docker run hello-world
 
 ---
 
-## 🔧 Step 3: Create Environment File
+### 🔧 Step 3: Create Environment File
 
 ```bash
 nano .env
@@ -574,7 +662,7 @@ VPS_IP=203.0.113.45
 
 ---
 
-## 🔧 Step 4: Create Docker Configuration
+### 🔧 Step 4: Create Docker Configuration
 
 ```bash
 nano docker-compose.yaml
@@ -630,7 +718,7 @@ volumes:
 
 ---
 
-## 🔧 Step 5: Configure Firewall
+### 🔧 Step 5: Configure Firewall
 
 ```bash
 sudo ufw allow 22/tcp
@@ -642,7 +730,7 @@ sudo ufw status
 
 ---
 
-## 🔧 Step 6: Start the Operator
+### 🔧 Step 6: Start the Operator
 
 ```bash
 docker pull ghcr.io/drosera-network/drosera-operator:latest
@@ -656,7 +744,7 @@ Press `Ctrl+C` to exit logs.
 
 ---
 
-## 🔧 Step 7: Register Your Operator
+### 🔧 Step 7: Register Your Operator
 
 **Hoodi Testnet:**
 ```bash
@@ -680,7 +768,7 @@ source .env && docker run -it --rm ghcr.io/drosera-network/drosera-operator:late
 
 ---
 
-## 🔧 Step 8: Opt-In to Your Trap
+### 🔧 Step 8: Opt-In to Your Trap
 
 Replace `YOUR_TRAP_ADDRESS_HERE` with your trap config address from Phase 2.
 
@@ -704,7 +792,7 @@ source .env && docker run -it --rm ghcr.io/drosera-network/drosera-operator:late
 
 ---
 
-## 🔧 Step 9: Verify Operation
+### 🔧 Step 9: Verify Operation
 
 ```bash
 docker compose logs -f --tail=50
@@ -720,7 +808,7 @@ This confirms your operator is monitoring your trap.
 
 ---
 
-## 🔧 Step 10: Dashboard Verification
+### 🔧 Step 10: Dashboard Verification
 
 1. Go to https://app.drosera.io/
 2. Connect your wallet
@@ -757,441 +845,555 @@ docker compose up -d
 
 ---
 
-# 📍 Phase 4: GitHub Publication
+## Phase 4: GitHub Publication
 
 ---
 
-## 🔧 Step 1: Secure Your Repository
-
-**CRITICAL: Protect your private keys before pushing to GitHub.**
-
-Check your `.gitignore`:
-```bash
-cat .gitignore
-```
-
-Ensure it contains:
-```
-.env
-*.env
-.env.*
-```
-
-If not, add it:
-```bash
-echo ".env" >> .gitignore
-```
-
----
-
-## 🔧 Step 2: Initialize Git Repository
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: Drosera trap deployment"
-git branch -M main
-```
-
----
-
-## 🔧 Step 3: Create GitHub Repository
-
-1. Go to https://github.com/new
-2. Repository name: `your-trap-name`
-3. Description: Brief description of your trap
-4. Visibility: **Public** (required for Drosera verification)
-5. **Do NOT** initialize with README, .gitignore, or license
-6. Click "Create repository"
-
----
-
-## 🔧 Step 4: Push to GitHub
-
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/your-trap-name.git
-git push -u origin main
-```
-
-**Authentication:**
-- Username: Your GitHub username
-- Password: Use a **Personal Access Token** (not your password)
-  - Generate at: Settings → Developer settings → Personal access tokens → Tokens (classic)
-  - Select `repo` scope
-  - Copy and paste the token when prompted
-
----
-
-## 🔧 Step 5: Create README.md
+### 🔧 Step 1: Create README.md
 
 ```bash
 nano README.md
 ```
 
-**Template:**
+Your README should include:
 
-```markdown
-# [Your Trap Name]
+**For Mainnet Traps:**
+- What vulnerability/condition it monitors
+- Why this monitoring is valuable (who benefits, TVL protected)
+- How it's designed to be efficient (quiet by default, specific thresholds)
+- Technical specifications (contracts monitored, data sources, trigger logic)
+- Deployment details (addresses, network, parameters)
+- How to verify it's working
 
-## Overview
-Brief description of what your trap monitors and why.
+**For Testnet Traps:**
+- Explain it's a learning/testing trap
+- What monitoring concept it demonstrates
+- How to test the trigger conditions
+- Educational value
 
-## Architecture
-- **Target Contract:** `0x...` (what you're monitoring)
-- **Trap Contract:** `0x...` (your trap config address)
-- **Response Contract:** `0x...` (your response address)
+**Save with:** `Ctrl+X`, `Y`, `Enter`
 
-## Trigger Conditions
-Explain when your trap triggers (e.g., "Triggers if treasury balance < 500,000 tokens")
+---
 
-## Network
-- Hoodi Testnet / Ethereum Mainnet
-- Chain ID: 560048 / 1
+### 🔧 Step 2: Create .gitignore
 
-## Setup
-See [TECHNICAL-GUIDE.md](TECHNICAL-GUIDE.md) for complete setup instructions.
-
-## Verification
-View on Drosera Dashboard: https://app.drosera.io/
-```
-
-**Save and push:**
 ```bash
-git add README.md
-git commit -m "Add README"
-git push
+nano .gitignore
+```
+
+```
+# Sensitive files
+.env
+*.key
+
+# Build artifacts
+out/
+cache/
+broadcast/
+
+# Dependencies
+lib/
+node_modules/
+
+# OS files
+.DS_Store
+*.swp
+*~
+```
+
+**Save with:** `Ctrl+X`, `Y`, `Enter`
+
+---
+
+### 🔧 Step 3: Git Initialization
+
+```bash
+git init
+git add .
+git commit -m "Initial commit: [Your Trap Name]"
+```
+
+**Verify:**
+```bash
+git status
+git log
 ```
 
 ---
 
-# 📍 Phase 5: Dashboard Verification
+### 🔧 Step 4: Create GitHub Repository
+
+1. Go to **https://github.com/new**
+2. **Repository name**: Use kebab-case (e.g., `oracle-staleness-trap`)
+3. **Visibility**: Public
+4. **Do NOT** initialize with README (you already have one)
+5. Click **Create repository**
 
 ---
 
-## 🔧 Step 1: Access Dashboard
+### 🔧 Step 5: Generate GitHub Token
 
-Navigate to https://app.drosera.io/
+1. Go to **https://github.com/settings/tokens**
+2. Click **Generate new token (classic)**
+3. **Scopes**: Select `repo` and `workflow`
+4. Click **Generate token**
+5. **Copy the token** immediately
 
 ---
 
-## 🔧 Step 2: Connect Wallet
+### 🔧 Step 6: Push to GitHub
+
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/your-trap-name.git
+git branch -M main
+git push -u origin main
+```
+
+**Authentication:**
+- **Username**: Your GitHub username
+- **Password**: Use your **Personal Access Token** (not your GitHub password)
+
+---
+
+### 🔧 Step 7: Verify Repository
+
+1. Visit your GitHub repository URL
+2. Verify README displays correctly
+3. Check that `.env` is NOT visible (should be in .gitignore)
+4. Confirm all contract files are present
+
+---
+
+## Phase 5: Dashboard Verification
+
+---
+
+### 🔧 Step 1: Access Dashboard
+
+Navigate to **https://app.drosera.io/**
+
+---
+
+### 🔧 Step 2: Connect Wallet
 
 1. Click "Connect Wallet"
-2. Select your wallet provider (MetaMask, WalletConnect, etc.)
-3. Approve the connection
-4. Switch to the correct network (Hoodi or Mainnet)
+2. Select your wallet provider
+3. Approve connection
+4. Switch to correct network (Hoodi or Mainnet)
 
 ---
 
-## 🔧 Step 3: Locate Your Trap
+### 🔧 Step 3: Locate Your Trap
 
-1. Go to "My Traps" section
-2. Search by:
-   - Your wallet address, OR
-   - Your trap config address
-
----
-
-## 🔧 Step 4: Verify Trap Status
-
-✅ **Your trap should show:**
-- **Status:** Green (Active)
-- **Operators:** List of opted-in operators
-- **Last Execution:** Recent timestamp
-- **Blocks Processed:** Incrementing number
-- **shouldRespond History:** Mostly `false` (good - silent watchdog)
+1. Go to "My Traps" or "Operators" section
+2. Find your trap by:
+   - Name matching your snake_case from TOML
+   - Status: Active
+   - Recent blocks
 
 ---
 
-## 🔧 Step 5: Monitor Execution Logs
+### 🔧 Step 4: Understand Block Colors
 
-Click on your trap to view detailed logs:
-- `collect()` execution results
-- `shouldRespond()` evaluations
-- Response contract calls (if triggered)
-- Gas consumption per execution
+**Green Blocks:**
+- ✅ Trap monitoring successfully
+- ✅ `shouldRespond()` returned `false` (no threat detected)
+- ✅ This is normal and expected behavior
+
+**Red Blocks:**
+- ⚠️ Either: `shouldRespond()` returned `true` (threat detected - response triggered)
+- ⚠️ Or: Error occurred in trap execution
+- Check operator logs to determine which
+
+**Gray/No Blocks:**
+- ⚠️ Trap not being executed
+- Check operator status
+- Verify TOML configuration
 
 ---
 
-## 🔧 Step 6: Bloom Boost (Optional)
-
-To increase trap priority and response speed:
+### 🔧 Step 5: Check Operator Logs
 
 ```bash
-drosera bloomboost --trap-address YOUR_TRAP_ADDRESS --eth-amount 0.1
+# View recent logs
+journalctl -u drosera-operator -n 50 --no-pager
+
+# Follow logs in real-time
+journalctl -u drosera-operator -f
 ```
 
-This deposits ETH to boost your trap's execution priority.
+**Exit real-time view:** `Ctrl+C`
+
+**Look for:**
+- "Executing trap: your_trap_name"
+- "Trap result: false" (good - no threat)
+- "Trap result: true" (alert - threat detected)
+- Any error messages
 
 ---
 
-## 🔧 Step 7: Test Your Trap (Recommended)
+### 🔧 Step 6: Success Confirmation
 
-Simulate the condition that should trigger your trap:
-
-1. Execute a test transaction that meets your trigger criteria
-2. Wait 1-2 blocks for operator execution
-3. Check dashboard for `shouldRespond: true`
-4. Verify Response contract was called
-5. Check event logs for expected output
+✅ **Your trap is successfully deployed if:**
+- Trap appears in dashboard
+- Green blocks appearing regularly
+- Operator logs show successful execution
+- No error messages in logs
 
 ---
 
-# Troubleshooting
+### 🔧 Step 7: Submit for Verification
+
+Once working:
+1. Take screenshot of dashboard showing trap name and green blocks
+2. Go to Drosera Discord
+3. Create ticket in verification channel
+4. Submit: Screenshot, GitHub link, Trap address, Network
 
 ---
 
-<details>
-<summary>❌ Issue: "Compiler run failed" during forge build</summary>
-
-**Possible causes:**
-- Missing dependencies
-- Wrong Solidity version
-- Import path errors
-
-**Solutions:**
-
-1. **Check Solidity version in foundry.toml:**
-   ```bash
-   nano foundry.toml
-   ```
-   Ensure `solc = "0.8.20"`
-
-2. **Verify remappings.txt:**
-   ```bash
-   cat remappings.txt
-   ```
-
-3. **Reinstall dependencies:**
-   ```bash
-   rm -rf lib/
-   forge install foundry-rs/forge-std@v1.8.2 --no-commit
-   forge install OpenZeppelin/openzeppelin-contracts@v5.0.2 --no-commit
-   ```
-
-4. **Clean and rebuild:**
-   ```bash
-   forge clean
-   forge build
-   ```
-
-</details>
+## Troubleshooting
 
 ---
 
 <details>
-<summary>❌ Issue: "drosera dryrun" fails with "reverted without reason"</summary>
+<summary>❌ Issue 1: Compilation Errors (`forge build` fails)</summary>
 
 **Common causes:**
-- Target contract doesn't exist on the network
-- Wrong contract address
-- `collect()` function calling non-existent contract
+- Missing dependencies
+- Incorrect import paths
+- Solidity version mismatch
+- Wrong `shouldRespond` signature (`bytes[]` not `bytes`)
 
 **Solutions:**
 
-1. **Verify target contract exists:**
-   ```bash
-   cast code YOUR_TARGET_ADDRESS --rpc-url YOUR_RPC_URL
-   ```
-   Should return bytecode (not `0x`)
-
-2. **Check if address is checksummed:**
-   ```bash
-   cast to-check-sum-address YOUR_ADDRESS
-   ```
-
-3. **Test collect() directly:**
-   ```bash
-   cast call YOUR_TRAP_ADDRESS "collect()" --rpc-url YOUR_RPC_URL
-   ```
-
-</details>
-
----
-
-<details>
-<summary>❌ Issue: "drosera apply" transaction fails</summary>
-
-**Possible causes:**
-- Insufficient gas
-- Wrong network configuration
-- Trap already deployed at this address
-
-**Solutions:**
-
-1. **Check wallet balance:**
-   ```bash
-   cast balance YOUR_ADDRESS --rpc-url YOUR_RPC_URL
-   ```
-
-2. **Verify drosera.toml network settings:**
-   - `eth_chain_id` matches your network
-   - `drosera_address` is correct for your network
-   - `ethereum_rpc` is accessible
-
-3. **Increase gas limit in drosera.toml:**
-   ```toml
-   gas_limit = 1000000
-   ```
-
-4. **If trap already exists, update instead:**
-   ```bash
-   DROSERA_PRIVATE_KEY=xxx drosera apply --update
-   ```
-
-</details>
-
----
-
-<details>
-<summary>❌ Issue: Docker container keeps restarting</summary>
-
-**Check logs:**
+**Missing dependencies:**
 ```bash
-docker compose logs --tail=100
+forge install foundry-rs/forge-std@v1.8.2 --no-commit
+forge install OpenZeppelin/openzeppelin-contracts@v5.0.2 --no-commit
+ls lib/  # Verify both installed
 ```
 
-**Common issues:**
+**Check remappings:**
+```bash
+cat remappings.txt
+# Verify paths match your imports
+```
 
-1. **Missing `.env` file:**
-   ```bash
-   ls -la .env
-   ```
-   If missing, recreate with `ETH_PRIVATE_KEY` and `VPS_IP`
+**Wrong shouldRespond signature:**
+```bash
+grep "shouldRespond" src/YourTrap.sol
+```
+Must be: `function shouldRespond(bytes[] calldata data)` not `function shouldRespond(bytes calldata data)`
 
-2. **Invalid private key format:**
-   - Must start with `0x`
-   - Must be 64 hex characters after `0x`
-
-3. **Port conflicts:**
-   ```bash
-   sudo lsof -i :31313
-   sudo lsof -i :31314
-   ```
-   If ports are in use, change in docker-compose.yaml
-
-4. **Wrong command format:**
-   Ensure docker-compose.yaml has:
-   ```yaml
-   command: ["node"]
-   ```
+**Visibility issues:**
+- `collect()` must be `view` (not `pure`)
+- `shouldRespond()` must be `pure` (not `view`)
 
 </details>
 
 ---
 
 <details>
-<summary>❌ Issue: Operator registration fails with "FunctionDoesNotExist"</summary>
+<summary>❌ Issue 2: Storage Variable Error (CRITICAL)</summary>
 
-**Causes:**
-- Outdated Drosera CLI
-- Wrong Drosera contract address
+**Symptoms:**
+- Trap compiles but never triggers
+- Always returns `false` even when conditions should be met
 
-**Solutions:**
+**Diagnosis:** Trap contract has storage variables
 
-1. **Update Drosera CLI:**
-   ```bash
-   curl -L https://app.drosera.io/install | bash
-   source ~/.bashrc
-   droseraup
-   ```
+**Why this fails:**
+Drosera redeploys your trap on shadow-fork every block. ALL storage variables reset to default (zero/false). State never persists.
 
-2. **Verify correct Drosera address for your network:**
-   - Hoodi: `0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D`
-   - Mainnet: `0x0c4f7e9684a11805Fc5406989F5124bFC2AD0D84`
+**Example of WRONG code:**
+```solidity
+contract BadTrap is ITrap {
+    uint256 public lastPrice;  // ❌ Resets every block
+    bool public triggered;     // ❌ Resets every block
+```
 
-3. **Use Docker registration method:**
-   ```bash
-   source .env && docker run -it --rm ghcr.io/drosera-network/drosera-operator:latest register \
-     --eth-chain-id YOUR_CHAIN_ID \
-     --eth-rpc-url YOUR_RPC \
-     --drosera-address YOUR_DROSERA_ADDRESS \
-     --eth-private-key $ETH_PRIVATE_KEY
-   ```
+**Fix:** Remove ALL storage variables. Use `constant` or `immutable` instead:
+```solidity
+contract GoodTrap is ITrap {
+    uint256 public constant THRESHOLD = 1000;      // ✅ OK
+    address public immutable targetContract;       // ✅ OK (set in constructor)
+```
 
 </details>
 
 ---
 
 <details>
-<summary>❌ Issue: Trap shows "Red" status on dashboard</summary>
+<summary>❌ Issue 3: ABI Mismatch (CRITICAL)</summary>
 
-**Possible causes:**
-- Operator not running
-- Operator not opted into trap
-- Network connectivity issues
-- Firewall blocking ports
+**Symptoms:**
+```
+Error: execution reverted
+Location: crates/planning/transaction_builder.rs
+```
 
-**Solutions:**
+**Diagnosis:** Trap's return data doesn't match Response function parameters
 
-1. **Check operator status:**
-   ```bash
-   docker compose ps
-   docker compose logs --tail=50
-   ```
+**How it works:**
+1. Trap's `shouldRespond()` returns: `abi.encode(A, B, C)`
+2. Response function must expect: `function handle(A, B, C)`
+3. TOML must specify: `response_function = "handle(A,B,C)"`
 
-2. **Verify opt-in:**
-   ```bash
-   # Re-run opt-in command
-   source .env && docker run -it --rm ghcr.io/drosera-network/drosera-operator:latest optin \
-     --eth-rpc-url YOUR_RPC \
-     --eth-private-key $ETH_PRIVATE_KEY \
-     --trap-config-address YOUR_TRAP_ADDRESS
-   ```
+**All three MUST match exactly**
 
-3. **Check firewall:**
-   ```bash
-   sudo ufw status
-   ```
-   Ensure 31313 and 31314 are open
+**Verification:**
+```bash
+# Check what Trap returns
+grep "abi.encode" src/YourTrap.sol
 
-4. **Verify RPC connectivity:**
-   ```bash
-   curl -X POST YOUR_RPC_URL \
-     -H "Content-Type: application/json" \
-     -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
-   ```
+# Check Response function
+grep "function" src/YourResponse.sol
+
+# Check TOML
+grep "response_function" drosera.toml
+```
+
+**Example mismatch:**
+- Trap returns: `abi.encode(uint256, uint256)`
+- Response expects: `function handle(uint256)` ❌ WRONG - missing second param
+- Fix Response to: `function handle(uint256, uint256)` ✅
 
 </details>
 
 ---
 
 <details>
-<summary>❌ Issue: GitHub push rejected</summary>
+<summary>❌ Issue 4: Authorization Error</summary>
 
-**Authentication issues:**
+**Symptoms:**
+```
+Error: execution reverted
+Reason: "not authorized" or "Only trap"
+```
 
-1. **Using password instead of token:**
-   - GitHub no longer accepts passwords for git operations
-   - Generate Personal Access Token at: https://github.com/settings/tokens
-   - Select `repo` scope
-   - Use token as password when prompted
+**Diagnosis:** Response contract blocking Drosera executor
 
-2. **Token expired:**
-   - Generate new token with same steps above
+**Wrong pattern (will fail):**
+```solidity
+// ❌ Trap doesn't call Response - Executor does!
+modifier onlyTrap() {
+    require(msg.sender == trapAddress, "Only trap");
+    _;
+}
+```
 
-3. **Wrong remote URL:**
-   ```bash
-   git remote -v
-   ```
-   Should show `https://github.com/YOUR_USERNAME/repo.git`
+**Correct pattern:**
+```solidity
+// ✅ Authorize operator addresses, not trap
+mapping(address => bool) public authorizedOperators;
 
-   If wrong:
-   ```bash
-   git remote set-url origin https://github.com/YOUR_USERNAME/your-trap-name.git
-   ```
+modifier onlyOperator() {
+    require(authorizedOperators[msg.sender], "Not authorized");
+    _;
+}
+
+function setOperator(address operator, bool authorized) external onlyOwner {
+    authorizedOperators[operator] = authorized;
+}
+```
+
+**Then authorize your operator:**
+```bash
+cast send RESPONSE_ADDRESS "setOperator(address,bool)" OPERATOR_ADDRESS true --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+```
 
 </details>
 
 ---
 
-# Trap Quality Standards
+<details>
+<summary>❌ Issue 5: Data Length Guard Missing</summary>
+
+**Symptoms:**
+- Red blocks in dashboard
+- Logs show "execution reverted" or abi.decode error
+
+**Diagnosis:** Missing check before decoding data
+
+**Always start shouldRespond with:**
+```solidity
+function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
+    // MANDATORY - Check data exists before decoding
+    if (data.length == 0 || data[0].length == 0) {
+        return (false, bytes(""));
+    }
+    
+    // Now safe to decode
+    (uint256 value) = abi.decode(data[0], (uint256));
+    // ...
+}
+```
+
+</details>
 
 ---
 
-## What Makes a Good Trap?
+<details>
+<summary>❌ Issue 6: TOML Address Field Error</summary>
 
-### Silent Watchdog Pattern
+**Symptoms:**
+```
+Error: Trap already exists
+Error: Planning failed - invalid trap config
+```
+
+**Diagnosis:** Manually added `address = "0x..."` in TOML
+
+**Fix:**
+```bash
+nano drosera.toml
+```
+
+Remove any line with `address = "0x..."`
+
+Drosera fills this automatically after `drosera apply`
+
+</details>
+
+---
+
+<details>
+<summary>❌ Issue 7: Response Contract Not Found</summary>
+
+**Symptoms:**
+```
+Error: Response contract not found at address
+Error: Invalid bytecode
+```
+
+**Check if deployed:**
+```bash
+cast code YOUR_RESPONSE_ADDRESS --rpc-url $RPC_URL
+```
+
+- Long hex string = deployed ✅
+- `0x` = NOT deployed ❌
+
+**If not deployed, deploy it:**
+```bash
+forge script script/Deploy.sol --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast
+```
+
+**Then update TOML with correct address**
+
+</details>
+
+---
+
+<details>
+<summary>❌ Issue 8: Trap Not Appearing in Dashboard</summary>
+
+**Checks:**
+
+**1. Operator running:**
+```bash
+systemctl status drosera-operator
+```
+Should show `active (running)`
+
+**2. Correct network in dashboard:**
+Verify dashboard is set to same network as your deployment
+
+**3. Wait for propagation:**
+Can take 1-5 minutes. Refresh dashboard.
+
+**4. Check TOML has address:**
+```bash
+cat drosera.toml | grep "address ="
+```
+Should see trap address. If not, `drosera apply` didn't succeed.
+
+</details>
+
+---
+
+<details>
+<summary>❌ Issue 9: "drosera dryrun" Fails</summary>
+
+**Common causes:**
+
+**Response function mismatch:**
+```bash
+grep "response_function" drosera.toml
+grep "function" src/YourResponse.sol
+# These must match exactly
+```
+
+**Invalid artifact path:**
+```bash
+ls out/YourTrap.sol/YourTrap.json
+# File must exist
+```
+
+**Response contract not deployed:**
+```bash
+cast code RESPONSE_ADDRESS --rpc-url $RPC_URL
+# Should return bytecode, not 0x
+```
+
+</details>
+
+---
+
+<details>
+<summary>❌ Issue 10: Red Blocks (Determining Cause)</summary>
+
+**Check operator logs:**
+```bash
+journalctl -u drosera-operator -n 50 | grep "your_trap_name"
+```
+
+**If "Trap result: true":**
+- ✅ Intended behavior - trap detected threat and triggered response
+- This is GOOD if it's a real anomaly
+
+**If "execution reverted" or error:**
+- ❌ Error in trap logic
+- Common causes:
+  - External call fails in `collect()`
+  - Division by zero
+  - Array out of bounds
+  - Missing data length check
+
+**Fix: Add defensive checks:**
+```solidity
+function collect() external view returns (bytes memory) {
+    // Wrap external calls
+    (bool success, bytes memory data) = target.staticcall(...);
+    if (!success) {
+        return abi.encode(0);  // Return safe default instead of reverting
+    }
+    // ...
+}
+
+function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
+    // Always check data exists
+    if (data.length == 0 || data[0].length == 0) return (false, bytes(""));
+    
+    // Check for division by zero
+    if (baseValue == 0) return (false, bytes(""));
+    
+    // ...
+}
+```
+
+</details>
+
+---
+
+## Trap Quality Standards
+
+---
+
+### What Makes a Good Trap?
+
+#### Silent Watchdog Pattern
 - **Returns false most of the time** - Only triggers on critical events
 - **Efficient gas usage** - Operators can run sustainably
 - **Clear trigger conditions** - Well-defined thresholds
@@ -1199,7 +1401,7 @@ docker compose logs --tail=100
 
 ---
 
-### Flexible Threshold Logic (For 3+ Vector Traps)
+#### Flexible Threshold Logic (For 3+ Vector Traps)
 For traps monitoring multiple conditions:
 - **3-vector traps:** Trigger if ANY 2 or ALL 3 conditions met
 - **4-vector traps:** Trigger if ANY 3 or ALL 4 conditions met
@@ -1213,7 +1415,7 @@ For traps monitoring multiple conditions:
 
 ---
 
-### Example: Good Flexible Threshold Logic
+#### Example: Good Flexible Threshold Logic
 ```solidity
 function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory) {
     // 1. Safety Check
@@ -1244,7 +1446,7 @@ function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes
 
 ---
 
-## What to Avoid
+### What to Avoid
 
 ❌ **Always True Logic:**
 ```solidity
@@ -1266,7 +1468,7 @@ if (block.basefee > 50 gwei) return (true, abi.encode(block.basefee));
 
 ---
 
-## Best Practices
+### Best Practices
 
 ✅ **Use constants for thresholds:**
 ```solidity
@@ -1303,7 +1505,7 @@ return (false, "");          // ❌ Wrong
 
 ---
 
-# Examples: Good vs Bad Traps
+## Examples: Good vs Bad Traps
 
 ---
 
