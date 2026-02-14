@@ -46,7 +46,7 @@ Based on extensive testing, Gemini provides optimal workflow adherence, context 
 
 ---
 
-# 🎯 PROMPT A: TRAP DEPLOYMENT
+## 🎯 TRAP DEPLOYMENT
 
 <details open>
 <summary>What This Does</summary>
@@ -66,7 +66,7 @@ Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabil
 </details>
 
 <details>
-<summary>📋 COPY PROMPT A - Click to Expand</summary>
+<summary>📋 COPY DEPLOYMENT PROMPT - Click to Expand</summary>
 
 ```
 # DROSERA TRAP DEPLOYMENT ARCHITECT
@@ -432,7 +432,7 @@ You are building critical security infrastructure. Precision matters.
 Your trap is deployed and visible at https://app.drosera.io/
 
 **To activate monitoring:**
-- Use Prompt B below to set up your own operator infrastructure, OR
+- Use the operator prompt below to set up your own operator infrastructure, OR
 - Rely on network operators to monitor your trap
 
 Your trap is ready - operators can now monitor it and execute responses when conditions are met.
@@ -441,7 +441,7 @@ Your trap is ready - operators can now monitor it and execute responses when con
 
 ---
 
-# 🖥️ PROMPT B: OPERATOR SETUP (OPTIONAL)
+## OPERATOR SETUP (OPTIONAL)
 
 <details open>
 <summary>What This Does</summary>
@@ -494,7 +494,7 @@ This allows running operators on both networks simultaneously. The prompt includ
 </details>
 
 <details>
-<summary>📋 COPY PROMPT B - Click to Expand</summary>
+<summary>📋 COPY OPERATOR PROMPT - Click to Expand</summary>
 
 ```
 [FULL OPERATOR PROMPT - Same as before]
