@@ -902,30 +902,19 @@ cd ~/Drosera-Network
 docker compose logs -f
 ```
 
-**For mainnet (operator1):**
-```bash
-docker compose logs -f operator1
-```
-
 ---
 
 ### **Expected Log Patterns:**
 
-**1. Healthy Startup:**
+**1. Initial Startup:**
 
 ```
-drosera-operator | 2026-02-13T21:00:00.123456Z  INFO drosera_operator::node: Spawning node...
-drosera-operator | 2026-02-13T21:00:00.456789Z  INFO Starting Trap Submission Service
-drosera-operator | 2026-02-13T21:00:00.789012Z  INFO Trap Attestation Service started
-drosera-operator | 2026-02-13T21:00:00.890123Z  INFO Trap Enzyme Service started block_number=23960771
-drosera-operator | 2026-02-13T21:00:01.234567Z  INFO Operator Node successfully spawned!
-drosera-operator | 2026-02-13T21:00:01.567890Z  INFO Registered DNR with seed node trap_address=0x1521a1C...
-drosera-operator | 2026-02-13T21:00:01.890123Z  INFO Bootstrapping with seed node...
-drosera-operator | 2026-02-13T21:00:02.123456Z  INFO Starting trap enzyme runner trap_address=0x1521a1C... block_number=23960771
-
-[... initial sync logs ...]
-
-drosera-operator | 2026-02-13T21:00:05.678901Z  INFO Operator is now running and monitoring traps
+drosera-operator | INFO drosera_operator::node: Spawning node...
+drosera-operator | INFO Trap Attestation Service started
+drosera-operator | INFO Operator Node successfully spawned!
+drosera-operator | INFO Registered DNR with seed node trap_address=0x...
+drosera-operator |  INFO Bootstrapping with seed node...
+drosera-operator | INFO Starting trap enzyme runner trap_address=0x... block_number=23960771
 ```
 
 **What this means:**
@@ -939,9 +928,9 @@ drosera-operator | 2026-02-13T21:00:05.678901Z  INFO Operator is now running and
 **2. Healthy Operation (Silent Monitoring):**
 
 ```
-drosera-operator | 2026-02-13T21:00:14.249044Z DEBUG Received new block trap_address=0x68639167... block_number=2229186
-drosera-operator | 2026-02-13T21:00:14.387336Z DEBUG Execution of Trap completed block_number=2229186
-drosera-operator | 2026-02-13T21:00:14.601862Z  INFO ShouldRespond='false' trap_address=0x68639167... block_number=2229186
+drosera-operator | DEBUG Received new block trap_address=0x6... block_number=2229186
+drosera-operator | DEBUG Execution of Trap completed block_number=2229186
+drosera-operator | INFO ShouldRespond='false' trap_address=0x6...
 
 [... repeats for each new block ...]
 ```
@@ -956,23 +945,22 @@ drosera-operator | 2026-02-13T21:00:14.601862Z  INFO ShouldRespond='false' trap_
 **3. Anomaly Detected & Response Executed:**
 
 ```
-drosera-operator | 2026-02-13T21:00:14.388921Z  INFO ShouldRespond='true' trap_address=0x68639167... block_number=2229186
-drosera-operator | 2026-02-13T21:00:14.398174Z DEBUG Generated attestation to aggregate and gossip
-drosera-operator | 2026-02-13T21:00:14.498900Z  INFO Reached signature threshold on trap execution result
-drosera-operator | 2026-02-13T21:00:14.502999Z  INFO Aggregated attestation result is 'shouldRespond=true'
-drosera-operator | 2026-02-13T21:00:14.503908Z  INFO Cooldown period is active, skipping submission
+drosera-operator | INFO ShouldRespond='true' trap_address=0x6... block_number=2229186
+drosera-operator | DEBUG Generated attestation to aggregate and gossip
+drosera-operator | INFO Reached signature threshold on trap execution result
+drosera-operator | INFO Aggregated attestation result is 'shouldRespond=true'
+drosera-operator | INFO Cooldown period is active, skipping submission
 
-[... OR if no cooldown ...]
+[...]
 
-drosera-operator | 2026-02-13T21:00:14.506789Z  INFO This node is selected to submit the claim
-drosera-operator | 2026-02-13T21:00:14.789012Z  INFO Response function executed successfully
+drosera-operator | INFO This node is selected to submit the claim
+drosera-operator | INFO Response function executed successfully
 ```
 
 **What this means:**
-- 🔍 Trap detected conditions matching your trigger logic
-- ✅ Operators reached consensus on the detection
-- ⏸️ If "Cooldown period active": Recent execution, waiting before next response
-- ✅ If "This node is selected": Response contract function was called
+- 🔍 Conditions your created as "anomaly" were detected and the trap was triggered
+- ✅ Operators reached agreement on the detection
+- ⏸️ "Cooldown period active" means there was a recent execution, waiting before next response
 - **Note:** Frequent triggers may indicate overly sensitive thresholds - review your trap logic
 
 ---
@@ -996,10 +984,19 @@ WARN No result from shouldRespond function
 
 ---
 
-**Restart operator if needed:**
+**Helpful commands if needed:**
 ```bash
+# Stop operator
 docker compose down
-docker compose up -d --force-recreate
+
+# Start operator 
+docker compose up -d
+
+# View live logs
+docker compose logs -f
+
+# Restart operator 
+docker compose restart
 ```
 
 </details>
