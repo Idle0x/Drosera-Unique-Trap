@@ -907,22 +907,94 @@ docker compose logs -f
 docker compose logs -f operator1
 ```
 
-**Healthy log patterns:**
+---
+
+### **Expected Log Patterns:**
+
+**1. Healthy Startup:**
+
 ```
-[INFO] Block 12345678: Executing collect()
-[INFO] Block 12345678: shouldRespond() = false
-[INFO] Block 12345679: Executing collect()
-[INFO] Block 12345679: shouldRespond() = false
+drosera-operator | 2026-02-13T21:00:00.123456Z  INFO drosera_operator::node: Spawning node...
+drosera-operator | 2026-02-13T21:00:00.456789Z  INFO Starting Trap Submission Service
+drosera-operator | 2026-02-13T21:00:00.789012Z  INFO Trap Attestation Service started
+drosera-operator | 2026-02-13T21:00:00.890123Z  INFO Trap Enzyme Service started block_number=23960771
+drosera-operator | 2026-02-13T21:00:01.234567Z  INFO Operator Node successfully spawned!
+drosera-operator | 2026-02-13T21:00:01.567890Z  INFO Registered DNR with seed node trap_address=0x1521a1C...
+drosera-operator | 2026-02-13T21:00:01.890123Z  INFO Bootstrapping with seed node...
+drosera-operator | 2026-02-13T21:00:02.123456Z  INFO Starting trap enzyme runner trap_address=0x1521a1C... block_number=23960771
+
+[... initial sync logs ...]
+
+drosera-operator | 2026-02-13T21:00:05.678901Z  INFO Operator is now running and monitoring traps
 ```
 
-**Trap triggered pattern:**
+**What this means:**
+- ✅ Operator started successfully
+- ✅ Connected to Drosera network
+- ✅ Monitoring your trap
+- ⚠️ You may see some ERROR/WARN messages during initial sync (like "Batch size too large" or "Block not found") - these are **normal** and will resolve within 1-2 minutes
+
+---
+
+**2. Healthy Operation (Silent Monitoring):**
+
 ```
-[INFO] Block 12345680: Executing collect()
-[WARN] Block 12345680: shouldRespond() = true
-[INFO] Calling response function
-[INFO] Response executed successfully
-[INFO] Trap cooldown active
+drosera-operator | 2026-02-13T21:00:14.249044Z DEBUG Received new block trap_address=0x68639167... block_number=2229186
+drosera-operator | 2026-02-13T21:00:14.387336Z DEBUG Execution of Trap completed block_number=2229186
+drosera-operator | 2026-02-13T21:00:14.601862Z  INFO ShouldRespond='false' trap_address=0x68639167... block_number=2229186
+
+[... repeats for each new block ...]
 ```
+
+**What this means:**
+- ✅ Trap is monitoring every new block
+- ✅ `ShouldRespond='false'` means **no anomaly detected** - this is the expected state
+- ✅ Your trap is working correctly, staying silent until a real threat appears
+
+---
+
+**3. Anomaly Detected & Response Executed:**
+
+```
+drosera-operator | 2026-02-13T21:00:14.388921Z  INFO ShouldRespond='true' trap_address=0x68639167... block_number=2229186
+drosera-operator | 2026-02-13T21:00:14.398174Z DEBUG Generated attestation to aggregate and gossip
+drosera-operator | 2026-02-13T21:00:14.498900Z  INFO Reached signature threshold on trap execution result
+drosera-operator | 2026-02-13T21:00:14.502999Z  INFO Aggregated attestation result is 'shouldRespond=true'
+drosera-operator | 2026-02-13T21:00:14.503908Z  INFO Cooldown period is active, skipping submission
+
+[... OR if no cooldown ...]
+
+drosera-operator | 2026-02-13T21:00:14.506789Z  INFO This node is selected to submit the claim
+drosera-operator | 2026-02-13T21:00:14.789012Z  INFO Response function executed successfully
+```
+
+**What this means:**
+- 🔍 Trap detected conditions matching your trigger logic
+- ✅ Operators reached consensus on the detection
+- ⏸️ If "Cooldown period active": Recent execution, waiting before next response
+- ✅ If "This node is selected": Response contract function was called
+- **Note:** Frequent triggers may indicate overly sensitive thresholds - review your trap logic
+
+---
+
+### **Common Warnings You Can Ignore:**
+
+```
+WARN Failed to gossip message: InsufficientPeers
+```
+↳ Normal if running single operator
+
+```
+ERROR Failed to get block: Batch size too large
+```
+↳ RPC limitation during initial sync, recovers automatically
+
+```
+WARN No result from shouldRespond function
+```
+↳ During initial sync, resolves within 1-2 minutes
+
+---
 
 **Restart operator if needed:**
 ```bash
@@ -1148,7 +1220,8 @@ drosera apply
 
 ### Common Issues and Solutions
 
-#### 1. "Execution Reverted" Error During `drosera apply`
+<details>
+<summary>Issue 1: "Execution Reverted" Error During `drosera apply`</summary>
 
 **Cause:** You manually deployed the Trap contract and included its address in `drosera.toml`.
 
@@ -1157,7 +1230,12 @@ drosera apply
 - Let Drosera deploy the Trap automatically
 - Only the `response_contract` field should contain an address you deployed
 
-#### 2. Storage Variables Don't Persist / Trap Never Triggers
+</details>
+
+---
+
+<details>
+<summary>Issue 2: Storage Variables Don't Persist / Trap Never Triggers</summary>
 
 **Problem:** You added storage variables like `uint256 public lastPrice` or `bool crashDetected` and expect them to persist between blocks.
 
@@ -1184,7 +1262,12 @@ address public immutable feedContract; // Fixed value, OK
 uint256 public constant THRESHOLD = 1000; // Fixed value, OK
 ```
 
-#### 3. Response Function Reverts with "Not Authorized"
+</details>
+
+---
+
+<details>
+<summary>Issue 3: Response Function Reverts with "Not Authorized"</summary>
 
 **Problem:** Your response function uses `onlyTrap()` modifier checking `msg.sender == trapAddress`.
 
@@ -1198,7 +1281,12 @@ uint256 public constant THRESHOLD = 1000; // Fixed value, OK
 - See Phase 1, Step 4 for correct authorization pattern
 - After deploying, authorize your operator address via `setOperator()`
 
-#### 4. ABI Mismatch - Response Never Executes
+</details>
+
+---
+
+<details>
+<summary>Issue 4: ABI Mismatch - Response Never Executes</summary>
 
 **Problem:** Type mismatch between trap's return value and response function signature.
 
@@ -1226,7 +1314,12 @@ function handleAlert(uint256 gasPrice, uint256 timestamp) external { ... }
 response_function = "handleAlert(uint256,uint256)"
 ```
 
-#### 5. `drosera dryrun` Succeeds but `apply` Fails
+</details>
+
+---
+
+<details>
+<summary>Issue 5: `drosera dryrun` Succeeds but `apply` Fails</summary>
 
 **Possible causes:**
 - Incorrect `response_function` signature
@@ -1240,7 +1333,12 @@ response_function = "handleAlert(uint256,uint256)"
 3. Confirm wallet address in whitelist is correct
 4. Check wallet has sufficient funds
 
-#### 6. Compilation Errors (`forge build` fails)
+</details>
+
+---
+
+<details>
+<summary>Issue 6: Compilation Errors (`forge build` fails)</summary>
 
 **Common causes:**
 - Missing dependencies (re-run `forge install` commands)
@@ -1253,9 +1351,14 @@ response_function = "handleAlert(uint256,uint256)"
 - Verify all dependencies installed: `ls lib/`
 - Check import statements match remappings
 - Verify ITrap interface matches exactly
-- Use AI assistant for debugging specific errors
+- If using template, ensure you didn't modify core files
 
-#### 7. Trap Not Appearing in Dashboard
+</details>
+
+---
+
+<details>
+<summary>Issue 7: Trap Not Appearing in Dashboard</summary>
 
 **Check:**
 - Operator is running: `docker ps` (check if drosera-operator container is up)
@@ -1263,7 +1366,21 @@ response_function = "handleAlert(uint256,uint256)"
 - `drosera apply` completed successfully
 - Wait a few minutes for network propagation
 
-#### 8. Red Blocks in Dashboard (Errors)
+**Solution:**
+```bash
+# Check operator status
+docker ps | grep drosera
+
+# Check operator logs
+docker compose logs -f
+```
+
+</details>
+
+---
+
+<details>
+<summary>Issue 8: Red Blocks in Dashboard (Errors)</summary>
 
 **Causes:**
 - `collect()` function reverts (external call fails)
@@ -1276,6 +1393,173 @@ response_function = "handleAlert(uint256,uint256)"
 - Add defensive checks in `shouldRespond()`
 - Test with `drosera dryrun` on current network state
 - Check operator logs for specific error messages
+
+</details>
+
+---
+
+## Common Operator Errors
+
+<details>
+<summary>Operator Error 1: "InsufficientPeers" Warning</summary>
+
+**Error Message:**
+```
+WARN drosera_services::network::service: Failed to gossip message: InsufficientPeers
+```
+
+**Cause:** Your operator doesn't have enough peer connections to gossip messages.
+
+**Is This a Problem?**
+- **NO** - If you're running a single operator on your trap
+- **YES** - If you're running multiple operators but they can't connect
+
+**Solution:**
+- **For single operator:** Ignore this warning, it's normal
+- **For multiple operators:**
+  - Check firewall rules (ports 31313, 31314 must be open)
+  - Verify VPS_IP is correct in `.env`
+  - Check both operators are running: `docker ps`
+  - Wait 2-3 minutes for peer discovery
+
+</details>
+
+---
+
+<details>
+<summary>Operator Error 2: RPC Connection Failed / Timeout</summary>
+
+**Error Messages:**
+```
+ERROR Failed to call eth_call: request timeout
+ERROR RPC connection failed
+ERROR Connection refused
+```
+
+**Cause:** RPC endpoint is down, rate-limited, or unreachable.
+
+**Solution:**
+
+**Option 1: Use Private RPC (Recommended)**
+- Get free RPC from [Alchemy](https://www.alchemy.com/) or [QuickNode](https://www.quicknode.com/)
+- Update `DRO__ETH__RPC_URL` in `docker-compose.yaml`
+- Restart operator: `docker compose restart`
+
+**Option 2: Add Backup RPC**
+Already configured in the docker-compose.yaml:
+```yaml
+- DRO__ETH__BACKUP_RPC_URL=https://ethereum-hoodi-rpc.publicnode.com
+```
+
+**Option 3: Check RPC Status**
+```bash
+# Test RPC connection
+curl -X POST https://rpc.hoodi.ethpandaops.io \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+</details>
+
+---
+
+<details>
+<summary>Operator Error 3: Port Already in Use</summary>
+
+**Error Message:**
+```
+Error starting userland proxy: listen tcp 0.0.0.0:31313: bind: address already in use
+```
+
+**Cause:** Another process is using ports 31313 or 31314.
+
+**Solution:**
+
+**Check what's using the port:**
+```bash
+sudo lsof -i :31313
+sudo lsof -i :31314
+```
+
+**Option 1: Stop the conflicting process**
+```bash
+sudo kill <PID>
+```
+
+**Option 2: Use different ports**
+Edit `docker-compose.yaml` and change:
+```yaml
+ports:
+  - "31315:31313"  # Changed external port
+  - "31316:31314"  # Changed external port
+```
+
+Also update `DRO__NETWORK__P2P_PORT` accordingly.
+
+</details>
+
+---
+
+## Still Having Issues?
+
+If your error isn't listed above or the solutions don't work, here are your next steps:
+
+### Option 1: Community Support (Recommended)
+
+1. **Copy your error logs:**
+   ```bash
+   # For operator errors
+   docker compose logs --tail=100 > error-logs.txt
+   
+   # For trap deployment errors
+   forge build 2>&1 | tee build-error.txt
+   ```
+
+2. **Take a screenshot** of the error in your terminal
+
+3. **Join Drosera Discord:** [discord.gg/drosera](https://discord.gg/drosera)
+
+4. **Post in #technical-support** with:
+   - Your error message or screenshot
+   - What phase/step you're on
+   - What you've already tried
+   - Network you're deploying to (Hoodi/Mainnet)
+
+The community and Drosera team are active and helpful!
+
+---
+
+### Option 2: AI Troubleshooting
+
+1. **Copy your full error log** (commands above)
+
+2. **Use ChatGPT or Claude** with this prompt template:
+   ```
+   I'm deploying a Drosera trap and encountered this error:
+   
+   [Paste your error here]
+   
+   Context:
+   - I'm at Phase X, Step Y
+   - Network: Hoodi/Mainnet
+   - What I've tried: [list what you tried]
+   
+   Can you help identify the issue and suggest a fix?
+   ```
+
+3. **AI can help with:**
+   - Solidity compilation errors
+   - Docker/container issues
+   - Configuration problems
+   - ABI encoding/decoding issues
+
+---
+
+### Option 3: Check Official Resources
+
+- **[Drosera Documentation](https://docs.drosera.io)** - Official technical docs
+- **[GitHub Releases](https://github.com/drosera-network/releases)** - Check for known issues
+- **[Network Status](https://status.drosera.io)** - Check if there are network-wide issues
 
 ---
 
