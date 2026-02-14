@@ -36,8 +36,9 @@ Each prompt is self-contained with its own context, deliverables, and next steps
 
 ## 🎯 TRAP DEPLOYMENT
 
-<details>
+<details open>
 <summary>What This Does</summary>
+
 
 Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabilities.
 
@@ -45,8 +46,9 @@ Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabil
 
 ---
 
-<details>
+<details open>
 <summary>Prerequisites</summary>
+
 
 - Basic command line familiarity
 - VPS or local Linux machine with Foundry installed
@@ -57,7 +59,7 @@ Creates and deploys your Drosera trap contracts to monitor blockchain vulnerabil
 
 ---
 
-<details>
+<details open>
 <summary>📋 COPY DEPLOYMENT PROMPT - Click to Expand</summary>
 
 ```
@@ -407,7 +409,7 @@ You are building critical security infrastructure. Precision matters.
 
 ---
 
-<details>
+<details open>
 <summary>What You Get</summary>
 
 - Complete Foundry project with trap contracts
@@ -422,7 +424,7 @@ You are building critical security infrastructure. Precision matters.
 
 ---
 
-<details>
+<details open>
 <summary>What Happens Next</summary>
 
 Your trap is deployed and visible at https://app.drosera.io/
