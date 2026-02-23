@@ -97,56 +97,68 @@ exit
 ---
 
 <details>
-<summary>Step 2: Project Setup with Foundry Template</summary>
+<summary>Step 2: Project Setup</summary>
 
 Replace `{folder-name}` with your trap's kebab-case name:
 
 ```bash
-mkdir ~/{folder-name}
-cd ~/{folder-name}
-forge init -t drosera-network/trap-foundry-template
+# Update system dependencies
+apt-get update && apt-get install git curl unzip screen -y
+
+# Install Foundry (if not already installed)
+curl -L [https://foundry.paradigm.xyz](https://foundry.paradigm.xyz) | bash
+source ~/.bashrc && foundryup
+
+# Initialize clean workspace
+forge init {folder-name}
+cd {folder-name}
+
+# Cleanup default examples
+rm src/Counter.sol script/Counter.s.sol test/Counter.t.sol
 ```
 
 **What this does:**
-- Initializes a Foundry project with Drosera's official template
-- Includes ITrap interface automatically (no manual creation needed)
-- Pre-configured with correct remappings and dependencies
-- Includes example contracts as reference
+- Installs necessary system dependencies and Foundry
+- Initializes a clean Foundry project
+- Removes default template files to prepare for your custom trap
 
 **Verify setup:**
 ```bash
 pwd
 ls src/
-ls lib/
 ```
 
 Expected:
 - Directory: `/home/your-username/{folder-name}`
-- `src/` contains example Trap contracts
-- `lib/` contains dependencies including `drosera-contracts`
+- `src/` should be empty
 
 </details>
 
 ---
 
 <details>
-<summary>Step 3: Install Additional Dependencies</summary>
+<summary>Step 3: Install Drosera Dependencies</summary>
 
-The template includes basic dependencies, but you may need additional ones:
+We need the official Drosera smart contracts and Forge Standard Library:
 
 ```bash
-# Install Foundry (if not already installed)
-curl -L https://foundry.paradigm.xyz | bash
-source ~/.bashrc
-foundryup
+forge install drosera-network/contracts foundry-rs/forge-std
+```
 
-# Install OpenZeppelin if needed for your trap logic
+Map the dependencies correctly and create a script folder:
+
+```bash
+echo "drosera-contracts/=lib/contracts/src/" > remappings.txt && echo "forge-std/=lib/forge-std/src/" >> remappings.txt && mkdir -p script
+```
+
+**(Optional) Install OpenZeppelin if needed for your trap logic:**
+```bash
 forge install OpenZeppelin/openzeppelin-contracts@v5.0.2
 ```
 
 **Verify ITrap interface is available:**
 ```bash
-ls lib/drosera-contracts/src/interfaces/ITrap.sol
+ls lib/contracts/src/interfaces/ITrap.sol
 ```
 
 **The ITrap interface signature (for reference):**
@@ -423,7 +435,7 @@ ls out/{TrapName}Response.sol/{TrapName}Response.json
 ```bash
 source .env
 forge script script/Deploy.sol \
-  --rpc-url https://rpc.hoodi.ethpandaops.io \
+  --rpc-url [https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io) \
   --private-key $PRIVATE_KEY \
   --broadcast
 ```
@@ -432,7 +444,7 @@ forge script script/Deploy.sol \
 ```bash
 source .env
 forge script script/Deploy.sol \
-  --rpc-url https://eth.llamarpc.com \
+  --rpc-url [https://eth.llamarpc.com](https://eth.llamarpc.com) \
   --private-key $PRIVATE_KEY \
   --broadcast
 ```
@@ -465,8 +477,8 @@ Copy this address - you'll need it for `drosera.toml` in Phase 2.
 **For Hoodi Testnet:**
 
 ```toml
-ethereum_rpc = "https://rpc.hoodi.ethpandaops.io/"
-drosera_rpc = "https://relay.hoodi.drosera.io"
+ethereum_rpc = "[https://rpc.hoodi.ethpandaops.io/](https://rpc.hoodi.ethpandaops.io/)"
+drosera_rpc = "[https://relay.hoodi.drosera.io](https://relay.hoodi.drosera.io)"
 eth_chain_id = 560048
 drosera_address = "0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D"
 
@@ -488,8 +500,8 @@ private_trap = true
 **For Ethereum Mainnet:**
 
 ```toml
-ethereum_rpc = "https://eth.llamarpc.com"
-drosera_rpc = "https://relay.ethereum.drosera.io"
+ethereum_rpc = "[https://eth.llamarpc.com](https://eth.llamarpc.com)"
+drosera_rpc = "[https://relay.ethereum.drosera.io](https://relay.ethereum.drosera.io)"
 
 [traps]
 [traps.your_trap_snake_case]
@@ -593,7 +605,7 @@ The operator CLI is needed for registration and opt-in commands. This script aut
 
 ```bash
 # Detect latest version
-LATEST=$(curl -s https://api.github.com/repos/drosera-network/releases/releases/latest | grep tag_name | cut -d '"' -f 4)
+LATEST=$(curl -s [https://api.github.com/repos/drosera-network/releases/releases/latest](https://api.github.com/repos/drosera-network/releases/releases/latest) | grep tag_name | cut -d '"' -f 4)
 
 # Detect system architecture
 ARCH=$(uname -m)
@@ -607,7 +619,7 @@ else
 fi
 
 # Download operator CLI
-curl -LO "https://github.com/drosera-network/releases/releases/download/${LATEST}/drosera-operator-${LATEST}-${TARGET}.tar.gz"
+curl -LO "[https://github.com/drosera-network/releases/releases/download/$](https://github.com/drosera-network/releases/releases/download/$){LATEST}/drosera-operator-${LATEST}-${TARGET}.tar.gz"
 
 # Extract
 tar -xvf drosera-operator-${LATEST}-${TARGET}.tar.gz
@@ -664,8 +676,8 @@ services:
       - DRO__LISTEN_ADDRESS=0.0.0.0
       - DRO__DISABLE_DNR_CONFIRMATION=true
       - DRO__ETH__CHAIN_ID=560048
-      - DRO__ETH__RPC_URL=https://rpc.hoodi.ethpandaops.io
-      - DRO__ETH__BACKUP_RPC_URL=https://ethereum-hoodi-rpc.publicnode.com
+      - DRO__ETH__RPC_URL=[https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io)
+      - DRO__ETH__BACKUP_RPC_URL=[https://ethereum-hoodi-rpc.publicnode.com](https://ethereum-hoodi-rpc.publicnode.com)
       - DRO__ETH__PRIVATE_KEY=${ETH_PRIVATE_KEY}
       - DRO__NETWORK__P2P_PORT=31313
       - DRO__NETWORK__EXTERNAL_P2P_ADDRESS=${VPS_IP}
@@ -705,7 +717,7 @@ services:
     command: ["node"]
     environment:
       - DRO__ETH__CHAIN_ID=1
-      - DRO__ETH__RPC_URL=https://eth.llamarpc.com
+      - DRO__ETH__RPC_URL=[https://eth.llamarpc.com](https://eth.llamarpc.com)
       - DRO__ETH__PRIVATE_KEY=${ETH_PRIVATE_KEY}
       - DRO__NETWORK__P2P_PORT=31313
       - DRO__NETWORK__EXTERNAL_P2P_ADDRESS=${VPS_IP}
@@ -813,7 +825,7 @@ source .env
 **For Hoodi Testnet:**
 ```bash
 drosera-operator register \
-  --eth-rpc-url https://rpc.hoodi.ethpandaops.io \
+  --eth-rpc-url [https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io) \
   --eth-private-key $PRIVATE_KEY \
   --drosera-address 0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D
 ```
@@ -821,7 +833,7 @@ drosera-operator register \
 **For Ethereum Mainnet:**
 ```bash
 drosera-operator register \
-  --eth-rpc-url https://eth.llamarpc.com \
+  --eth-rpc-url [https://eth.llamarpc.com](https://eth.llamarpc.com) \
   --eth-private-key $PRIVATE_KEY
 ```
 
@@ -842,7 +854,7 @@ cat ~/your-trap-folder/drosera.toml | grep "address"
 **For Hoodi Testnet:**
 ```bash
 drosera-operator optin \
-  --eth-rpc-url https://rpc.hoodi.ethpandaops.io \
+  --eth-rpc-url [https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io) \
   --eth-private-key $PRIVATE_KEY \
   --trap-config-address your_trap_address_here
 ```
@@ -851,7 +863,7 @@ drosera-operator optin \
 ```bash
 drosera opt-in \
   --trap-address your_trap_address_here \
-  --eth-rpc-url https://eth.llamarpc.com \
+  --eth-rpc-url [https://eth.llamarpc.com](https://eth.llamarpc.com) \
   --eth-private-key $PRIVATE_KEY
 ```
 
@@ -1095,7 +1107,7 @@ git config --global user.name "Your Name"
 **4. Push Your Code:**
 
 ```bash
-git remote add origin https://github.com/{username}/{repo-name}.git
+git remote add origin [https://github.com/](https://github.com/){username}/{repo-name}.git
 git branch -M main
 git push -u origin main
 ```
@@ -1300,7 +1312,7 @@ response_function = "handleAlert(uint256,uint256)"
 - Verify all dependencies installed: `ls lib/`
 - Check import statements match remappings
 - Verify ITrap interface matches exactly
-- If using template, ensure you didn't modify core files
+- Ensure you haven't accidentally modified the imported `ITrap.sol` interface.
 
 </details>
 
@@ -1395,13 +1407,13 @@ ERROR Connection refused
 **Option 2: Add Backup RPC**
 Already configured in the docker-compose.yaml:
 ```yaml
-- DRO__ETH__BACKUP_RPC_URL=https://ethereum-hoodi-rpc.publicnode.com
+- DRO__ETH__BACKUP_RPC_URL=[https://ethereum-hoodi-rpc.publicnode.com](https://ethereum-hoodi-rpc.publicnode.com)
 ```
 
 **Option 3: Check RPC Status**
 ```bash
 # Test RPC connection
-curl -X POST https://rpc.hoodi.ethpandaops.io \
+curl -X POST [https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io) \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 ```
