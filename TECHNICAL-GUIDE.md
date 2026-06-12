@@ -825,7 +825,7 @@ source .env
 **For Hoodi Testnet:**
 ```bash
 drosera-operator register \
-  --eth-rpc-url [https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io) \
+  --eth-rpc-url https://rpc.hoodi.ethpandaops.io \
   --eth-private-key $PRIVATE_KEY \
   --drosera-address 0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D
 ```
@@ -833,7 +833,7 @@ drosera-operator register \
 **For Ethereum Mainnet:**
 ```bash
 drosera-operator register \
-  --eth-rpc-url [https://eth.llamarpc.com](https://eth.llamarpc.com) \
+  --eth-rpc-url https://eth.llamarpc.com \
   --eth-private-key $PRIVATE_KEY
 ```
 
@@ -854,7 +854,7 @@ cat ~/your-trap-folder/drosera.toml | grep "address"
 **For Hoodi Testnet:**
 ```bash
 drosera-operator optin \
-  --eth-rpc-url [https://rpc.hoodi.ethpandaops.io](https://rpc.hoodi.ethpandaops.io) \
+  --eth-rpc-url https://rpc.hoodi.ethpandaops.io \
   --eth-private-key $PRIVATE_KEY \
   --trap-config-address your_trap_address_here
 ```
@@ -863,7 +863,7 @@ drosera-operator optin \
 ```bash
 drosera opt-in \
   --trap-address your_trap_address_here \
-  --eth-rpc-url [https://eth.llamarpc.com](https://eth.llamarpc.com) \
+  --eth-rpc-url https://eth.llamarpc.com \
   --eth-private-key $PRIVATE_KEY
 ```
 
